@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rudrajit Roy | Cybersecurity Enthusiast &amp; Full Stack Developer</title>
+
+  <!-- ===== SEO META TAGS ===== -->
+  <meta name="description"
+    content="Rudrajit Roy is a B.Tech CSE (IoT, Cyber Security & Blockchain) student and full stack developer building secure web applications, network security tools and AI automation projects." />
+  <meta name="keywords"
+    content="Rudrajit Roy, Cybersecurity Portfolio, Full Stack Developer, Python Developer, Django Developer, Ethical Hacking, Network Security, AI Automation, B.Tech CSE" />
+  <meta name="author" content="Rudrajit Roy" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://rudrajitroy1310.github.io/portfolio/" />
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rudrajitroy1310.github.io/portfolio/" />
+  <meta property="og:title" content="Rudrajit Roy | Cybersecurity Enthusiast &amp; Full Stack Developer" />
+  <meta property="og:description"
+    content="Building secure, reliable and intelligent web applications with a focus on cybersecurity and AI automation." />
+  <meta property="og:image" content="https://rudrajitroy1310.github.io/portfolio/images/og-image.png" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:site_name" content="Rudrajit Roy Portfolio" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rudrajit Roy | Cybersecurity Enthusiast &amp; Full Stack Developer" />
+  <meta name="twitter:description"
+    content="Building secure, reliable and intelligent web applications with a focus on cybersecurity and AI automation." />
+  <meta name="twitter:image" content="https://rudrajitroy1310.github.io/portfolio/images/og-image.png" />
+
+  <!-- Theme color for mobile browser chrome -->
+  <meta name="theme-color" content="#0a0f1c" />
+
+  <!-- Structured Data (JSON-LD) for rich search results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Rudrajit Roy",
+    "url": "https://rudrajitroy1310.github.io/portfolio/",
+    "jobTitle": "Full Stack Developer & Cybersecurity Enthusiast",
+    "email": "mailto:rudrajitroyofficial@gmail.com",
+    "telephone": "+91-6295293409",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Asansol",
+      "addressRegion": "West Bengal",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      "https://github.com/rudrajitroy1310",
+      "https://www.linkedin.com/in/rudrajitroy/"
+    ],
+    "knowsAbout": ["Cybersecurity", "Python", "Django", "Flask", "Network Security", "Machine Learning", "JavaScript"]
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/solid.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/regular.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/brands.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css" />
+  <noscript>
+    <style>
+      .skill-card,
+      .project-card,
+      .exp-item {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      #preloader {
+        display: none !important;
+      }
+
+      .navbar,
+      .hero-text,
+      .hero-visual {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    </style>
+  </noscript>
+</head>
+
+<body>
+
+  <!-- ===== LOADING INTRO: SECURE BOOT SEQUENCE ===== -->
+  <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Site loading">
+    <canvas id="preloaderRain"></canvas>
+    <div class="preloader-scanline"></div>
+
+    <div class="preloader-content">
+      <div class="preloader-badge"><i class="fa-solid fa-shield-halved"></i></div>
+
+      <div class="preloader-terminal">
+        <div class="preloader-terminal-bar">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+          <span class="preloader-terminal-title">secure_boot.sh</span>
+        </div>
+        <div class="preloader-lines" id="preloaderLines"></div>
+      </div>
+
+      <div class="preloader-progress-wrap">
+        <div class="preloader-progress-bar">
+          <div class="preloader-progress-fill" id="preloaderFill"></div>
+        </div>
+        <span class="preloader-progress-pct" id="preloaderPct">0%</span>
+      </div>
+
+      <p class="preloader-skip">Click anywhere to skip</p>
+    </div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="logo">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>RUDRAJIT ROY</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="assets/Rudrajit_Roy_CV.pdf" class="btn btn-outline-cv" id="downloadCv" download>
+          Download CV <i class="fa-solid fa-download"></i>
+        </a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-greet">Hi, I am</p>
+        <h1 class="hero-name">Rudrajit <span class="accent">Roy</span><span class="cursor">|</span></h1>
+
+        <div class="hero-roles">
+          <p class="role role-blue"><span id="typedRole"></span><span class="type-cursor">|</span></p>
+        </div>
+
+        <p class="hero-desc">
+          I build secure, reliable and intelligent web applications with a focus on
+          cybersecurity and AI automation.
+        </p>
+
+        <div class="hero-btns">
+          <a href="#projects" class="btn btn-primary">Explore My Work <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#contact" class="btn btn-outline">Contact Me <i class="fa-solid fa-paper-plane"></i></a>
+        </div>
+
+        <div class="hero-socials">
+          <a href="https://github.com/rudrajitroy1310" target="_blank" aria-label="GitHub"><i
+              class="fa-brands fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/rudrajitroy/" target="_blank" aria-label="LinkedIn"><i
+              class="fa-brands fa-linkedin"></i></a>
+          <a href="mailto:rudrajitroyofficial@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="binary-decor binary-left">01001<br>11010<br>00101<br>10110<br>01100<br>10011</div>
+        <div class="binary-decor binary-right">10011<br>01101<br>11000<br>00110<br>10101<br>01011</div>
+        <div class="globe-wrap">
+          <div class="globe"></div>
+          <canvas id="particleCanvas"></canvas>
+
+          <div class="hero-icon icon-lock"><i class="fa-solid fa-lock"></i></div>
+          <div class="hero-icon icon-code"><i class="fa-solid fa-code"></i></div>
+          <div class="hero-icon icon-terminal"><i class="fa-solid fa-terminal"></i></div>
+          <div class="hero-icon icon-globe"><i class="fa-solid fa-globe"></i></div>
+
+          <div class="hooded-figure">
+            <div class="figure-body">
+              <img src="images/profile-hero.png" alt="Rudrajit Roy" class="figure-photo">
+            </div>
+          </div>
+
+          <div class="orbit-shield"><i class="fa-solid fa-shield-halved"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT + SKILLS ===== -->
+  <section class="split-section">
+    <div class="split-inner">
+
+      <div class="about-block" id="about">
+        <h2 class="section-title"><i class="fa-solid fa-user"></i> About Me</h2>
+        <p class="about-text">
+          I am a B.Tech CSE (IoT, Cyber Security &amp; Blockchain Technology) student who loves
+          to explore the world of technology. I enjoy building web applications, network
+          security tools and AI based solutions. My goal is to become a Cybersecurity
+          Engineer and contribute to building a safer digital world.
+        </p>
+        <!-- TODO: replace this placeholder paragraph with more about yourself
+             (background, interests, achievements, what drives you, etc.) -->
+        <p class="about-text about-text-more" id="aboutMore" hidden>
+          My journey started in 2023 when I began my B.Tech, and it didn't take long before
+          I found myself pulled toward two things at once — breaking systems apart to see how
+          they work, and building applications that solve real problems. That curiosity turned
+          into hands-on practice with tools like Wireshark and Nmap for network analysis, and
+          Python, Django and Flask for building full-stack applications. Along the way I've
+          worked on everything from a real-time packet sniffer to an AI-powered voice assistant,
+          picking up certifications in Cyber Security Essentials, Linux, and Ethical Hacking to
+          back up what I was learning hands-on. What I enjoy most is the overlap between the two
+          worlds — writing code that not only works, but is built to withstand the ways it could
+          be broken. That's the mindset I'm carrying forward as I work toward becoming a full-time
+          Cybersecurity Engineer.
+        </p>
+        <button type="button" class="btn btn-primary btn-sm" id="aboutToggleBtn">
+          <span id="aboutToggleText">Read More</span> <i class="fa-solid fa-arrow-right" id="aboutToggleIcon"></i>
+        </button>
+      </div>
+
+      <div class="skills-block" id="skills">
+        <h2 class="section-title"><i class="fa-solid fa-code"></i> Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-card"><i class="devicon-python-plain colored"></i><span>Python</span></div>
+          <div class="skill-card"><i class="devicon-django-plain icon-django"></i><span>Django</span></div>
+          <div class="skill-card"><i class="fa-solid fa-flask"></i><span>Flask</span></div>
+          <div class="skill-card"><i class="devicon-javascript-plain colored"></i><span>JavaScript</span></div>
+          <div class="skill-card"><i class="devicon-html5-plain colored"></i><span>HTML</span></div>
+          <div class="skill-card"><i class="devicon-css3-plain colored"></i><span>CSS</span></div>
+          <div class="skill-card"><i class="devicon-mysql-plain icon-mysql"></i><span>MySQL</span></div>
+          <div class="skill-card"><i class="devicon-postgresql-plain colored"></i><span>PostgreSQL</span></div>
+          <div class="skill-card"><i class="devicon-linux-plain icon-linux"></i><span>Linux</span></div>
+          <div class="skill-card"><i class="fa-solid fa-fish"></i><span>Wireshark</span></div>
+          <div class="skill-card"><i class="fa-solid fa-eye"></i><span>Nmap</span></div>
+          <div class="skill-card"><i class="devicon-git-plain colored"></i><span>Git &amp; GitHub</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section class="projects-section" id="projects">
+    <div class="section-head">
+      <h2 class="section-title"><i class="fa-regular fa-folder-open"></i> Featured Projects</h2>
+      <a href="javascript:void(0)" class="view-all" id="viewAllBtn">View All Projects <i
+          class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card" data-github="https://github.com/rudrajitroy1310/Network_Packet_Sniffer">
+        <div class="project-thumb thumb-1">
+          <img src="images/project1.png" alt="Network Packet Sniffer" onerror="this.style.display='none'">
+          <i class="fa-solid fa-chart-line thumb-fallback-icon"></i>
+        </div>
+        <h3>Network Packet Sniffer</h3>
+        <p>A network monitoring tool that captures and analyzes packets in real-time for security analysis.</p>
+        <div class="tags"><span>Python</span><span>Scapy</span><span>Wireshark</span></div>
+        <p class="project-detail" hidden>Built to capture live network traffic and break it down packet-by-packet for
+          security analysis. It sniffs traffic using Scapy, decodes protocol headers, flags suspicious patterns, and
+          logs everything in a readable format so the flow of data across a network becomes easy to inspect and audit.
+        </p>
+      </div>
+
+      <div class="project-card" data-github="https://github.com/rudrajitroy1310/SecureAssistant">
+        <div class="project-thumb thumb-2">
+          <img src="images/project2.png" alt="Secure Assistant" onerror="this.style.display='none'">
+          <i class="fa-solid fa-wave-square thumb-fallback-icon"></i>
+        </div>
+        <h3>Secure Assistant</h3>
+        <p>AI powered voice assistant with automation features and secure command execution.</p>
+        <div class="tags"><span>Python</span><span>Eel</span><span>AI</span></div>
+        <p class="project-detail" hidden>A desktop voice assistant built with Python and Eel that listens for voice
+          commands and automates everyday tasks. Sensitive commands run through a permission layer before execution, and
+          the assistant can open apps, search the web, and respond conversationally using AI.</p>
+      </div>
+
+      <div class="project-card" data-github="https://github.com/rudrajitroy-codes/worldchat">
+        <div class="project-thumb thumb-3">
+          <img src="images/project3.png" alt="WorldChat" onerror="this.style.display='none'">
+          <i class="fa-solid fa-comments thumb-fallback-icon"></i>
+        </div>
+        <h3>WorldChat</h3>
+        <p>Real-time chat application with authentication and multiple room support.</p>
+        <div class="tags"><span>Django</span><span>SQLite</span><span>Channels</span></div>
+        <p class="project-detail" hidden>A real-time messaging platform built on Django Channels for WebSocket
+          communication. Users can sign up, join multiple chat rooms, and exchange messages instantly with no page
+          reloads, backed by a SQLite database for storing users and message history.</p>
+      </div>
+
+      <!-- TODO: replace data-github below with the real repo link for Heart Disease Predictor -->
+      <div class="project-card" data-github="#">
+        <div class="project-thumb thumb-4">
+          <img src="images/project4.png" alt="Heart Disease Predictor" onerror="this.style.display='none'">
+          <i class="fa-solid fa-graduation-cap thumb-fallback-icon"></i>
+        </div>
+        <h3>Heart Disease Predictor</h3>
+        <p>An intelligent machine learning-based web application that predicts the risk of heart disease using patient
+          health data, providing quick and easy-to-understand prediction results.
+        </p>
+        <div class="tags"><span>Python</span><span>Machine Learning</span><span>Flask</span><span>Scikit-learn</span></div>
+        <p class="project-detail" hidden>Heart Disease Predictor is a machine learning-based web application designed to
+          predict the risk of heart disease using various patient health parameters. Built with Python and Flask, the
+          application processes user-provided medical data through a trained machine learning model and generates
+          prediction results. The project demonstrates the practical integration of machine learning with web
+          development through a simple, interactive, and user-friendly interface.
+        </p>
+      </div>
+
+      <div class="project-card" data-github="https://github.com/rudrajitroy-codes/ryko-social-app">
+        <div class="project-thumb thumb-5">
+          <img src="images/project5.png" alt="RyKo Social App" onerror="this.style.display='none'">
+          <i class="fa-solid fa-mobile-screen-button thumb-fallback-icon"></i>
+        </div>
+        <h3>RyKo Social App</h3>
+        <p>Social connection app where everyday you get a new connection to chat.</p>
+        <div class="tags"><span>Kotlin</span><span>Android</span><span>Firebase</span></div>
+        <p class="project-detail" hidden>An Android social app built with Kotlin and Firebase that matches users with
+          one new connection every day, encouraging meaningful one-on-one conversations instead of endless swiping.
+          Firebase handles authentication, real-time chat, and daily matchmaking logic.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE TIMELINE ===== -->
+  <section class="experience-section" id="experience">
+    <div class="experience-inner">
+      <h2 class="section-title"><i class="fa-solid fa-timeline"></i> Experience Timeline</h2>
+      <p class="experience-subtitle">A quick look at how the journey has unfolded so far — scroll to explore.</p>
+
+      <div class="exp-timeline-wrap">
+        <button class="exp-scroll-btn exp-scroll-left" id="expScrollLeft" aria-label="Scroll left">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="exp-timeline" id="expTimeline">
+          <div class="exp-track">
+
+            <div class="exp-segment">
+              <span class="exp-particle"></span>
+              <span class="exp-particle"></span>
+            </div>
+            <div class="exp-segment">
+              <span class="exp-particle"></span>
+              <span class="exp-particle"></span>
+            </div>
+            <div class="exp-segment">
+              <span class="exp-particle"></span>
+              <span class="exp-particle"></span>
+            </div>
+            <div class="exp-segment">
+              <span class="exp-particle"></span>
+              <span class="exp-particle"></span>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-card">
+                <span class="exp-year">2023</span>
+                <h3>Started B.Tech Journey</h3>
+                <p>Began the B.Tech CSE (IoT, Cyber Security &amp; Blockchain) program, laying the foundation.</p>
+              </div>
+              <div class="exp-node"><i class="fa-solid fa-graduation-cap"></i></div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-card">
+                <span class="exp-year">2024</span>
+                <h3>Exploring Python Development</h3>
+                <p>Dove deep into Python, scripting and backend fundamentals.</p>
+              </div>
+              <div class="exp-node"><i class="fa-brands fa-python"></i></div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-card">
+                <span class="exp-year">2025</span>
+                <h3>Built Full Stack Projects</h3>
+                <p>Shipped multiple full-stack apps spanning Django, real-time chat and Android.</p>
+              </div>
+              <div class="exp-node"><i class="fa-solid fa-layer-group"></i></div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-card">
+                <span class="exp-year">2026</span>
+                <h3>Cybersecurity &amp; AI Projects</h3>
+                <p>Shifted focus toward network security tooling, AI automation and secure design.</p>
+              </div>
+              <div class="exp-node"><i class="fa-solid fa-shield-halved"></i></div>
+            </div>
+
+            <div class="exp-item exp-item-future">
+              <div class="exp-card">
+                <span class="exp-year">Future Goal</span>
+                <h3>Cybersecurity Engineer</h3>
+                <p>Aiming to design, build and defend systems at scale as a full-time Engineer.</p>
+              </div>
+              <div class="exp-node"><i class="fa-solid fa-bullseye"></i></div>
+            </div>
+
+          </div>
+        </div>
+
+        <button class="exp-scroll-btn exp-scroll-right" id="expScrollRight" aria-label="Scroll right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== GITHUB STATS + CERTIFICATIONS ===== -->
+  <section class="bottom-section">
+    <div class="bottom-inner">
+
+      <div class="github-block">
+        <h2 class="section-title"><i class="fa-brands fa-github"></i> GitHub Stats</h2>
+        <div class="github-card" id="githubCard">
+          <div class="gh-user">
+            <img id="ghAvatar" src="" alt="avatar" />
+            <span id="ghUsername">loading...</span>
+          </div>
+          <div class="gh-stats">
+            <div><strong id="ghRepos">–</strong><span>Repositories</span></div>
+            <div><strong id="ghFollowers">–</strong><span>Followers</span></div>
+            <div><strong id="ghStars">–</strong><span>Stars</span></div>
+          </div>
+          <p class="gh-label">Contribution Activity</p>
+          <div class="gh-chart">
+            <img id="ghChartImg" src="" alt="GitHub contribution chart" />
+          </div>
+        </div>
+      </div>
+
+      <div class="cert-block" id="certifications">
+        <h2 class="section-title">
+          <span><i class="fa-solid fa-certificate"></i> Certifications</span>
+          <span class="cert-count-badge" id="certCountBadge">0</span>
+        </h2>
+
+        <div class="cert-list-wrap" id="certListWrap">
+          <div class="cert-list" id="certList">
+            <a href="#" class="cert-item" data-cert-img="images/cert-python.jpg">
+              <i class="devicon-python-plain colored"></i>
+              <div><strong>Python Programming</strong><span>Udemy</span></div>
+              <i class="fa-solid fa-chevron-right chev"></i>
+            </a>
+            <a href="#" class="cert-item" data-cert-img="images/cert-cisco.jpg">
+              <i class="fa-solid fa-shield-halved cert-cisco"></i>
+              <div><strong>Cyber Security Essentials</strong><span>Cisco</span></div>
+              <i class="fa-solid fa-chevron-right chev"></i>
+            </a>
+            <a href="#" class="cert-item" data-cert-img="images/cert-linux.jpg">
+              <i class="devicon-linux-plain icon-linux"></i>
+              <div><strong>Linux Essentials</strong><span>Linux Academy</span></div>
+              <i class="fa-solid fa-chevron-right chev"></i>
+            </a>
+            <a href="#" class="cert-item" data-cert-img="images/cert-wireshark.jpg">
+              <i class="fa-solid fa-fish cert-shark"></i>
+              <div><strong>Network Analysis</strong><span>Wireshark University</span></div>
+              <i class="fa-solid fa-chevron-right chev"></i>
+            </a>
+            <!--
+            NAYA CERTIFICATE ADD KARNE KE LIYE: neeche wala block copy karke
+            paste kar do (isi <div> ke andar), image, icon, title aur issuer badal do.
+            List apne aap scroll ho jayegi, koi CSS/JS badalne ki zaroorat nahi.
+          -->
+            <a href="#" class="cert-item" data-cert-img="images/cert-django.jpg">
+              <i class="devicon-django-plain icon-django"></i>
+              <div><strong>Django Web Framework</strong><span>Coursera</span></div>
+              <i class="fa-solid fa-chevron-right chev"></i>
+            </a>
+            <a href="#" class="cert-item" data-cert-img="images/cert-nmap.jpg">
+              <i class="fa-solid fa-eye"></i>
+              <div><strong>Nmap for Ethical Hacking</strong><span>TryHackMe</span></div>
+              <i class="fa-solid fa-chevron-right chev"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===== PROJECT DETAIL MODAL ===== -->
+  <div class="project-modal" id="projectModal">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" data-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-thumb" id="modalThumb"></div>
+      <div class="modal-body">
+        <h3 id="modalTitle"></h3>
+        <p id="modalDetail"></p>
+        <div class="tags" id="modalTags"></div>
+        <a id="modalGithub" href="#" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+          <i class="fa-brands fa-github"></i> View on GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CERTIFICATE PREVIEW MODAL ===== -->
+  <div class="project-modal" id="certModal">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+      <button class="modal-close" data-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <div class="cert-modal-image" id="certModalFallback">
+        <img id="certModalImg" src="" alt="" />
+      </div>
+      <div class="modal-body">
+        <h3 id="certModalTitle"></h3>
+        <p id="certModalIssuer" class="cert-modal-issuer"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ALL PROJECTS OVERVIEW ===== -->
+  <div class="all-projects-overlay" id="allProjectsOverlay">
+    <div class="all-projects-backdrop" data-close-all></div>
+    <div class="all-projects-panel" role="dialog" aria-modal="true" aria-labelledby="allProjectsTitle">
+      <div class="all-projects-header">
+        <h2 id="allProjectsTitle"><i class="fa-regular fa-folder-open"></i> All Projects</h2>
+        <button class="all-projects-close" data-close-all aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="all-projects-scroll">
+        <div class="projects-grid all-projects-grid" id="allProjectsGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="contact">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <h3>Let's Connect</h3>
+        <p><a href="mailto:rudrajitroyofficial@gmail.com"><i class="fa-solid fa-envelope"></i>
+            rudrajitroyofficial@gmail.com</a></p>
+        <p><a href="tel:+916295293409"><i class="fa-solid fa-phone"></i> +91 6295293409</a></p>
+        <p><i class="fa-solid fa-location-dot"></i> Asansol, West Bengal, India</p>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/rudrajitroy1310" target="_blank"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/rudrajitroy" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="mailto:rudrajitroyofficial@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Rudrajit Roy. All rights reserved.</p>
+      <p>Built with <i class="fa-solid fa-heart"></i> and lots of <i class="fa-solid fa-mug-hot"></i></p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+
+</html>
