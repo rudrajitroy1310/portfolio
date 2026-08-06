@@ -1,5 +1,0 @@
-<a href="#" class="cert-item" data-cert-img="images/cert-xyz.jpg">
-  <i class="fa-solid fa-icon-name"></i>
-  <div><strong>Certificate Name</strong><span>Issuer</span></div>
-  <i class="fa-solid fa-chevron-right chev"></i>
-</a>
