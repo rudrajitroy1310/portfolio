@@ -59,12 +59,18 @@ html {
 }
 ::-webkit-scrollbar-corner { background: var(--bg-alt); }
 
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
   overflow-x: hidden;
+  width: 100%;
   transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -441,6 +447,10 @@ body.light-theme .navbar { background: rgba(255,255,255,0.85); }
   grid-template-columns: repeat(5, 1fr);
   gap: 1.3rem;
 }
+.projects-grid {
+  /* clip child transforms so entrance animation can't expand page scroll width */
+  overflow: hidden;
+}
 .project-card {
   background: var(--card);
   border: 1px solid var(--card-border);
@@ -457,6 +467,15 @@ body.light-theme .navbar { background: rgba(255,255,255,0.85); }
 }
 .project-card:nth-child(even) {
   transform: perspective(1200px) rotateY(-20deg) rotateX(8deg) translateX(50px) translateY(40px) scale(0.9);
+}
+@media (max-width: 600px) {
+  /* on small screens, drop the sideways slide-in so it can never contribute to horizontal scroll */
+  .project-card:nth-child(odd) {
+    transform: perspective(1200px) rotateY(0) rotateX(0) translateY(40px) scale(0.94);
+  }
+  .project-card:nth-child(even) {
+    transform: perspective(1200px) rotateY(0) rotateX(0) translateY(40px) scale(0.94);
+  }
 }
 .project-card.revealed {
   opacity: 1;
