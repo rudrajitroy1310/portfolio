@@ -442,59 +442,26 @@ body.light-theme .navbar { background: rgba(255,255,255,0.85); }
 .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.6rem; }
 .view-all { color: var(--blue); font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem; }
 
+/* ---- shared grid primitives (also used, unscoped, by the All Projects overlay) ---- */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1.3rem;
 }
-.projects-grid {
-  /* clip child transforms so entrance animation can't expand page scroll width */
-  overflow: hidden;
-}
 .project-card {
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
-  overflow: hidden;
-  padding-bottom: 1.2rem;
   cursor: pointer;
-  opacity: 0;
-  transform-style: preserve-3d;
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.project-card:nth-child(odd) {
-  transform: perspective(1200px) rotateY(20deg) rotateX(8deg) translateX(-50px) translateY(40px) scale(0.9);
-}
-.project-card:nth-child(even) {
-  transform: perspective(1200px) rotateY(-20deg) rotateX(8deg) translateX(50px) translateY(40px) scale(0.9);
-}
-@media (max-width: 600px) {
-  /* on small screens, drop the sideways slide-in so it can never contribute to horizontal scroll */
-  .project-card:nth-child(odd) {
-    transform: perspective(1200px) rotateY(0) rotateX(0) translateY(40px) scale(0.94);
-  }
-  .project-card:nth-child(even) {
-    transform: perspective(1200px) rotateY(0) rotateX(0) translateY(40px) scale(0.94);
-  }
-}
-.project-card.revealed {
-  opacity: 1;
-  transform: perspective(1200px) rotateY(0) rotateX(0) translateX(0) translateY(0) scale(1);
-}
-.project-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-  border-color: var(--blue);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
 }
 .project-thumb {
   position: relative;
-  height: 120px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 2.4rem;
+  font-size: 2rem;
   color: rgba(255,255,255,0.85);
-  margin-bottom: 1rem;
   overflow: hidden;
+  border-radius: 9px;
 }
 .project-thumb img,
 .modal-thumb img {
@@ -515,9 +482,7 @@ body.light-theme .navbar { background: rgba(255,255,255,0.85); }
 .thumb-3 { background: linear-gradient(135deg, #0f1f2e, #1a3550); }
 .thumb-4 { background: linear-gradient(135deg, #1e2530, #2c3a4d); }
 .thumb-5 { background: linear-gradient(135deg, #4a1a6b, #7a2f9e); }
-.project-card h3 { font-size: 1.05rem; margin: 0 1rem 0.4rem; }
-.project-card p { font-size: 0.85rem; color: var(--text-dim); margin: 0 1rem 0.9rem; min-height: 55px; }
-.tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0 1rem; }
+.tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 .tags span {
   font-size: 0.72rem;
   background: rgba(58,168,240,0.12);
@@ -525,6 +490,167 @@ body.light-theme .navbar { background: rgba(255,255,255,0.85); }
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
   font-weight: 500;
+}
+
+/* =============================================================
+   FEATURED PROJECTS — asymmetric "registry" bento layout
+   one large featured build + four compact file-entry cards,
+   each tagged with the actual file that project ships.
+   ============================================================= */
+#projects .projects-grid {
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(150px, auto);
+  gap: 1.1rem;
+  overflow: visible;
+}
+
+#projects .projects-grid .project-card {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas:
+    "file  file"
+    "thumb title"
+    "thumb desc"
+    "thumb tags";
+  column-gap: 0.9rem;
+  row-gap: 0.3rem;
+  padding: 0.85rem 1rem 1rem;
+  align-items: start;
+  opacity: 0;
+  transform: translateY(28px) scale(0.96);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+#projects .projects-grid .project-card.revealed { opacity: 1; transform: translateY(0) scale(1); }
+#projects .projects-grid .project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 32px -12px var(--accent);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+#projects .projects-grid .project-card::after {
+  content: '\f35d'; /* fa-solid fa-arrow-up-right-from-square */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  top: 0.8rem; right: 0.9rem;
+  font-size: 0.7rem;
+  color: var(--accent);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+#projects .projects-grid .project-card:hover::after { opacity: 1; transform: translate(0, 0); }
+
+/* per-project accent, echoing each thumbnail's own palette */
+#projects .projects-grid .project-card:nth-child(1) { --accent: var(--blue); }
+#projects .projects-grid .project-card:nth-child(2) { --accent: #8b6cf0; }
+#projects .projects-grid .project-card:nth-child(3) { --accent: #2fd8c8; }
+#projects .projects-grid .project-card:nth-child(4) { --accent: #ff6b7a; }
+#projects .projects-grid .project-card:nth-child(5) { --accent: #d946ef; }
+
+/* terminal-style file tag: the signature element tying every card together */
+.project-file {
+  grid-area: file;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.project-file::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent, var(--blue));
+  box-shadow: 0 0 6px var(--accent, var(--blue));
+  flex-shrink: 0;
+}
+
+#projects .projects-grid .project-thumb { grid-area: thumb; height: 100%; min-height: 64px; font-size: 1.5rem; }
+#projects .projects-grid .project-card h3 { grid-area: title; font-size: 0.98rem; margin: 0; line-height: 1.25; }
+#projects .projects-grid .project-card > p:not(.project-detail) {
+  grid-area: desc;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* belt-and-braces: the long-form modal copy must never render inline */
+.project-card .project-detail[hidden] { display: none !important; }
+#projects .projects-grid .tags { grid-area: tags; align-self: end; margin-top: 0.15rem; }
+#projects .projects-grid .tags span { font-size: 0.66rem; padding: 0.2rem 0.5rem; }
+
+/* the featured build: spans the first two columns and both rows,
+   reverts to a tall vertical layout with room to actually read */
+#projects .projects-grid .project-card:nth-child(1) {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto 1fr auto;
+  grid-template-areas:
+    "file"
+    "thumb"
+    "title"
+    "desc"
+    "tags";
+  padding: 1rem 1.2rem 1.3rem;
+  row-gap: 0.5rem;
+}
+#projects .projects-grid .project-card:nth-child(1) .project-file { font-size: 0.72rem; }
+#projects .projects-grid .project-card:nth-child(1) .project-thumb {
+  height: 190px;
+  font-size: 2.2rem;
+}
+#projects .projects-grid .project-card:nth-child(1) h3 { font-size: 1.35rem; }
+#projects .projects-grid .project-card:nth-child(1) > p:not(.project-detail) {
+  font-size: 0.9rem;
+  -webkit-line-clamp: 3;
+}
+#projects .projects-grid .project-card:nth-child(1) .tags span { font-size: 0.72rem; padding: 0.28rem 0.65rem; }
+
+/* the four compact entries sit two-by-two beside the featured build */
+#projects .projects-grid .project-card:nth-child(2) { grid-column: 3; grid-row: 1; }
+#projects .projects-grid .project-card:nth-child(3) { grid-column: 4; grid-row: 1; }
+#projects .projects-grid .project-card:nth-child(4) { grid-column: 3; grid-row: 2; }
+#projects .projects-grid .project-card:nth-child(5) { grid-column: 4; grid-row: 2; }
+
+@media (max-width: 1100px) {
+  #projects .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  #projects .projects-grid .project-card:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+  #projects .projects-grid .project-card:nth-child(2) { grid-column: 1; grid-row: 2; }
+  #projects .projects-grid .project-card:nth-child(3) { grid-column: 2; grid-row: 2; }
+  #projects .projects-grid .project-card:nth-child(4) { grid-column: 1; grid-row: 3; }
+  #projects .projects-grid .project-card:nth-child(5) { grid-column: 2; grid-row: 3; }
+}
+
+@media (max-width: 640px) {
+  #projects .projects-grid { grid-template-columns: 1fr; }
+  #projects .projects-grid .project-card,
+  #projects .projects-grid .project-card:nth-child(1) {
+    grid-column: 1;
+    grid-row: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto 1fr auto;
+    grid-template-areas:
+      "file"
+      "thumb"
+      "title"
+      "desc"
+      "tags";
+    padding: 0.9rem 1rem 1.1rem;
+  }
+  #projects .projects-grid .project-card .project-thumb { height: 150px; }
+  #projects .projects-grid .project-card > p:not(.project-detail) { -webkit-line-clamp: 3; }
 }
 
 /* ===================== PROJECT DETAIL MODAL ===================== */
@@ -727,10 +853,34 @@ body.modal-open { overflow: hidden; }
 }
 .all-projects-grid { grid-template-columns: repeat(3, 1fr); }
 .all-projects-grid .project-card {
+  padding: 0 0 1.2rem;
+  overflow: hidden;
   opacity: 0;
   transform: translateY(34px) scale(0.9) rotate(-1.5deg);
   filter: blur(6px);
 }
+.all-projects-grid .project-file {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin: 0.8rem 1rem 0.5rem;
+}
+.all-projects-grid .project-file::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+.all-projects-grid .project-thumb { height: 120px; margin: 0 0 1rem; border-radius: 0; }
+.all-projects-grid .project-card h3 { font-size: 1.05rem; margin: 0 1rem 0.4rem; }
+.all-projects-grid .project-card p {
+  font-size: 0.85rem; color: var(--text-dim); margin: 0 1rem 0.9rem; min-height: 55px;
+}
+.all-projects-grid .tags { margin: 0 1rem; }
 .all-projects-grid .project-card.pop-in {
   animation: allProjectsPopIn 0.65s cubic-bezier(0.16, 0.85, 0.3, 1) forwards;
 }
