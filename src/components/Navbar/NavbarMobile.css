@@ -8,15 +8,37 @@
   overflow: hidden;
   background: transparent;
   border: 1px solid transparent;
-  transition: background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
-.navbar-m--scrolled {
+/* Blur/background ab ek alag pseudo-element layer pe hai, khud .navbar-m pe
+   nahi. Wajah: backdrop-filter ko directly class-toggle se add/remove karne
+   par kuch mobile browsers (Chrome/Android, Safari) GPU compositing layer
+   sahi se repaint nahi karte, aur ek "ghost" blurred patch reh jaata hai.
+   Opacity transitions hamesha cleanly repaint hote hain, isliye ab sirf
+   opacity (0 <-> 1) toggle hoti hai — backdrop-filter khud kabhi add/remove
+   nahi hota. */
+.navbar-m::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
   background: rgba(8, 9, 10, 0.9);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.navbar-m--scrolled {
   border: 1px solid var(--line);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-m--scrolled::before {
+  opacity: 1;
 }
 
 .navbar-m--open {
@@ -25,16 +47,13 @@
 }
 
 /* ---------- Collapsed state (baaki sections me sirf RR logo) ---------- */
-/* !important zaroori hai kyunki production build me CSS minify/bundle hone
-   ke baad is rule ka cascade order kabhi kabhi .navbar-m--scrolled se
-   pehle aa jata hai (sirf local dev server me yeh issue nahi dikhta) */
-
 .navbar-m--collapsed.navbar-m--scrolled {
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.navbar-m--collapsed.navbar-m--scrolled::before {
+  opacity: 0;
 }
 
 .navbar-m--collapsed .navbar-m__inner {
@@ -95,6 +114,8 @@
 }
 
 .navbar-m__inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -177,6 +198,8 @@
 }
 
 .navbar-m__links {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0;
