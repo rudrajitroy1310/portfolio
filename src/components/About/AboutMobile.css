@@ -1,0 +1,404 @@
+.about-m {
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* ---------- Single continuous poster: whole section is ONE image, everything overlays on it ---------- */
+
+.about-m__poster {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 941 / 1762;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.about-m__bg-layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% auto;
+  will-change: transform;
+}
+
+/* ---------- Dark mask over the bright bg so text stays readable ---------- */
+
+.about-m__mask {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 65% at 50% 18%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.22) 90%, rgba(0, 0, 0, 0.32) 100%),
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.02) 13.3%,
+      rgba(0, 0, 0, 0.18) 28.5%,
+      rgba(0, 0, 0, 0.4) 32.3%,
+      rgba(0, 0, 0, 0.44) 68.3%,
+      rgba(0, 0, 0, 0.28) 77.8%,
+      rgba(0, 0, 0, 0.15) 94.9%,
+      rgba(0, 0, 0, 0.95) 100%
+    );
+}
+
+/* ---------- Top-left kicker ---------- */
+
+.about-m__kicker {
+  position: absolute;
+  z-index: 3;
+  top: 5.69vw;
+  left: 7.8%;
+  max-width: 42%;
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 2.55vw, 0.62rem);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  border-left: 2px solid var(--red);
+  padding-left: 8px;
+}
+
+/* ---------- Top-right brand: RR logo + tagline ---------- */
+
+.about-m__brand {
+  position: absolute;
+  z-index: 3;
+  top: 6.22vw;
+  right: 5%;
+  max-width: 34%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.about-m__brand-logo {
+  width: 15vw;
+  max-width: 72px;
+  height: auto;
+  margin-bottom: 3px;
+}
+
+.about-m__brand-text {
+  font-family: var(--font-mono);
+  font-size: clamp(0.48rem, 2.35vw, 0.56rem);
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.about-m__brand-bar {
+  width: 18px;
+  height: 2px;
+  background: var(--red);
+  margin-top: 5px;
+}
+
+/* ---------- Left index rail ---------- */
+
+.about-m__index {
+  position: absolute;
+  z-index: 3;
+  left: 5.3%;
+  top: 23.1vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.about-m__index-num {
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 3vw, 0.74rem);
+  color: var(--red);
+  animation: about-m-sig-glow 3.4s ease-in-out infinite;
+}
+
+.about-m__index-bar {
+  width: 1px;
+  height: 24px;
+  background: var(--line);
+}
+
+.about-m__index-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-mono);
+  font-size: clamp(0.54rem, 2.5vw, 0.62rem);
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+}
+
+/* ---------- Signature, right side over the shoulder ---------- */
+
+.about-m__signature {
+  position: absolute;
+  z-index: 3;
+  right: 3%;
+  top: 41.76vw;
+  text-align: right;
+}
+
+.about-m__sig-name {
+  display: inline;
+  font-family: var(--font-signature);
+  font-size: clamp(1.15rem, 6vw, 1.55rem);
+  line-height: 1.5;
+  color: var(--red);
+  background: rgba(0, 0, 0, 0.32);
+  padding: 2px 8px;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transform: rotate(-2deg);
+  animation: about-m-sig-glow 3.4s ease-in-out infinite;
+}
+
+@keyframes about-m-sig-glow {
+  0%, 100% { text-shadow: 0 0 10px rgba(255, 39, 64, 0.4); }
+  50% { text-shadow: 0 0 20px rgba(255, 39, 64, 0.85); }
+}
+
+.about-m__sig-role {
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.46rem, 2.2vw, 0.54rem);
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+
+/* ---------- Body block: eyebrow -> heading -> text -> skills -> actions, all overlaid directly on the poster ---------- */
+
+.about-m__body {
+  position: absolute;
+  z-index: 2;
+  top: 57.75vw;
+  left: 0;
+  right: 0;
+  padding: 0 10% 0 11.5%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.3vw;
+}
+
+.about-m__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.58rem, 2.7vw, 0.66rem);
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+
+.about-m__eyebrow-line {
+  width: 18px;
+  height: 2px;
+  background: var(--red);
+}
+
+.about-m__heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 7.4vw, 1.9rem);
+  line-height: 1.06;
+}
+
+.about-m__heading span {
+  color: var(--red);
+}
+
+.about-m__text {
+  color: var(--text-dim);
+  font-size: clamp(0.66rem, 3.1vw, 0.8rem);
+  line-height: 1.45;
+}
+
+.about-m__text-highlight {
+  color: var(--red);
+}
+
+.about-m__skills {
+  margin-top: 1vw;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3vw;
+}
+
+.about-m__skill-card {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3vw;
+  padding: 2.6vw 8vw 2.6vw 3.4vw;
+  border: 1px solid rgba(255, 39, 64, 0.75);
+  border-radius: 10px;
+  background: linear-gradient(155deg, rgba(24, 12, 14, 0.92), rgba(12, 6, 8, 0.88));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(255, 39, 64, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 0 18px rgba(255, 39, 64, 0.06);
+  animation: about-m-card-glow 3.2s ease-in-out infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.about-m__skill-card:nth-child(2) { animation-delay: 0.5s; }
+.about-m__skill-card:nth-child(3) { animation-delay: 1s; }
+.about-m__skill-card:nth-child(4) { animation-delay: 1.5s; }
+
+.about-m__skill-card:active {
+  transform: scale(0.97);
+  border-color: rgba(255, 39, 64, 1);
+  box-shadow: 0 0 20px rgba(255, 39, 64, 0.5);
+}
+
+@media (hover: hover) {
+  .about-m__skill-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 39, 64, 1);
+    box-shadow: 0 0 20px rgba(255, 39, 64, 0.45);
+  }
+}
+
+@keyframes about-m-card-glow {
+  0%, 100% {
+    border-color: rgba(255, 39, 64, 0.55);
+    box-shadow: 0 0 8px rgba(255, 39, 64, 0.15), inset 0 0 14px rgba(255, 39, 64, 0.04);
+  }
+  50% {
+    border-color: rgba(255, 39, 64, 0.95);
+    box-shadow: 0 0 18px rgba(255, 39, 64, 0.4), inset 0 0 14px rgba(255, 39, 64, 0.08);
+  }
+}
+
+.about-m__skill-arrow {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 39, 64, 0.45);
+  border-radius: 5px;
+  color: #fff;
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.about-m__skill-card:active .about-m__skill-arrow {
+  background: var(--red);
+  border-color: var(--red);
+  transform: scale(1.12) rotate(45deg);
+}
+
+@media (hover: hover) {
+  .about-m__skill-card:hover .about-m__skill-arrow {
+    background: var(--red);
+    border-color: var(--red);
+    transform: rotate(45deg);
+  }
+}
+
+.about-m__skill-icon {
+  width: 9vw;
+  height: 9vw;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 42px;
+  max-height: 42px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.about-m__skill-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.about-m__skill-name {
+  font-family: var(--font-display);
+  font-size: clamp(0.68rem, 3.3vw, 0.78rem);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.about-m__skill-tag {
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 2.4vw, 0.56rem);
+  letter-spacing: 0.02em;
+  color: var(--text-dim);
+}
+
+.about-m__actions {
+  margin-top: 2.4vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.about-m__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2.4vw 6.5vw;
+  border: 1px solid var(--red);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: clamp(0.74rem, 3.5vw, 0.84rem);
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(255, 39, 64, 0.25);
+  animation: about-m-cta-glow 2.6s ease-in-out infinite;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.about-m__cta:active {
+  background: var(--red);
+  color: #0a0a0a;
+  transform: scale(0.96);
+}
+
+@keyframes about-m-cta-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 39, 64, 0.2); }
+  50% { box-shadow: 0 0 18px rgba(255, 39, 64, 0.5); }
+}
+
+.about-m__link {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: clamp(0.66rem, 3vw, 0.74rem);
+  color: var(--text-dim);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--text-dim);
+  white-space: nowrap;
+}
+
+/* ---------- Bottom-right footer note, sits over the river/mountain art baked into the poster ---------- */
+
+.about-m__footer-note {
+  position: absolute;
+  z-index: 3;
+  right: 4.8%;
+  bottom: 19.34vw;
+  max-width: 30%;
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 2.4vw, 0.58rem);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  border-left: 1px solid var(--line);
+  padding-left: 8px;
+}

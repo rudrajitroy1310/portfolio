@@ -1,0 +1,294 @@
+.navbar {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 100;
+  border-radius: 999px;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease;
+}
+
+.navbar__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 101;
+  width: auto;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.navbar--scrolled {
+  background: rgba(8, 9, 10, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Collapsed state (baaki sections me sirf RR logo) ---------- */
+
+.navbar--collapsed.navbar--scrolled {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.navbar--collapsed .navbar__inner {
+  pointer-events: none;
+}
+
+.navbar--collapsed .navbar__brand {
+  pointer-events: auto;
+}
+
+.navbar--collapsed .navbar__mark {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 45, 65, 0.28);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 60px;
+  padding: 0 clamp(18px, 3vw, 32px);
+  transition: gap 0.35s ease;
+}
+
+.navbar--collapsed .navbar__inner {
+  gap: 0;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.navbar__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #101113;
+  border: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.navbar__mark span {
+  color: var(--red);
+}
+
+.navbar__brand-text {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  max-width: 200px;
+  opacity: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
+}
+
+.navbar--collapsed .navbar__brand-text {
+  max-width: 0;
+  opacity: 0;
+  margin-left: -12px;
+}
+
+.navbar__links--desktop {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  opacity: 1;
+  transform: translateX(0);
+  max-width: 900px;
+  transition: opacity 0.3s ease 0.05s, transform 0.35s ease 0.05s, max-width 0.35s ease;
+}
+
+.navbar--collapsed .navbar__links--desktop {
+  opacity: 0;
+  transform: translateX(-14px);
+  max-width: 0;
+  gap: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, max-width 0.35s ease 0.1s;
+}
+
+.navbar__links--desktop a {
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+.navbar__links--desktop a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--red);
+  transition: width 0.2s ease;
+}
+
+.navbar__links--desktop a:hover {
+  color: var(--text);
+}
+
+.navbar__links--desktop a:hover::after {
+  width: 100%;
+}
+
+.navbar__links--desktop a.is-active {
+  color: var(--red);
+}
+
+.navbar__links--desktop a.is-active::after {
+  width: 100%;
+}
+
+.navbar__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.navbar__cta--desktop {
+  opacity: 1;
+  transform: translateX(0);
+  max-width: 220px;
+  transition: opacity 0.3s ease 0.05s, transform 0.35s ease 0.05s, max-width 0.35s ease, padding 0.35s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.navbar--collapsed .navbar__cta--desktop {
+  opacity: 0;
+  transform: translateX(-14px);
+  max-width: 0;
+  padding: 0;
+  border-color: transparent;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, max-width 0.35s ease 0.1s, padding 0.35s ease 0.1s;
+}
+
+.navbar__cta:hover {
+  border-color: var(--red);
+  background: rgba(255, 39, 64, 0.08);
+}
+
+.navbar__cta-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 8px rgba(255, 39, 64, 0.8);
+}
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 8px;
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.3s ease 0.05s, transform 0.35s ease 0.05s;
+}
+
+.navbar--collapsed .navbar__toggle {
+  opacity: 0;
+  transform: translateX(-14px);
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, width 0.35s ease 0.1s, padding 0.35s ease 0.1s;
+}
+
+.navbar__toggle span {
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+}
+
+.navbar__links--mobile {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .navbar {
+    border-radius: 24px;
+  }
+
+  .navbar__links--desktop,
+  .navbar__cta--desktop {
+    display: none;
+  }
+
+  .navbar__toggle {
+    display: flex;
+  }
+
+  .navbar__links--mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(8, 9, 10, 0.97);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 8px 32px 20px;
+  }
+
+  .navbar__links--mobile a:not(.navbar__cta) {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--text-dim);
+  }
+
+  .navbar__links--mobile a.is-active {
+    color: var(--red);
+  }
+
+  .navbar__links--mobile .navbar__cta {
+    margin-top: 16px;
+    justify-content: center;
+  }
+}

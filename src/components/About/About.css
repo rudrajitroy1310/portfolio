@@ -1,0 +1,221 @@
+.about {
+  position: relative;
+  padding: 140px 0 120px;
+  overflow: hidden;
+  background-color: var(--bg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.about__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 420px) 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+/* ---------- Left: visual ---------- */
+
+.about__visual {
+  position: relative;
+  padding-left: 40px;
+  margin-left: -32px;
+}
+
+.about__index {
+  position: absolute;
+  left: 0;
+  top: 46%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.about__index-num {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--red);
+}
+
+.about__index-bar {
+  width: 1px;
+  height: 42px;
+  background: var(--line);
+}
+
+.about__index-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+}
+
+.about__photo-card {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.about__photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 22px;
+  /* real-looking red light spill underneath the card */
+  filter: drop-shadow(0 26px 34px rgba(255, 39, 64, 0.45))
+    drop-shadow(0 8px 60px rgba(255, 39, 64, 0.28));
+}
+
+/* ---------- Right: content ---------- */
+
+.about__content {
+  position: relative;
+  z-index: 1;
+}
+
+.about__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.about__eyebrow-line {
+  width: 26px;
+  height: 2px;
+  background: var(--red);
+}
+
+.about__heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4vw, 3.1rem);
+  line-height: 1.12;
+  margin-bottom: 22px;
+}
+
+.about__heading span {
+  color: var(--red);
+}
+
+.about__text {
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 56ch;
+  margin-bottom: 34px;
+}
+
+.about__text-highlight {
+  color: var(--red);
+}
+
+.about__skills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 34px;
+}
+
+.about__skill-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(255, 39, 64, 0.35);
+  border-radius: 14px;
+  background: rgba(255, 39, 64, 0.04);
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.about__skill-card:hover {
+  border-color: var(--red);
+  background: rgba(255, 39, 64, 0.08);
+  transform: translateY(-3px);
+}
+
+.about__skill-icon {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+}
+
+.about__actions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.about__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border: 1px solid var(--red);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.about__cta:hover {
+  background: var(--red);
+  color: #0a0a0a;
+}
+
+.about__link {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--text-dim);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.about__link:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 980px) {
+  .about__inner {
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+
+  .about__visual {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .about {
+    padding: 100px 0 80px;
+  }
+
+  .about__skills {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about__visual {
+    padding-left: 44px;
+  }
+}

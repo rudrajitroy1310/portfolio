@@ -1,0 +1,772 @@
+.certexp {
+  position: relative;
+  padding: 80px 0 90px;
+  background: #0e0708;
+  overflow: hidden;
+}
+
+/* ---------- Background: your template image (natural ratio, top-fade, no stretch) ---------- */
+
+.certexp__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.certexp__bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  /* Bahut bright thi pehle (opacity: 1) jiski wajah se HTML text (LEARN/PRACTICE,
+     corner text) dab raha tha — ab opacity kam karke aur thoda dark filter laga
+     ke background ko subtle bana diya, taaki upar wala real text saaf dikhe. */
+  opacity: 0.9;
+  filter: brightness(1) saturate(1.1);
+  /* Slow drift — background subtly zooms/pans, section "alive" lagta hai */
+  animation: certexp-bg-drift 20s ease-in-out infinite;
+  will-change: transform;
+
+  /* Center strip (globe/01-02/text) ab real HTML divider se render ho raha hai,
+     isliye usi hisse ko image se mask karke hata rahe hain — sirf corner
+     decorations (diagonal lines, dots, logo, corner text) bache rehte hain,
+     jo content height badlne par bhi kabhi misalign nahi honge. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 37%,
+    transparent 46%,
+    transparent 54%,
+    #000 63%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 37%,
+    transparent 46%,
+    transparent 54%,
+    #000 63%,
+    #000 100%
+  );
+}
+
+/* Background ke upar ek halka dark overlay — image ke bright red patches ko
+   aur dampen karta hai taaki text/cards hamesha upar clearly padhe jaayein */
+.certexp__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.15) 100%);
+  pointer-events: none;
+}
+
+.certexp__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ---------- Live animations ---------- */
+
+@keyframes certexp-bg-drift {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.045) translate(-1.2%, -1%); }
+}
+
+@keyframes certexp-glow-pulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(255, 39, 64, 0.45); }
+  50% { box-shadow: 0 0 34px rgba(255, 39, 64, 0.8); }
+}
+
+@keyframes certexp-line-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 39, 64, 0.6); opacity: 1; }
+  50% { box-shadow: 0 0 20px rgba(255, 39, 64, 0.95); opacity: 0.75; }
+}
+
+@keyframes certexp-dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(255, 39, 64, 0.18), 0 0 10px rgba(255, 39, 64, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(255, 39, 64, 0.28), 0 0 18px rgba(255, 39, 64, 0.95); }
+}
+
+@keyframes certexp-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Scroll-reveal base state — GSAP ScrollTrigger.batch (JSX) is opacity/transform
+   ko animate karta hai jab element viewport me aata hai (ek hi baar) */
+.certexp__reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.certexp__reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .certexp__bg-img,
+  .certexp__divider-globe,
+  .certexp__vertical-line,
+  .certexp__exp-dot,
+  .certexp__cert-badge,
+  .certexp__heading span {
+    animation: none !important;
+  }
+
+  .certexp__reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Header ---------- */
+
+.certexp__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 46px;
+}
+
+.certexp__header-left {
+  max-width: 640px;
+}
+
+.certexp__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  margin-bottom: 12px;
+}
+
+.certexp__eyebrow-line {
+  width: 20px;
+  height: 1px;
+  background: var(--red);
+}
+
+.certexp__heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+
+.certexp__heading span {
+  position: relative;
+  color: var(--red);
+  background: linear-gradient(100deg, var(--red) 40%, #ff9aa3 50%, var(--red) 60%);
+  background-size: 240% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: certexp-heading-shimmer 5s ease-in-out infinite;
+}
+
+@keyframes certexp-heading-shimmer {
+  0%, 15% { background-position: 100% 0; }
+  50%, 65% { background-position: 0% 0; }
+  100% { background-position: 100% 0; }
+}
+
+.certexp__subtitle {
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  max-width: 540px;
+}
+
+.certexp__header-right {
+  flex-shrink: 0;
+  padding-top: 6px;
+}
+
+.certexp__vertical-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+  padding-left: 18px;
+}
+
+.certexp__vertical-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 56px;
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(255, 39, 64, 0.6);
+  animation: certexp-line-pulse 2.4s ease-in-out infinite;
+}
+
+/* ---------- Body: two columns ---------- */
+
+.certexp__body {
+  display: grid;
+  grid-template-columns: 1fr 110px 1fr;
+  gap: 0 40px;
+  align-items: stretch;
+}
+
+/* ---------- Middle divider: real HTML — globe/markers/text — always stretches
+   with content height, never overlaps like the old background-image version ---------- */
+
+.certexp__divider {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 4px 0;
+}
+
+.certexp__divider::before,
+.certexp__divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 39, 64, 0) 0%,
+    rgba(255, 39, 64, 0.55) 10%,
+    rgba(255, 39, 64, 0.55) 90%,
+    rgba(255, 39, 64, 0) 100%
+  );
+  box-shadow: 0 0 8px rgba(255, 39, 64, 0.35);
+}
+
+.certexp__divider::before {
+  left: 8px;
+}
+
+.certexp__divider::after {
+  right: 8px;
+}
+
+.certexp__divider-marker {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  background: #050505;
+  padding: 4px 0;
+}
+
+.certexp__divider-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.certexp__divider-globe {
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 39, 64, 0.4), rgba(10, 4, 5, 0.95) 72%);
+  border: 1.5px solid rgba(255, 39, 64, 0.55);
+  box-shadow: 0 0 18px rgba(255, 39, 64, 0.45);
+  color: var(--red);
+  font-size: 1.35rem;
+  animation: certexp-glow-pulse 2.8s ease-in-out infinite, certexp-float 4s ease-in-out infinite;
+}
+
+.certexp__divider-globe::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 39, 64, 0.18);
+}
+
+.certexp__divider-text {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  background: #050505;
+  padding: 2px 4px;
+}
+
+.certexp__col-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.certexp__col-header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.certexp__col-icon {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 39, 64, 0.4);
+  background: rgba(255, 39, 64, 0.08);
+  color: var(--red);
+  font-size: 0.85rem;
+}
+
+.certexp__col-header-left h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+
+.certexp__col-header-left p {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  max-width: 300px;
+}
+
+.certexp__view-all {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(255, 39, 64, 0.4);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.certexp__view-all svg {
+  transition: transform 0.25s ease;
+}
+
+.certexp__view-all:hover {
+  border-color: var(--red);
+  background: rgba(255, 39, 64, 0.1);
+  transform: translateY(-2px);
+}
+
+.certexp__view-all:hover svg {
+  transform: translateX(4px);
+}
+
+.certexp__view-all:active {
+  transform: translateY(0) scale(0.94);
+  transition-duration: 0.1s;
+}
+
+/* ---------- Certification cards ---------- */
+
+.certexp__cert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.certexp__cert-card {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 39, 64, 0.3);
+  /* Pehle bg image seedha through dikh raha tha (bohot transparent) —
+     ab solid frosted-glass jaisa: dark base + blur, sirf halka red tint */
+  background: linear-gradient(160deg, rgba(38, 14, 17, 0.9), rgba(16, 8, 9, 0.92));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover shine-sweep — ek diagonal light streak card ke through guzarti hai */
+.certexp__cert-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+
+.certexp__cert-card:hover {
+  border-color: rgba(255, 39, 64, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(255, 39, 64, 0.18), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.certexp__cert-card:hover::before {
+  left: 130%;
+}
+
+.certexp__cert-card:active {
+  transform: translateY(-1px) scale(0.985);
+  transition-duration: 0.1s;
+}
+
+.certexp__cert-badge {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 39, 64, 0.3);
+  background: linear-gradient(155deg, #1c0508, #0a0405 70%);
+  color: rgba(255, 39, 64, 0.6);
+  font-size: 1.05rem;
+}
+
+.certexp__cert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.certexp__cert-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.certexp__cert-top h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.83rem;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.certexp__cert-issuer {
+  font-size: 0.68rem;
+  color: var(--red);
+}
+
+.certexp__cert-top-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.certexp__verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(61, 220, 132, 0.4);
+  background: rgba(61, 220, 132, 0.08);
+  color: #3ddc84;
+  white-space: nowrap;
+}
+
+.certexp__cert-link-icon {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+}
+
+.certexp__cert-desc {
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.certexp__cert-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+
+.certexp__cert-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.certexp__cert-meta em {
+  font-style: normal;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ---------- Experience list ---------- */
+
+.certexp__exp-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.certexp__exp-row {
+  display: flex;
+  gap: 18px;
+}
+
+.certexp__exp-timeline {
+  flex-shrink: 0;
+  width: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.certexp__exp-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 4px rgba(255, 39, 64, 0.18), 0 0 10px rgba(255, 39, 64, 0.6);
+  flex-shrink: 0;
+  margin-top: 13px;
+  animation: certexp-dot-pulse 2.2s ease-in-out infinite;
+}
+
+.certexp__exp-line {
+  flex: 1;
+  width: 1px;
+  background: rgba(255, 39, 64, 0.25);
+  margin-top: 6px;
+}
+
+.certexp__exp-row:last-child .certexp__exp-line {
+  display: none;
+}
+
+.certexp__exp-card {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 39, 64, 0.3);
+  /* Same solid frosted-glass treatment as cert cards */
+  background: linear-gradient(160deg, rgba(38, 14, 17, 0.9), rgba(16, 8, 9, 0.92));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.certexp__exp-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+
+.certexp__exp-card:hover {
+  border-color: rgba(255, 39, 64, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(255, 39, 64, 0.18), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.certexp__exp-card:hover::before {
+  left: 130%;
+}
+
+.certexp__exp-card:active {
+  transform: translateY(-1px) scale(0.985);
+  transition-duration: 0.1s;
+}
+
+.certexp__exp-date {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.certexp__exp-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.certexp__exp-top h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.83rem;
+  color: var(--text);
+}
+
+.certexp__exp-status {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 39, 64, 0.35);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.certexp__exp-org {
+  font-size: 0.68rem;
+  color: var(--red);
+  margin-bottom: 10px;
+}
+
+.certexp__exp-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.certexp__exp-bullets li {
+  position: relative;
+  padding-left: 13px;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.certexp__exp-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+/* ---------- Corner decorative text ---------- */
+
+.certexp__corner-text {
+  position: absolute;
+  z-index: 1;
+  bottom: 24px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+.certexp__corner-text--left {
+  left: 32px;
+  text-align: left;
+}
+
+.certexp__corner-text--right {
+  right: 32px;
+  text-align: right;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 980px) {
+  .certexp__body {
+    grid-template-columns: 1fr;
+    gap: 64px;
+  }
+
+  .certexp__divider {
+    display: none;
+  }
+
+  .certexp__header {
+    flex-direction: column;
+  }
+
+  .certexp__header-right {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .certexp {
+    padding: 100px 0 100px;
+  }
+
+  .certexp__cert-card {
+    flex-direction: column;
+  }
+
+  .certexp__cert-badge {
+    width: 56px;
+    height: 56px;
+    font-size: 1.3rem;
+  }
+
+  .certexp__corner-text {
+    display: none;
+  }
+}

@@ -1,0 +1,1000 @@
+/* ============================================================
+   Certificates Modal — "View All" ka window (Certifications side)
+   ============================================================ */
+
+.certmodal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 2, 2, 0.82);
+  backdrop-filter: blur(6px);
+  animation: certmodal-fade-in 0.25s ease;
+}
+
+@keyframes certmodal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Rotating glow frame around the whole modal ---------- */
+
+.certmodal__frame {
+  position: relative;
+  width: 100%;
+  max-width: 1244px;
+  border-radius: 20px;
+  padding: 2px;
+  overflow: hidden;
+  animation: certmodal-pop-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.certmodal__glow-ring {
+  position: absolute;
+  inset: -60%;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    rgba(255, 39, 64, 0.9) 330deg,
+    #ff7a86 345deg,
+    rgba(255, 39, 64, 0.9) 360deg
+  );
+  animation: certmodal-ring-spin 4.5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes certmodal-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+.certmodal {
+  --certmodal-text-dim: #e4e6ec;
+
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1240px;
+  max-height: 92vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #0a0505;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(255, 39, 64, 0.25);
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65), 0 0 60px rgba(255, 39, 64, 0.08);
+  padding: 34px 40px 34px;
+  isolation: isolate;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.certmodal::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Separate layer just for the photo so we can push its brightness/contrast up
+   without touching the scrim or the content sitting above it. Fully static —
+   no pan/zoom/scale movement, so nothing shifts up or down. */
+.certmodal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: inherit;
+  filter: brightness(0.82) saturate(1.02) contrast(1.02);
+}
+
+/* Dark scrim between the background photo and the content so text stays legible */
+.certmodal__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 3, 3, 0.35) 0%, rgba(6, 3, 3, 0.65) 45%, rgba(6, 3, 3, 0.85) 100%),
+    linear-gradient(90deg, rgba(6, 3, 3, 0.4) 0%, rgba(6, 3, 3, 0.1) 30%, rgba(6, 3, 3, 0.1) 70%, rgba(6, 3, 3, 0.4) 100%);
+  pointer-events: none;
+}
+
+.certmodal__close,
+.certmodal__topright,
+.certmodal__layout {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes certmodal-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.certmodal__sidebar > *,
+.certmodal__tabs {
+  animation: certmodal-reveal 0.5s ease both;
+}
+
+.certmodal__sidebar > *:nth-child(1) { animation-delay: 0.05s; }
+.certmodal__sidebar > *:nth-child(2) { animation-delay: 0.1s; }
+.certmodal__sidebar > *:nth-child(3) { animation-delay: 0.15s; }
+.certmodal__sidebar > *:nth-child(4) { animation-delay: 0.2s; }
+.certmodal__sidebar > *:nth-child(5) { animation-delay: 0.25s; }
+.certmodal__tabs { animation-delay: 0.1s; }
+.certmodal__carousel { animation: certmodal-reveal 0.55s ease 0.2s both; }
+.certmodal__progress { animation: certmodal-reveal 0.5s ease 0.3s both; }
+
+/* Plays every time the active card changes (key={`${active.title}-${activeIndex}`}
+   remounts .certmodal__detail) — soft slide + blur-in so the detail panel feels
+   like it's transitioning to the new certificate, not just popping in. */
+@keyframes certmodal-detail-switch {
+  from { opacity: 0; transform: translateY(10px) scale(0.99); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+.certmodal__detail { animation: certmodal-detail-switch 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+.certmodal__detail > * {
+  animation: certmodal-reveal 0.4s ease both;
+  animation-delay: 0.08s;
+}
+.certmodal__detail > *:nth-child(2) { animation-delay: 0.13s; }
+.certmodal__detail > *:nth-child(3) { animation-delay: 0.18s; }
+
+@keyframes certmodal-pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(14px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ---------- Close + corner label ---------- */
+
+.certmodal__close {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: 1.15rem;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.certmodal__close:hover {
+  border-color: var(--red);
+  background: rgba(255, 39, 64, 0.12);
+  color: var(--red);
+  transform: rotate(90deg);
+}
+
+.certmodal__close:active {
+  transform: rotate(90deg) scale(0.88);
+  transition-duration: 0.1s;
+}
+
+.certmodal__topright {
+  position: absolute;
+  top: 26px;
+  right: 76px;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  color: var(--certmodal-text-dim);
+  text-align: right;
+}
+
+/* ---------- Layout ---------- */
+
+.certmodal__layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 36px;
+  margin-top: 6px;
+}
+
+/* ---------- Sidebar ---------- */
+
+.certmodal__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.certmodal__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: var(--red);
+}
+
+.certmodal__eyebrow-line {
+  width: 16px;
+  height: 1px;
+  background: var(--red);
+}
+
+.certmodal__heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  line-height: 1.08;
+}
+
+.certmodal__heading span {
+  position: relative;
+  color: var(--red);
+  background: linear-gradient(100deg, var(--red) 40%, #ff9aa3 50%, var(--red) 60%);
+  background-size: 240% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: certmodal-heading-shimmer 5s ease-in-out infinite;
+}
+
+@keyframes certmodal-heading-shimmer {
+  0%, 15% { background-position: 100% 0; }
+  50%, 65% { background-position: 0% 0; }
+  100% { background-position: 100% 0; }
+}
+
+.certmodal__desc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--certmodal-text-dim);
+}
+
+.certmodal__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.certmodal__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(155deg, rgba(255, 39, 64, 0.28), rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.certmodal__stat:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 39, 64, 0.4);
+}
+
+.certmodal__stat-icon {
+  color: var(--red);
+  font-size: 0.95rem;
+}
+
+.certmodal__stat strong {
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.certmodal__stat span:last-child {
+  font-size: 0.6rem;
+  color: var(--certmodal-text-dim);
+  letter-spacing: 0.02em;
+}
+
+.certmodal__quote {
+  position: relative;
+  padding: 14px 14px 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 2px solid var(--red);
+  background: rgba(30, 12, 13, 0.6);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border-radius: 0 10px 10px 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--certmodal-text-dim);
+  font-style: italic;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.certmodal__quote-mark {
+  color: var(--red);
+  font-size: 1.1rem;
+  margin-right: 2px;
+  font-style: normal;
+}
+
+.certmodal__quote cite {
+  display: block;
+  margin-top: 8px;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+
+/* ---------- Main ---------- */
+
+.certmodal__main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* Tabs */
+
+.certmodal__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.certmodal__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(30, 12, 13, 0.55);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  color: var(--certmodal-text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.certmodal__tab:hover {
+  border-color: rgba(255, 39, 64, 0.4);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+.certmodal__tab:active {
+  transform: translateY(0) scale(0.94);
+  transition-duration: 0.1s;
+}
+
+.certmodal__tab--active {
+  border-color: var(--red);
+  background: var(--red);
+  color: #0a0505;
+  font-weight: 600;
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 6px 18px rgba(255, 39, 64, 0.35);
+}
+
+/* Carousel */
+
+.certmodal__carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 26px 0 10px;
+}
+
+.certmodal__nav {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 39, 64, 0.4);
+  background: rgba(10, 5, 5, 0.6);
+  color: var(--red);
+  font-size: 1rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+  z-index: 2;
+}
+
+.certmodal__nav:hover {
+  background: rgba(255, 39, 64, 0.15);
+  transform: scale(1.08);
+}
+
+.certmodal__nav:active {
+  transform: scale(0.9);
+  transition-duration: 0.1s;
+}
+
+.certmodal__orbit {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 230px;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+}
+
+.certmodal__orbit-card {
+  --card-w: 200px;
+  --lift: 0px;
+
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: var(--card-w);
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(160deg, rgba(75, 22, 27, 0.72), rgba(20, 9, 10, 0.8));
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  text-align: left;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease, filter 0.35s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 10px 26px rgba(0, 0, 0, 0.4);
+
+  /* Fan the cards out horizontally based on distance from center (--pos).
+     translate happens BEFORE scale in the transform list, so the offset
+     itself is never shrunk by the scale — this is what stops the cards
+     from overlapping once they shrink. */
+  transform: translateX(calc(var(--pos) * 250px)) translateY(var(--lift)) scale(calc(1 - min(0.4, abs(var(--pos)) * 0.4)));
+  opacity: calc(1 - min(1, abs(var(--pos)) * 0.55));
+  filter: brightness(calc(1 - min(0.4, abs(var(--pos)) * 0.4)));
+  z-index: calc(10 - abs(var(--pos)));
+}
+
+.certmodal__orbit-card:hover {
+  --lift: -8px;
+  border-color: rgba(255, 39, 64, 0.5);
+}
+
+.certmodal__orbit-card--active {
+  border-color: var(--red);
+  background: linear-gradient(160deg, rgba(255, 39, 64, 0.5), rgba(20, 8, 9, 0.85));
+  cursor: default;
+  animation: certmodal-card-glow 2.6s ease-in-out infinite;
+}
+
+.certmodal__orbit-card--active:hover {
+  --lift: 0px;
+}
+
+@keyframes certmodal-card-glow {
+  0%, 100% {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 0 1px rgba(255, 39, 64, 0.3), 0 18px 40px rgba(255, 39, 64, 0.3);
+  }
+  50% {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 0 0 1px rgba(255, 39, 64, 0.6), 0 22px 55px rgba(255, 39, 64, 0.55);
+  }
+}
+
+.certmodal__orbit-badge {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(20, 8, 9, 0.9);
+  color: rgba(255, 39, 64, 0.65);
+  font-size: 0.66rem;
+  border: 2px solid #0a0505;
+}
+
+.certmodal__orbit-badge--active {
+  width: 26px;
+  height: 26px;
+  background: var(--red);
+  color: #0a0505;
+  font-size: 0.72rem;
+  box-shadow: 0 0 12px rgba(255, 39, 64, 0.7);
+  animation: certmodal-badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes certmodal-badge-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 39, 64, 0.6); }
+  50% { box-shadow: 0 0 18px rgba(255, 39, 64, 1); }
+}
+
+.certmodal__orbit-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 39, 64, 0.12);
+  border: 1px solid rgba(255, 39, 64, 0.3);
+  color: var(--red);
+  font-size: 1.25rem;
+  margin-bottom: 2px;
+}
+
+.certmodal__orbit-card--active .certmodal__orbit-icon {
+  animation: certmodal-icon-float 3s ease-in-out infinite;
+}
+
+@keyframes certmodal-icon-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.certmodal__orbit-issuer {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--certmodal-text-dim);
+  text-transform: uppercase;
+}
+
+.certmodal__orbit-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.22;
+}
+
+.certmodal__orbit-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--certmodal-text-dim);
+}
+
+/* Progress bar */
+
+.certmodal__progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.certmodal__progress-track {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.certmodal__progress-fill {
+  position: relative;
+  height: 100%;
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(255, 39, 64, 0.6);
+  transition: width 0.35s ease;
+  overflow: hidden;
+}
+
+.certmodal__progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: certmodal-shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes certmodal-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.certmodal__progress-count {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--certmodal-text-dim);
+}
+
+.certmodal__empty {
+  padding: 40px 0;
+  text-align: center;
+  color: var(--certmodal-text-dim);
+  font-size: 0.85rem;
+}
+
+/* Detail panel */
+
+.certmodal__detail {
+  display: grid;
+  grid-template-columns: 220px 1fr 200px;
+  gap: 22px;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(160deg, rgba(65, 20, 23, 0.7), rgba(15, 7, 7, 0.78));
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.certmodal__detail-art {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 150px;
+  padding: 16px;
+  border-radius: 10px;
+  text-align: center;
+  background: linear-gradient(155deg, rgba(255, 39, 64, 0.32), rgba(20, 9, 10, 0.75));
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px dashed rgba(255, 39, 64, 0.4);
+}
+
+.certmodal__detail-art-icon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 39, 64, 0.14);
+  border: 1px solid rgba(255, 39, 64, 0.4);
+  color: var(--red);
+  font-size: 1.4rem;
+}
+
+.certmodal__detail-art-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  line-height: 1.25;
+}
+
+.certmodal__detail-art-issuer {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--certmodal-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.certmodal__detail-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.certmodal__detail-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 39, 64, 0.4);
+  background: rgba(255, 39, 64, 0.1);
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.certmodal__detail-info h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.certmodal__detail-issuer {
+  color: var(--red);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.certmodal__detail-desc {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--certmodal-text-dim);
+}
+
+.certmodal__detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.certmodal__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 15px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.certmodal__btn--primary {
+  background: var(--red);
+  color: #0a0505;
+}
+
+.certmodal__btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(255, 39, 64, 0.35);
+}
+
+.certmodal__btn--ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text);
+}
+
+.certmodal__btn--ghost:hover {
+  border-color: var(--red);
+  color: var(--red);
+  transform: translateY(-2px);
+}
+
+.certmodal__btn:active {
+  transform: translateY(0) scale(0.95);
+  transition-duration: 0.1s;
+}
+
+/* "View Credential" button no longer needs a disabled state — it always
+   opens the preview card, real or placeholder art */
+
+/* ---------- "View Credential" square image preview ---------- */
+.certmodal__cred-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 2, 2, 0.78);
+  backdrop-filter: blur(10px);
+  animation: certmodal-fade-in 0.2s ease;
+}
+
+.certmodal__cred-card {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 39, 64, 0.35);
+  background: linear-gradient(165deg, #201013 0%, #0c0505 100%);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 50px rgba(255, 39, 64, 0.12);
+  animation: certmodal-pop-in 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.certmodal__cred-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(10, 5, 5, 0.55);
+  backdrop-filter: blur(6px);
+  color: var(--text);
+  font-size: 1.05rem;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.certmodal__cred-close:hover {
+  border-color: var(--red);
+  color: var(--red);
+  transform: rotate(90deg);
+}
+
+
+/* Fills the top ~85% of the square card with the certificate photo, or the
+   same icon+title placeholder art used elsewhere when no real image exists yet */
+.certmodal__cred-image {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(160deg, rgba(75, 22, 27, 0.72), rgba(20, 9, 10, 0.85));
+  overflow: hidden;
+}
+
+.certmodal__cred-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.certmodal__cred-image-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 18px;
+  font-size: 2.1rem;
+  color: var(--red);
+  background: rgba(255, 39, 64, 0.14);
+  border: 1px solid rgba(255, 39, 64, 0.35);
+}
+
+.certmodal__cred-image-title {
+  color: var(--text);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.4;
+  max-width: 80%;
+}
+
+/* One-line detail strip under the image */
+.certmodal__cred-caption {
+  padding: 18px 20px;
+  margin: 0;
+  text-align: center;
+  font-size: 0.86rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+  color: var(--certmodal-text-dim);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 5, 5, 0.5);
+}
+
+.certmodal__cred-caption span {
+  color: var(--red);
+  margin: 0 4px;
+}
+
+.certmodal__detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.certmodal__meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 0.78rem;
+}
+
+.certmodal__meta-row > svg {
+  margin-top: 3px;
+  color: var(--red);
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+.certmodal__meta-row div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.certmodal__meta-row span {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  color: var(--certmodal-text-dim);
+  text-transform: uppercase;
+}
+
+.certmodal__meta-row strong {
+  font-size: 0.78rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.certmodal__meta-ok {
+  color: #3ddc84;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .certmodal { padding: 26px 20px 22px; }
+  .certmodal__topright { display: none; }
+  .certmodal__layout { grid-template-columns: 1fr; gap: 22px; }
+  .certmodal__stats { grid-template-columns: repeat(3, 1fr); }
+  .certmodal__detail { grid-template-columns: 1fr; }
+  .certmodal__detail-meta {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-left: 0;
+    padding-top: 14px;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .certmodal__detail-meta > div { flex: 1 1 45%; }
+  .certmodal__orbit-card { --card-w: 168px; padding: 16px; }
+  .certmodal__orbit-card { transform: translateX(calc(var(--pos) * 210px)) translateY(var(--lift)) scale(calc(1 - min(0.4, abs(var(--pos)) * 0.4))); }
+}
+
+@media (max-width: 560px) {
+  .certmodal__overlay { padding: 0; }
+  .certmodal__frame { max-width: 100%; height: 100%; border-radius: 0; padding: 0; }
+  .certmodal__glow-ring { display: none; }
+  .certmodal { max-height: 100vh; height: 100%; border-radius: 0; }
+  .certmodal__orbit-card:not(.certmodal__orbit-card--active) { display: none; }
+  .certmodal__orbit-card--active { position: static; transform: none !important; opacity: 1 !important; filter: none !important; width: 100%; }
+  .certmodal__nav { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .certmodal__overlay,
+  .certmodal,
+  .certmodal::before,
+  .certmodal__frame,
+  .certmodal__glow-ring,
+  .certmodal__sidebar > *,
+  .certmodal__tabs,
+  .certmodal__carousel,
+  .certmodal__progress,
+  .certmodal__detail,
+  .certmodal__detail > *,
+  .certmodal__heading span,
+  .certmodal__orbit-card--active,
+  .certmodal__orbit-badge--active,
+  .certmodal__orbit-card--active .certmodal__orbit-icon,
+  .certmodal__progress-fill::after {
+    animation: none !important;
+  }
+  .certmodal__close:hover { transform: none; }
+}

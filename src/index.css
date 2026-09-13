@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Dancing+Script:wght@600;700&display=swap');
+
+:root {
+  --bg: #08090a;
+  --bg-raised: #0f1113;
+  --line: #232527;
+  --red: #ff2740;
+  --red-dim: #7a1420;
+  --text: #ededed;
+  --text-dim: #8b8f93;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-signature: 'Dancing Script', cursive;
+
+  --container: 1120px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Section seams: har section ka apna alag background/template hai
+   (Hero, About, Skills, Projects, Certifications, Contact, Footer sabka color/
+   pattern thoda different hai), jisse scroll karte waqt boundary pe ek hard
+   "cut" dikhta tha. Yeh top/bottom par ek chhota sa fade-to-black overlay daal
+   deta hai taaki har section doosre mein softly blend ho jaaye — koi visible
+   partition/seam nahi bachta. Pointer-events: none, isliye kisi click/hover
+   ko block nahi karta. ---------- */
+/* ---------- Section seams: har section ke background template (about-bg,
+   skills-orbit-template, projects-bg-template, etc.) ke andar hi bright red
+   glow lines baked-in hain, jo exactly top/bottom edge ke paas hain. Isliye
+   fade ki height/strength har section ke hisaab se alag rakhi hai — jahan
+   template ka glow zyada bright/mota hai (About ka bottom curve, Skills ka
+   top+bottom frame, Projects ka top streak) wahan fade lamba+strong hai,
+   baaki jagah halka. Pointer-events: none — kisi click/hover ko block nahi
+   karta. ---------- */
+#hero::after,
+.about::before,
+.about::after,
+.skills::before,
+.skills::after,
+.projects::before,
+.projects::after,
+.certexp::before,
+.certexp::after,
+.contact::before,
+.contact::after,
+.footer::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Top fades */
+#hero::after,
+.about::before,
+.skills::before,
+.projects::before,
+.certexp::before,
+.contact::before,
+.footer::before {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(3, 3, 4, 0.92) 0%,
+    rgba(3, 3, 4, 0.5) 45%,
+    rgba(3, 3, 4, 0) 100%
+  );
+}
+
+/* Bottom fades */
+.about::after,
+.skills::after,
+.projects::after,
+.certexp::after,
+.contact::after {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(3, 3, 4, 0.92) 0%,
+    rgba(3, 3, 4, 0.5) 45%,
+    rgba(3, 3, 4, 0) 100%
+  );
+}
+
+/* ----- Har section ki apni height, template ke glow ke hisaab se ----- */
+#hero::after { height: 110px; }
+
+.about::before { height: 70px; }
+.about::after { height: 200px; } /* about-bg.webp ka bright curve bottom mein hai */
+
+.skills::before {
+  height: 380px; /* aur bhi lambi/strong fade, seam poora dabana hai */
+  background: linear-gradient(
+    to bottom,
+    rgba(1, 1, 2, 1) 0%,
+    rgba(1, 1, 2, 0.95) 25%,
+    rgba(1, 1, 2, 0.7) 55%,
+    rgba(1, 1, 2, 0) 100%
+  );
+}
+.skills::after { height: 200px; } /* orbit-template ka bright bottom frame */
+
+.projects::before { height: 120px; } /* bg-template ka top streak + corner diagonals */
+.projects::after { height: 140px; } /* mirrored bottom streak */
+
+.certexp::before { height: 70px; }
+.certexp::after { height: 100px; }
+
+.contact::before { height: 90px; }
+.contact::after { height: 90px; }
+
+.footer::before { height: 100px; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+::selection {
+  background: var(--red);
+  color: #0a0a0a;
+}
+
+/* ---------- Page-level scrollbar completely hidden (scroll still works,
+   bas visible bar nahi dikhta). Internal component scrollbars (Projects
+   modal sidebar, CertificatesModal, ExperienceModal) apni jagah untouched
+   hain — unki apni khud ki hide/show CSS hai. ---------- */
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* ---------- Preloader door-open reveal for the site behind it ---------- */
+
+.app-reveal {
+  opacity: 0;
+}
+
+.app-reveal.is-revealed {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-reveal {
+    opacity: 1;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+}

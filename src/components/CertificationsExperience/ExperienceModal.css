@@ -1,0 +1,732 @@
+/* ============================================================
+   Experience Modal — "View All" ka window (Experience side)
+   ============================================================ */
+
+.expmodal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 2, 2, 0.82);
+  backdrop-filter: blur(6px);
+  animation: expmodal-fade-in 0.25s ease;
+}
+
+@keyframes expmodal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Rotating glow frame around the whole modal ---------- */
+
+.expmodal__frame {
+  position: relative;
+  width: 100%;
+  max-width: 1360px;
+  border-radius: 20px;
+  padding: 2px;
+  overflow: hidden;
+  animation: expmodal-pop-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.expmodal__glow-ring {
+  position: absolute;
+  inset: -60%;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    rgba(255, 39, 64, 0.9) 330deg,
+    #ff7a86 345deg,
+    rgba(255, 39, 64, 0.9) 360deg
+  );
+  animation: expmodal-ring-spin 4.5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes expmodal-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes expmodal-pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(14px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.expmodal {
+  --expmodal-text-dim: #e4e6ec;
+
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1356px;
+  max-height: 92vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #0a0505;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(255, 39, 64, 0.25);
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65), 0 0 60px rgba(255, 39, 64, 0.08);
+  padding: 34px 40px 34px;
+  isolation: isolate;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.expmodal::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Separate layer just for the photo so brightness/contrast can be tuned
+   without touching the scrim or the content sitting above it */
+.expmodal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: inherit;
+  filter: brightness(1) saturate(1.08) contrast(1.05);
+}
+
+/* Dark scrim over the photo — strongest on the left where the sidebar text
+   sits, fading out by roughly the sidebar's width so the mountain art stays
+   clearly visible across the rest of the card, same as the reference. */
+.expmodal__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 3, 3, 0.2) 0%, rgba(6, 3, 3, 0.3) 55%, rgba(6, 3, 3, 0.5) 100%),
+    linear-gradient(90deg, rgba(6, 3, 3, 0.88) 0%, rgba(6, 3, 3, 0.75) 18%, rgba(6, 3, 3, 0.3) 32%, rgba(6, 3, 3, 0.05) 45%, rgba(6, 3, 3, 0) 60%);
+  pointer-events: none;
+}
+
+.expmodal__close,
+.expmodal__topright,
+.expmodal__bottomright,
+.expmodal__layout {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes expmodal-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Plays every time the active experience changes (key={activeIndex} on
+   .expmodal__detail remounts the panel) — a soft slide + fade so switching
+   roles feels like a deliberate transition, not a hard cut. */
+@keyframes expmodal-detail-switch {
+  from { opacity: 0; transform: translateY(10px) scale(0.99); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+.expmodal__sidebar > * { animation: expmodal-reveal 0.5s ease both; }
+.expmodal__sidebar > *:nth-child(1) { animation-delay: 0.05s; }
+.expmodal__sidebar > *:nth-child(2) { animation-delay: 0.1s; }
+.expmodal__sidebar > *:nth-child(3) { animation-delay: 0.15s; }
+.expmodal__sidebar > *:nth-child(4) { animation-delay: 0.2s; }
+.expmodal__sidebar > *:nth-child(5) { animation-delay: 0.25s; }
+.expmodal__detail { animation: expmodal-detail-switch 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* Cascading entrance for the detail panel's own children, staggered slightly
+   after the panel starts sliding in, so tags/boxes feel like they "arrive"
+   rather than popping in with the rest of the panel all at once. */
+.expmodal__detail > * {
+  animation: expmodal-reveal 0.4s ease both;
+  animation-delay: 0.08s;
+}
+.expmodal__detail > *:nth-child(2) { animation-delay: 0.13s; }
+.expmodal__detail > *:nth-child(3) { animation-delay: 0.18s; }
+.expmodal__detail > *:nth-child(4) { animation-delay: 0.23s; }
+
+/* ---------- Close + corner labels ---------- */
+
+.expmodal__close {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: 1.15rem;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.expmodal__close:hover {
+  border-color: var(--red);
+  background: rgba(255, 39, 64, 0.12);
+  color: var(--red);
+  transform: rotate(90deg);
+}
+
+.expmodal__close:active {
+  transform: rotate(90deg) scale(0.88);
+  transition-duration: 0.1s;
+}
+
+.expmodal__topright,
+.expmodal__bottomright {
+  position: absolute;
+  right: 26px;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  color: var(--expmodal-text-dim);
+  text-align: right;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+.expmodal__topright { top: 68px; }
+.expmodal__bottomright { bottom: 26px; }
+
+.expmodal__corner-underline {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin-top: 6px;
+  margin-left: auto;
+  background: var(--red);
+}
+
+/* ---------- Layout ---------- */
+
+.expmodal__layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 36px;
+  margin-top: 6px;
+}
+
+/* ---------- Sidebar ---------- */
+
+.expmodal__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.expmodal__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: var(--red);
+}
+
+.expmodal__eyebrow-line {
+  width: 16px;
+  height: 1px;
+  background: var(--red);
+}
+
+.expmodal__heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+  line-height: 1.05;
+}
+
+.expmodal__heading span {
+  position: relative;
+  color: var(--red);
+  background: linear-gradient(100deg, var(--red) 40%, #ff9aa3 50%, var(--red) 60%);
+  background-size: 240% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: expmodal-heading-shimmer 5s ease-in-out infinite;
+}
+
+@keyframes expmodal-heading-shimmer {
+  0%, 15% { background-position: 100% 0; }
+  50%, 65% { background-position: 0% 0; }
+  100% { background-position: 100% 0; }
+}
+
+.expmodal__desc {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--expmodal-text-dim);
+}
+
+/* ---------- Timeline list ---------- */
+
+.expmodal__timeline {
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Soft fade at the bottom hints there's more to scroll to, since the
+     scrollbar itself is hidden. */
+  mask-image: linear-gradient(180deg, #000 calc(100% - 20px), transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 20px), transparent 100%);
+}
+
+.expmodal__timeline::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+.expmodal__timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: stretch;
+  gap: 10px;
+  padding: 6px 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* The rail (dot + connecting line) sits OUTSIDE the card now — it's a
+   sibling of .expmodal__timeline-card, not nested inside it — so the
+   active card's border never encloses it and the line stays one clean,
+   uninterrupted stroke down the whole timeline regardless of which item
+   is active. */
+.expmodal__timeline-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 10px 4px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.expmodal__timeline-item:hover .expmodal__timeline-card {
+  background: rgba(255, 39, 64, 0.06);
+}
+
+.expmodal__timeline-item--active .expmodal__timeline-card {
+  background: rgba(255, 39, 64, 0.1);
+  border-color: rgba(255, 39, 64, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.expmodal__timeline-item:active .expmodal__timeline-card {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
+}
+
+.expmodal__timeline-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.expmodal__timeline-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: #0a0505;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.expmodal__timeline-item--active .expmodal__timeline-dot {
+  border-color: var(--red);
+  background: var(--red);
+  box-shadow: 0 0 0 4px rgba(255, 39, 64, 0.2);
+}
+
+.expmodal__timeline-line-top,
+.expmodal__timeline-line-bottom {
+  flex: 1;
+  width: 1px;
+  min-height: 14px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.expmodal__timeline-line-top { margin-bottom: 2px; }
+.expmodal__timeline-line-bottom { margin-top: 2px; }
+
+.expmodal__timeline-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.expmodal__timeline-date {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.03em;
+  color: var(--expmodal-text-dim);
+}
+
+.expmodal__timeline-role {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.expmodal__timeline-org {
+  font-size: 0.72rem;
+  color: var(--red);
+}
+
+.expmodal__timeline-chevron {
+  align-self: center;
+  color: var(--expmodal-text-dim);
+  font-size: 0.8rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.expmodal__timeline-item--active .expmodal__timeline-chevron {
+  opacity: 1;
+  color: var(--red);
+  transform: translateX(2px);
+}
+
+.expmodal__quote {
+  position: relative;
+  padding: 14px 14px 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 2px solid var(--red);
+  background: rgba(30, 12, 13, 0.6);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border-radius: 0 10px 10px 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--expmodal-text-dim);
+  font-style: italic;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  margin-top: 4px;
+}
+
+.expmodal__quote-mark {
+  color: var(--red);
+  font-size: 1.1rem;
+  margin-right: 2px;
+  font-style: normal;
+}
+
+.expmodal__quote cite {
+  display: block;
+  margin-top: 8px;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+
+/* ---------- Main: detail panel ---------- */
+
+.expmodal__main {
+  min-width: 0;
+  width: 74%;
+  max-width: 760px;
+  justify-self: start;
+}
+
+.expmodal__detail {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 28px 30px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 39, 64, 0.5);
+  background: rgba(10, 5, 5, 0.55);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 20px 50px rgba(0, 0, 0, 0.35), 0 0 40px rgba(255, 39, 64, 0.18);
+}
+
+.expmodal__detail-top {
+  display: flex;
+  gap: 16px;
+}
+
+.expmodal__detail-logo {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 39, 64, 0.22), rgba(255, 39, 64, 0.08) 70%);
+  border: 1px solid rgba(255, 39, 64, 0.5);
+  box-shadow: 0 0 30px rgba(255, 39, 64, 0.25);
+  color: var(--red);
+  font-size: 2.4rem;
+}
+
+.expmodal__detail-head {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.expmodal__detail-head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.expmodal__status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 39, 64, 0.4);
+  background: rgba(255, 39, 64, 0.14);
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.expmodal__detail-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.03em;
+  color: var(--expmodal-text-dim);
+}
+
+.expmodal__detail-head h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.25;
+}
+
+.expmodal__detail-org {
+  color: var(--red);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.expmodal__detail-desc {
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--expmodal-text-dim);
+}
+
+.expmodal__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.expmodal__tag {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 39, 64, 0.35);
+  background: rgba(255, 39, 64, 0.08);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.expmodal__tag:hover {
+  border-color: rgba(255, 39, 64, 0.6);
+  background: rgba(255, 39, 64, 0.16);
+  transform: translateY(-2px);
+}
+
+/* ---------- Key Contributions / Tools boxes ---------- */
+
+.expmodal__box {
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 39, 64, 0.3);
+  background: rgba(20, 9, 10, 0.55);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 24px rgba(255, 39, 64, 0.1);
+}
+
+.expmodal__box-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.expmodal__box-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(255, 39, 64, 0.16);
+  color: var(--red);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.expmodal__box-head h4 {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.expmodal__contrib-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-left: 36px;
+}
+
+.expmodal__contrib-list li {
+  position: relative;
+  padding-left: 12px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--expmodal-text-dim);
+  list-style: none;
+}
+
+.expmodal__contrib-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.expmodal__tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 10px;
+}
+
+.expmodal__tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.66rem;
+  color: var(--expmodal-text-dim);
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.expmodal__tool:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 39, 64, 0.4);
+}
+
+.expmodal__tool:active {
+  transform: translateY(-1px) scale(0.95);
+  transition-duration: 0.1s;
+}
+
+.expmodal__tool-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  font-size: 1rem;
+  color: var(--red);
+}
+
+.expmodal__tool-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.expmodal__tool--more {
+  justify-content: center;
+}
+
+.expmodal__tool--more .expmodal__tool-icon {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .expmodal { padding: 26px 20px 22px; }
+  .expmodal__topright, .expmodal__bottomright { display: none; }
+  .expmodal__layout { grid-template-columns: 1fr; gap: 22px; }
+  .expmodal__main { width: 100%; max-width: none; }
+  .expmodal__detail-top { flex-wrap: wrap; }
+}
+
+@media (max-width: 560px) {
+  .expmodal__overlay { padding: 0; }
+  .expmodal__frame { max-width: 100%; height: 100%; border-radius: 0; padding: 0; }
+  .expmodal__glow-ring { display: none; }
+  .expmodal { max-height: 100vh; height: 100%; border-radius: 0; }
+  .expmodal__detail-top { flex-direction: column; align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expmodal__overlay,
+  .expmodal,
+  .expmodal::before,
+  .expmodal__frame,
+  .expmodal__glow-ring,
+  .expmodal__sidebar > *,
+  .expmodal__detail,
+  .expmodal__detail > *,
+  .expmodal__heading span {
+    animation: none !important;
+  }
+  .expmodal__close:hover { transform: none; }
+}

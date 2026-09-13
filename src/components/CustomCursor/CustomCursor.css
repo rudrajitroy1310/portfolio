@@ -1,0 +1,82 @@
+/* Native cursor sirf tab hide hota hai jab JS ne confirm kar diya ho ki
+   custom cursor safely chal sakta hai (non-touch + reduced-motion off) */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+.cc-flame {
+  pointer-events: none;
+}
+
+.cc-flame-seg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+}
+
+.cc-flame-seg--tip {
+  box-shadow: 0 0 10px 3px rgba(255, 39, 64, 0.55), 0 0 20px 7px rgba(255, 39, 64, 0.25);
+  animation: cc-flicker 0.55s ease-in-out infinite alternate;
+}
+
+/* Subtle always-on flicker so the flame feels alive even while moving */
+@keyframes cc-flicker {
+  from { transform-origin: center; filter: brightness(1); }
+  to { transform-origin: center; filter: brightness(1.08); }
+}
+
+/* Idle: mouse ruka hua hai, sab segments tip pe simat chuke hain — ab ek
+   soft blink/pulse chalta hai jaise flame apni jagah dhadak rahi ho */
+.cc-flame--idle .cc-flame-seg--tip {
+  animation: cc-idle-blink 1.3s ease-in-out infinite;
+}
+
+@keyframes cc-idle-blink {
+  0%, 100% {
+    box-shadow: 0 0 10px 3px rgba(255, 39, 64, 0.5), 0 0 20px 6px rgba(255, 39, 64, 0.22);
+    filter: brightness(1) scale(1);
+  }
+  50% {
+    box-shadow: 0 0 16px 5px rgba(255, 39, 64, 0.7), 0 0 30px 10px rgba(255, 39, 64, 0.38);
+    filter: brightness(1.15) scale(1.1);
+  }
+}
+
+/* Hover/magnetic lock: flame tip khilti hai, zyada bright aur bada */
+.cc-flame--lock .cc-flame-seg--tip {
+  width: 32px !important;
+  height: 32px !important;
+  box-shadow: 0 0 20px 6px rgba(255, 39, 64, 0.9), 0 0 44px 16px rgba(255, 39, 64, 0.5);
+}
+
+/* Click: tip thoda squeeze hoti hai, ping ring burst karti hai */
+.cc-flame--click .cc-flame-seg--tip {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.cc-flame__ping {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  border: 1px solid var(--red);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Touch/reduced-motion fallback: agar has-custom-cursor class kabhi na lage,
+   toh flame segments already display:none rahenge taaki koi stray element na dikhe */
+html:not(.has-custom-cursor) .cc-flame-seg {
+  display: none;
+}
