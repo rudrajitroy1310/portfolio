@@ -57,6 +57,10 @@ function Hero({ introDone = false }) {
   const videoRef = useRef(null);
   const heroRef = useRef(null);
   const roleTextRef = useRef(null);
+  // Silent audio warm-up chal raha hai jab tak true hai — is dauraan
+  // onPlay/onPause se aane wale state updates ignore kar dete hain, taaki
+  // custom poster image beech mein flash na ho.
+  const warmingRef = useRef(false);
 
   // ---------- Typewriter: role line 3 titles ke beech cycle karti hai —
   // type karo, thodi der ruko, delete karo, agla title, loop chalta rahega ----------
@@ -197,25 +201,29 @@ function Hero({ introDone = false }) {
 
     const warmUp = () => {
       if (cancelled) return;
+      warmingRef.current = true;
       vid.muted = true;
       const playPromise = vid.play();
+      const finish = () => {
+        vid.pause();
+        vid.currentTime = 0;
+        vid.muted = false;
+        warmingRef.current = false;
+      };
       if (playPromise && typeof playPromise.then === 'function') {
         playPromise
           .then(() => {
             if (cancelled) return;
-            vid.pause();
-            vid.currentTime = 0;
-            vid.muted = false;
+            finish();
           })
           .catch(() => {
             // Browser ne muted autoplay bhi block kar diya — koi baat nahi,
             // sirf muted wapas false kar do, normal click-to-play kaam karega.
             vid.muted = false;
+            warmingRef.current = false;
           });
       } else {
-        vid.pause();
-        vid.currentTime = 0;
-        vid.muted = false;
+        finish();
       }
     };
 
@@ -271,10 +279,22 @@ function Hero({ introDone = false }) {
           poster={heroVideoPoster}
           preload="auto"
           playsInline
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
+          onPlay={() => {
+            if (!warmingRef.current) setIsPlaying(true);
+          }}
+          onPause={() => {
+            if (!warmingRef.current) setIsPlaying(false);
+          }}
           onEnded={handleEnded}
         />
+        {!isPlaying && (
+          <img
+            src={heroVideoPoster}
+            alt=""
+            className="hero__poster"
+            aria-hidden="true"
+          />
+        )}
         <div className="hero__scrim" />
       </div>
 

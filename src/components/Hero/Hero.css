@@ -28,6 +28,21 @@
   z-index: 0;
 }
 
+/* Video khud ka poster attribute sirf tab tak dikhata hai jab tak video kabhi
+   play na ho chuka ho — audio warm-up trick ke baad browser use ignore karne
+   lagta hai. Isliye poster ko khud control karte hain: jab tak actually play
+   nahi ho raha, yeh image video ke upar rehti hai. */
+.hero__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .hero__scrim {
   position: absolute;
   inset: 0;
