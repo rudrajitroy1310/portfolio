@@ -35,13 +35,16 @@
 }
 
 /* ---------- Collapsed state (baaki sections me sirf RR logo) ---------- */
+/* !important zaroori hai kyunki production build me CSS minify/bundle hone
+   ke baad is rule ka cascade order kabhi kabhi .navbar--scrolled se
+   pehle aa jata hai (sirf local dev server me yeh issue nahi dikhta) */
 
 .navbar--collapsed.navbar--scrolled {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .navbar--collapsed .navbar__inner {
