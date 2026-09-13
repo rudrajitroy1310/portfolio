@@ -180,6 +180,56 @@ function HeroMobile({ introDone = false }) {
     return () => ctx.revert();
   }, [introDone]);
 
+  // ---------- Audio "warm-up" fix ----------
+  // Kai browsers me video ka audio decoder pehli baar "cold" hota hai, isliye
+  // jab video pehli baar play hota hai, shuru ke kuch milliseconds ka sound
+  // cut ho jaata hai (sirf pehli baar — dobara play karo toh theek chalta hai).
+  // Fix: page load hote hi, user ko dikhaye bina, video ko ek baar muted state
+  // mein silently "play + turant pause" kar dete hain. Isse decoder pehle se
+  // warm/ready ho jaata hai, aur jab user actually play button dabata hai,
+  // audio bilkul shuru se, bina cut hue, sunayi deta hai.
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return undefined;
+
+    let cancelled = false;
+
+    const warmUp = () => {
+      if (cancelled) return;
+      vid.muted = true;
+      const playPromise = vid.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise
+          .then(() => {
+            if (cancelled) return;
+            vid.pause();
+            vid.currentTime = 0;
+            vid.muted = false;
+          })
+          .catch(() => {
+            // Browser ne muted autoplay bhi block kar diya — koi baat nahi,
+            // sirf muted wapas false kar do, normal click-to-play kaam karega.
+            vid.muted = false;
+          });
+      } else {
+        vid.pause();
+        vid.currentTime = 0;
+        vid.muted = false;
+      }
+    };
+
+    if (vid.readyState >= 2) {
+      warmUp();
+    } else {
+      vid.addEventListener('loadeddata', warmUp, { once: true });
+    }
+
+    return () => {
+      cancelled = true;
+      vid.removeEventListener('loadeddata', warmUp);
+    };
+  }, []);
+
   const handleToggle = () => {
     const vid = videoRef.current;
     if (!vid) return;

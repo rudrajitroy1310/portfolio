@@ -89,31 +89,7 @@ function Navbar() {
   const collapsed = !isHero && !navExpanded;
 
   const navRef = useRef(null);
-  const progressRef = useRef(null);
   const markRingRef = useRef(null);
-
-  // ---------- GSAP: scroll progress bar — navbar ke bottom pe page scroll % dikhata hai ----------
-  useEffect(() => {
-    const bar = progressRef.current;
-    if (!bar) return undefined;
-
-    const setProgress = gsap.quickTo(bar, 'scaleX', { duration: 0.15, ease: 'power2.out' });
-
-    const updateProgress = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? scrollTop / docHeight : 0;
-      setProgress(pct);
-    };
-
-    updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
-    return () => {
-      window.removeEventListener('scroll', updateProgress);
-      window.removeEventListener('resize', updateProgress);
-    };
-  }, []);
 
   // ---------- GSAP: navbar entrance — page load pe hero se thoda pehle drop-in hota hai ----------
   useEffect(() => {
@@ -230,7 +206,6 @@ function Navbar() {
         </nav>
       )}
 
-      <span className="navbar__progress" ref={progressRef} aria-hidden="true" />
     </header>
   );
 }
