@@ -67,6 +67,19 @@ function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  // ---------- Scroll progress ring — RR logo ke around border, active SECTION ke hisaab se ----------
+  // Mobile jaisa hi behavior: continuous scroll % nahi, sections ke discrete steps —
+  // Home me khaali, Contact tak aate poora ring ban jaaye.
+  useEffect(() => {
+    const ring = markRingRef.current;
+    if (!ring) return;
+
+    const idx = links.findIndex((l) => l.href === active);
+    const pct = idx >= 0 ? idx / (links.length - 1) : 0;
+    // 1 = poora chhupa hua (koi border nahi), 0 = poora khinch gaya (full border)
+    ring.style.strokeDashoffset = String(1 - pct);
+  }, [active]);
+
   // Hero section me wapas aane par navbar apne aap full ho jaye, manual toggle reset ho
   useEffect(() => {
     if (isHero) setNavExpanded(false);
@@ -77,6 +90,7 @@ function Navbar() {
 
   const navRef = useRef(null);
   const progressRef = useRef(null);
+  const markRingRef = useRef(null);
 
   // ---------- GSAP: scroll progress bar — navbar ke bottom pe page scroll % dikhata hai ----------
   useEffect(() => {
@@ -142,8 +156,22 @@ function Navbar() {
     >
       <div className="navbar__inner">
         <a href="#hero" className="navbar__brand" onClick={handleBrandClick}>
-          <span className="navbar__mark">
-            R<span>R</span>
+          <span className="navbar__mark-wrap">
+            <span className="navbar__mark">
+              R<span>R</span>
+            </span>
+            <svg className="navbar__mark-ring" viewBox="0 0 46 46" aria-hidden="true">
+              <rect
+                ref={markRingRef}
+                x="2"
+                y="2"
+                width="42"
+                height="42"
+                rx="12"
+                ry="12"
+                pathLength="1"
+              />
+            </svg>
           </span>
           <span className="navbar__brand-text">Rudrajit Roy</span>
         </a>
