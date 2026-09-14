@@ -5,7 +5,7 @@ import HeroMobile from './components/Hero/HeroMobile';
 import AboutMobile from './components/About/AboutMobile';
 import Skills from './components/Skills/Skills';
 import ProjectsMobile from './components/Projects/ProjectsMobile';
-import CertificationsExperience from './components/CertificationsExperience/CertificationsExperience';
+import CertificationsExperienceMobile from './components/CertificationsExperience/CertificationsExperienceMobile';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 
@@ -28,7 +28,7 @@ function MobileApp() {
         <AboutMobile />
         <Skills />
         <ProjectsMobile />
-        <CertificationsExperience />
+        <CertificationsExperienceMobile />
         <Contact />
       </main>
       <Footer />
