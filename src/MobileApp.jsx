@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Preloader from './components/Preloader/Preloader';
 import NavbarMobile from './components/Navbar/NavbarMobile';
 import HeroMobile from './components/Hero/HeroMobile';
@@ -18,6 +18,25 @@ import Footer from './components/Footer/Footer';
 // — touch devices pe cursor concept apply nahi hota.
 function MobileApp() {
   const [introDone, setIntroDone] = useState(false);
+
+  // Jo section screen pe nahi hai uski infinite CSS animations (glow/pulse)
+  // pause kar dete hain (index.css: [data-offscreen="true"]). Screen pe aate
+  // hi wapas chalti hain — dikhne mein kuch nahi badalta, bas scroll ke waqt
+  // GPU pe ek saath 15+ animations ka bojh nahi padta.
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return undefined;
+    const sections = document.querySelectorAll('.mobile-app-shell main > section');
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          e.target.setAttribute('data-offscreen', e.isIntersecting ? 'false' : 'true');
+        });
+      },
+      { rootMargin: '150px 0px 150px 0px' }
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
 
   return (
     <div className="mobile-app-shell">

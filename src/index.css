@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Dancing+Script:wght@600;700&display=swap');
-
 :root {
   --bg: #08090a;
   --bg-raised: #0f1113;
@@ -272,4 +270,14 @@ body::-webkit-scrollbar {
     background: var(--bg);
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
   }
+}
+
+/* ---------- Performance: offscreen sections ki animations pause ----------
+   MobileApp.jsx ka IntersectionObserver sections pe data-offscreen set karta
+   hai. Sirf animation-play-state badalta hai — koi style/look change nahi. */
+.mobile-app-shell main > section[data-offscreen="true"],
+.mobile-app-shell main > section[data-offscreen="true"] *,
+.mobile-app-shell main > section[data-offscreen="true"] *::before,
+.mobile-app-shell main > section[data-offscreen="true"] *::after {
+  animation-play-state: paused !important;
 }

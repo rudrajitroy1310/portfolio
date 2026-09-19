@@ -31,7 +31,7 @@ function NavbarMobile() {
   useEffect(() => {
     const heroEl = document.getElementById('hero');
 
-    const onScroll = () => {
+    const update = () => {
       setScrolled(window.scrollY > 12);
 
       if (heroEl) {
@@ -41,9 +41,23 @@ function NavbarMobile() {
       }
     };
 
-    onScroll();
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    // Scroll events ko har frame mein ek baar tak limit karte hain (rAF) —
+    // pehle har event pe getBoundingClientRect (forced layout) chalta tha.
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        update();
+      });
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   // Hero section me wapas aane par navbar apne aap full ho jaye, manual toggle reset ho
