@@ -1,0 +1,553 @@
+/* ==========================================================================
+   SkillsMobile — 9:16 poster layout.
+   Baaki mobile sections ki tarah yeh bhi ek hi continuous poster hai:
+   background template (skills-mobile-bg.webp) par sab kuch absolutely
+   overlay hota hai. Poster ki height width se bandhi hai (aspect-ratio
+   941/1672 = ~1.78x width), isliye ek normal phone screen par poora
+   section ek hi screen mein aa jata hai — andar scroll karne ki zarurat
+   nahi padti.
+   Saari positions poster ke % mein hain aur font-sizes vw-based clamps
+   hain, taaki 320px se 480px tak har width par proportion same rahe.
+   ========================================================================== */
+
+.skillsm {
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* Section seams — upar/neeche ka hard cut soft karne ke liye
+   (index.css ke .skills wale rules sirf desktop component ko lagte hain) */
+.skillsm::before,
+.skillsm::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.skillsm::before {
+  top: 0;
+  height: 12%;
+  /* z-index 2: background ke upar par text (z 3-4) ke NEECHE — pehle 6 tha,
+     jis se brand/corner text par 80% tak kala chadh jaata tha. Top edge 1 hi
+     rakha hai taaki upar wale section se seam jaisa join banta rahe. */
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    rgba(1, 1, 2, 1) 0%,
+    rgba(1, 1, 2, 0.55) 40%,
+    rgba(1, 1, 2, 0) 100%
+  );
+}
+
+.skillsm::after {
+  bottom: 0;
+  height: 10%;
+  background: linear-gradient(
+    to top,
+    rgba(1, 1, 2, 0.96) 0%,
+    rgba(1, 1, 2, 0.5) 45%,
+    rgba(1, 1, 2, 0) 100%
+  );
+}
+
+/* ---------- Poster shell ---------- */
+
+.skillsm__poster {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 560px;
+  max-height: 1040px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.skillsm__bg-layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  will-change: transform;
+}
+
+/* Bright template ke upar dark mask, taaki text readable rahe */
+.skillsm__mask {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      78% 42% at 50% 43%,
+      rgba(0, 0, 0, 0) 45%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.66) 0%,
+      rgba(0, 0, 0, 0.5) 12%,
+      rgba(0, 0, 0, 0.3) 24%,
+      rgba(0, 0, 0, 0.26) 46%,
+      rgba(0, 0, 0, 0.45) 64%,
+      rgba(0, 0, 0, 0.7) 80%,
+      rgba(0, 0, 0, 0.88) 100%
+    );
+}
+
+/* ---------- Heading block ---------- */
+
+.skillsm__head {
+  position: absolute;
+  z-index: 4;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  text-align: center;
+}
+
+.skillsm__eyebrow {
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 2.9vw, 0.78rem);
+  letter-spacing: 0.26em;
+  color: var(--text-dim);
+}
+
+.skillsm__heading {
+  margin-top: 1.4vw;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.62rem, 8.4vw, 2.7rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.skillsm__heading-line {
+  display: block;
+  background: linear-gradient(180deg, #ffffff 25%, #9ea3a8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.skillsm__heading-line--accent {
+  background: linear-gradient(180deg, #ff5063 20%, var(--red) 55%, #9c101f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 16px rgba(255, 39, 64, 0.35));
+}
+
+.skillsm__subtitle {
+  margin: 2.4vw auto 0;
+  max-width: 74%;
+  font-size: clamp(0.64rem, 3.05vw, 0.86rem);
+  line-height: 1.45;
+  color: rgba(237, 237, 237, 0.78);
+}
+
+.skillsm__head-rule {
+  display: block;
+  margin: 3.2vw auto 0;
+  width: 11vw;
+  max-width: 54px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 39, 64, 0),
+    var(--red),
+    rgba(255, 39, 64, 0)
+  );
+}
+
+/* ---------- Corner filter buttons (pehle yahan static label+list tha,
+   ab desktop jaise functional filter buttons hain, isi "// LABEL •"
+   format mein) ---------- */
+
+.skillsm__group {
+  position: absolute;
+  z-index: 4;
+  max-width: 27%;
+}
+
+.skillsm__group--left { left: 4.5%; }
+.skillsm__group--right { right: 4.5%; }
+.skillsm__group--top { top: 25%; }
+.skillsm__group--bottom { top: 61%; }
+
+.skillsm__group-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.2vw;
+  font-family: var(--font-mono);
+  font-size: clamp(0.44rem, 2.15vw, 0.62rem);
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  color: rgba(237, 237, 237, 0.78);
+  text-align: left;
+  white-space: normal;
+  /* button reset — yeh ab clickable filter hai, ek label nahi */
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.25s ease;
+}
+
+.skillsm__group-title:active {
+  color: var(--text);
+}
+
+.skillsm__group-title--active {
+  color: var(--text);
+}
+
+.skillsm__group-slash {
+  color: var(--red);
+  flex: none;
+}
+
+.skillsm__group-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 39, 64, 0.4);
+  box-shadow: none;
+  flex: none;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.skillsm__group-title--active .skillsm__group-dot {
+  background: var(--red);
+  box-shadow: 0 0 8px rgba(255, 39, 64, 0.9);
+}
+
+.skillsm__group--right .skillsm__group-title {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+/* ---------- Orbit: twin curved arcs (vesica/trishul shape), circle nahi ----------
+   .skillsm__orbit ka 0-100 x/0-100 y coordinate space seedha JS ke
+   ARC_DX/ARC_R geometry se match karta hai — is box ke andar hi saare icons
+   aur arc-lines apni sahi jagah baithte hain, box ke bahar kuch nahi jaata. */
+
+.skillsm__orbit {
+  position: absolute;
+  z-index: 3;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 84%;
+  aspect-ratio: 1 / 1;
+}
+
+/* Crystal ke upar/neeche seedhi laal "spike" beam — orbit box ke top/bottom
+   intersection point (jahan dono arcs milte hain) se poster ke edge tak */
+.skillsm__orbit-spike {
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.skillsm__orbit-spike--top {
+  bottom: 90%;
+  height: 46%;
+  background: linear-gradient(to top, rgba(255, 39, 64, 0.85), rgba(255, 39, 64, 0));
+}
+
+.skillsm__orbit-spike--bottom {
+  top: 91.5%;
+  height: 42%;
+  background: linear-gradient(to bottom, rgba(255, 39, 64, 0.85), rgba(255, 39, 64, 0));
+}
+
+.skillsm__orbit-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.skillsm__orbit-arc {
+  fill: none;
+  stroke: rgba(255, 39, 64, 0.32);
+  stroke-width: 0.4;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Laal light-streak jo U line ke saath chalti hai. pathLength=100 hai, isliye
+   dash "8 92" = path ka 8% hissa. Non-scaling-stroke yahan nahi lagaya
+   (dash pathLength ke hisaab se chalta rahe) — orbit box square hai, isliye
+   stroke distort nahi hota. Motion off ho to bilkul hidden rehta hai. */
+.skillsm__comet,
+.skillsm__comet-glow {
+  fill: none;
+  stroke: rgb(255, 70, 90);
+  stroke-linecap: round;
+  stroke-dasharray: 8 92;
+  opacity: 0;
+}
+
+.skillsm__comet { stroke-width: 0.55; }
+
+.skillsm__comet-glow {
+  stroke-width: 2.4;
+  stroke: rgba(255, 39, 64, 0.28);
+}
+
+/* ---------- Skill pills — dono arcs par static baithe hain (koi rotation
+   nahi, kyunki yeh shape circle nahi hai — rotate karne par poora trishul
+   hi ghoom jaata, jo galat dikhta) ---------- */
+
+.skillsm__pill {
+  position: absolute;
+  translate: -50% -50%;
+  z-index: 3;
+  --box: clamp(26px, 7.8vw, 42px);
+  width: var(--box);
+  height: var(--box);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 45, 65, 0.5);
+  background: linear-gradient(160deg, rgba(110, 12, 22, 0.55), rgba(10, 6, 8, 0.82));
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -8px 14px rgba(255, 39, 64, 0.14),
+    0 6px 16px rgba(0, 0, 0, 0.55);
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+}
+
+.skillsm__pill:active {
+  scale: 0.9;
+  border-color: var(--red);
+}
+
+/* Filter se match na karne wale icons — position (left/top) bilkul nahi
+   badalti, isliye U-shape arc aur spike-beam hamesha sahi rehte hain */
+.skillsm__pill[data-dimmed='true'] {
+  opacity: 0.16;
+  filter: grayscale(1);
+  scale: 0.88;
+  transition: opacity 0.3s ease, filter 0.3s ease, scale 0.3s ease;
+}
+
+.skillsm__pill[data-dimmed='false'] {
+  transition: opacity 0.3s ease, filter 0.3s ease, scale 0.3s ease;
+}
+
+.skillsm__pill-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skillsm__icon {
+  width: 46%;
+  height: 46%;
+  color: rgba(255, 255, 255, 0.96);
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
+}
+
+/* ---------- Quote ---------- */
+
+.skillsm__quote {
+  position: absolute;
+  z-index: 4;
+  top: 74%;
+  left: 5%;
+  max-width: 54%;
+}
+
+.skillsm__quote-mark {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 8vw, 2.4rem);
+  line-height: 0.6;
+  color: var(--red);
+}
+
+.skillsm__quote blockquote {
+  margin-top: 1.8vw;
+  font-size: clamp(0.76rem, 3.6vw, 1.02rem);
+  line-height: 1.4;
+  color: rgba(237, 237, 237, 0.92);
+}
+
+.skillsm__quote figcaption {
+  margin-top: 1.6vw;
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 2.8vw, 0.76rem);
+  letter-spacing: 0.06em;
+  color: var(--red);
+}
+
+/* ---------- Mindset note ---------- */
+
+.skillsm__mindset {
+  position: absolute;
+  z-index: 4;
+  top: 74.5%;
+  right: 5%;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 2.5vw, 0.68rem);
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  color: var(--text);
+}
+
+.skillsm__mindset-bar {
+  display: block;
+  margin-top: 1.8vw;
+  width: 8vw;
+  max-width: 38px;
+  height: 2px;
+  background: var(--red);
+}
+
+/* ---------- Stats strip ---------- */
+
+.skillsm__stats {
+  position: absolute;
+  z-index: 4;
+  top: 86%;
+  left: 4%;
+  right: 4%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5vw;
+}
+
+.skillsm__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.1vw;
+}
+
+.skillsm__stat-icon {
+  display: flex;
+  color: var(--red);
+  filter: drop-shadow(0 0 8px rgba(255, 39, 64, 0.5));
+}
+
+.skillsm__stat-icon svg {
+  width: clamp(16px, 5vw, 26px);
+  height: clamp(16px, 5vw, 26px);
+}
+
+.skillsm__stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.92rem, 4.6vw, 1.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.skillsm__stat-label {
+  font-size: clamp(0.5rem, 2.5vw, 0.7rem);
+  line-height: 1.2;
+  color: var(--text-dim);
+}
+
+/* ---------- Footnote ---------- */
+
+.skillsm__footnote {
+  position: absolute;
+  z-index: 4;
+  bottom: 1.5%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: clamp(0.5rem, 2.5vw, 0.68rem);
+  letter-spacing: 0.22em;
+  color: var(--text-dim);
+}
+
+/* ---------- Bahut chhoti / bahut lambi screens ke liye safety ----------
+   Agar viewport itna chhota hai ki poster ki natural height screen se
+   zyada ho jaye, to poster ko screen ki height par cap kar dete hain
+   (bg cover isko crop handle kar leta hai) — is se "one screen" promise
+   toota nahi. */
+/* Chhoti screens (<= ~700px tall) par heading/subtitle thoda aur compress,
+   taaki heading block aur corner lists ek doosre par na chadhein */
+@media (max-height: 700px) {
+  .skillsm__head { top: 7%; }
+  .skillsm__heading { font-size: clamp(1.45rem, 7.4vw, 2.2rem); }
+  .skillsm__subtitle {
+    margin-top: 1.8vw;
+    max-width: 70%;
+    font-size: clamp(0.58rem, 2.8vw, 0.76rem);
+    line-height: 1.35;
+  }
+  .skillsm__head-rule { margin-top: 2.2vw; }
+  .skillsm__quote blockquote { line-height: 1.32; }
+}
+
+/* ==========================================================================
+   Animations
+   - Sirf tab chalti hain jab user ne "reduce motion" ON nahi kiya ho
+   - Aur sirf jab section screen par ho (.is-live, JS IntersectionObserver
+     se lagta/hatta hai) — taaki off-screen 17 blurred pills battery na khayein
+   - Pills ko `translate` property se float karaya hai (transform se nahi),
+     kyunki :active ka `scale` aur GSAP ka transform alag rehna chahiye
+   ========================================================================== */
+
+@keyframes skillsm-float {
+  0%, 100% { translate: -50% calc(-50% - 2.5px); }
+  50%      { translate: calc(-50% + 1.5px) calc(-50% + 2.5px); }
+}
+
+@keyframes skillsm-comet {
+  from { stroke-dashoffset: 8; }
+  to   { stroke-dashoffset: -92; }
+}
+
+@keyframes skillsm-beam {
+  0%, 100% { opacity: 0.65; }
+  50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skillsm.is-live .skillsm__pill {
+    animation: skillsm-float var(--float-dur, 5s) ease-in-out var(--float-delay, 0s) infinite;
+  }
+
+  .skillsm.is-live .skillsm__comet,
+  .skillsm.is-live .skillsm__comet-glow {
+    opacity: 1;
+    animation: skillsm-comet 6.5s linear infinite;
+  }
+
+  .skillsm.is-live .skillsm__comet--b {
+    animation-delay: -3.25s;
+  }
+
+  .skillsm.is-live .skillsm__orbit-spike {
+    animation: skillsm-beam 4.6s ease-in-out infinite;
+  }
+}

@@ -8,8 +8,8 @@ import {
   BsChevronLeft, BsChevronRight,
 } from 'react-icons/bs';
 import certExpMobileBg from '../../assets/images/certexp-mobile-bg.webp';
-import CertificatesModal from './CertificatesModal';
-import ExperienceModal from './ExperienceModal';
+import CertificatesModalMobile from './CertificatesModalMobile';
+import ExperienceModalMobile from './ExperienceModalMobile';
 import {
   certifications, certStats, certQuote, experience, expQuote,
 } from './certExpData';
@@ -26,6 +26,14 @@ function CertificationsExperienceMobile() {
   const [isCertModalOpen, setCertModalOpen] = useState(false);
   const [isExpModalOpen, setExpModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  // Preview card tap karne par usi certificate ka detail modal ke andar khulna
+  // chahiye — "View All" button se khole to null (default/first cert dikhta hai)
+  const [selectedCertTitle, setSelectedCertTitle] = useState(null);
+
+  const openCertModal = (title = null) => {
+    setSelectedCertTitle(title);
+    setCertModalOpen(true);
+  };
 
   // Preview: saare cert cards (swipeable carousel, 3 ek baar me visible) aur 3 experience rows —
   // poori detail ke liye "View All" modal hai
@@ -138,7 +146,7 @@ function CertificationsExperienceMobile() {
                 <h3>CERTIFICATIONS</h3>
                 <p>Industry-recognized certifications that validate my skills.</p>
               </div>
-              <button type="button" className="certexp-m__view-all" onClick={() => setCertModalOpen(true)}>
+              <button type="button" className="certexp-m__view-all" onClick={() => openCertModal(null)}>
                 View All <BsArrowRight />
               </button>
             </div>
@@ -156,7 +164,14 @@ function CertificationsExperienceMobile() {
 
               <div className="certexp-m__track" ref={trackRef}>
                 {previewCerts.map((cert, idx) => (
-                  <div className="certexp-m__cert-card certexp-m__reveal" style={{ '--i': idx }} key={cert.title}>
+                  <button
+                    type="button"
+                    className="certexp-m__cert-card certexp-m__reveal"
+                    style={{ '--i': idx }}
+                    key={cert.title}
+                    onClick={() => openCertModal(cert.title)}
+                    aria-label={`View details for ${cert.title}`}
+                  >
                     <div className="certexp-m__cert-top">
                       <span className="certexp-m__cert-badge"><BsAward /></span>
                       <span className="certexp-m__verified"><BsPatchCheckFill /> Verified</span>
@@ -167,7 +182,7 @@ function CertificationsExperienceMobile() {
                     <div className="certexp-m__cert-meta">
                       <span>{cert.date}</span>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
 
@@ -241,15 +256,16 @@ function CertificationsExperienceMobile() {
         </div>
       </section>
 
-      <CertificatesModal
+      <CertificatesModalMobile
         isOpen={isCertModalOpen}
         onClose={() => setCertModalOpen(false)}
         certifications={certifications}
         stats={certStats}
         quote={certQuote}
+        initialTitle={selectedCertTitle}
       />
 
-      <ExperienceModal
+      <ExperienceModalMobile
         isOpen={isExpModalOpen}
         onClose={() => setExpModalOpen(false)}
         experience={experience}

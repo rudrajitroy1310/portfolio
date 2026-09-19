@@ -302,6 +302,13 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35), 0 0 10px rgba(255, 39, 64, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   animation: certexpCardGlow 5s ease-in-out infinite;
+  /* Now a real <button> (for tap-to-open-detail) — strip native button chrome
+     so it still looks/reads exactly like the plain card did before */
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .certexp-m__cert-card::before,

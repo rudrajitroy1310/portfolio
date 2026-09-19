@@ -74,7 +74,7 @@ function Skills() {
 
   const sectionRef = useRef(null);
   const statValueRef = useRef(null);
-  const pillRefs = useRef([]);
+  const pillRefs = useRef({});
 
   const filteredSkills = useMemo(() => {
     if (activeFilter === 'all') return skills;
@@ -144,8 +144,8 @@ function Skills() {
   }, []);
 
   // ---------- GSAP: magnetic hover — skill icons cursor ki taraf halka khinchte hain ----------
-  const handlePillMove = (e, idx) => {
-    const el = pillRefs.current[idx];
+  const handlePillMove = (e, key) => {
+    const el = pillRefs.current[key];
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const relX = e.clientX - rect.left - rect.width / 2;
@@ -158,8 +158,8 @@ function Skills() {
     });
   };
 
-  const handlePillLeave = (idx) => {
-    const el = pillRefs.current[idx];
+  const handlePillLeave = (key) => {
+    const el = pillRefs.current[key];
     if (!el) return;
     gsap.to(el, {
       x: 0,
@@ -250,25 +250,28 @@ function Skills() {
                     return (
                       <motion.div
                         key={name}
-                        layout
-                        initial={{ opacity: 0, scale: 0.4 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.4 }}
-                        transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35, ease: 'easeOut' }}
                         className="skills__pill"
                         style={pos}
                         title={name}
                         aria-label={name}
                         data-magnetic
-                        ref={(el) => {
-                          pillRefs.current[idx] = el;
-                        }}
                         onClick={() => setIsOrbitPaused((prev) => !prev)}
-                        onMouseMove={(e) => handlePillMove(e, idx)}
-                        onMouseLeave={() => handlePillLeave(idx)}
+                        onMouseMove={(e) => handlePillMove(e, name)}
+                        onMouseLeave={() => handlePillLeave(name)}
                       >
-                        <div className="skills__pill-inner">
-                          <Icon className="skills__icon" />
+                        <div
+                          className="skills__pill-magnet"
+                          ref={(el) => {
+                            pillRefs.current[name] = el;
+                          }}
+                        >
+                          <div className="skills__pill-inner">
+                            <Icon className="skills__icon" />
+                          </div>
                         </div>
                       </motion.div>
                     );

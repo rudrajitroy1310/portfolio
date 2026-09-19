@@ -1,0 +1,935 @@
+/* ============================================================
+   Certificates Modal — "View All" ka window (Certifications side)
+   ============================================================ */
+
+.certmodalm__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: rgba(4, 2, 2, 0.82);
+  backdrop-filter: blur(6px);
+  animation: certmodalm-fade-in 0.25s ease;
+}
+
+@keyframes certmodalm-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Rotating glow frame around the whole modal ---------- */
+/* Mobile: full-screen sheet, no floating-card frame/glow-ring — that effect
+   only reads well with room around the card, which a phone screen doesn't have */
+
+.certmodalm__frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  border-radius: 0;
+  padding: 0;
+  overflow: hidden;
+  animation: certmodalm-pop-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.certmodalm__glow-ring {
+  display: none;
+}
+
+@keyframes certmodalm-ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+.certmodalm {
+  --certmodalm-text-dim: #e4e6ec;
+
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100dvh;
+  max-width: 100%;
+  max-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: #0a0505;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: clamp(14px, 4vw, 28px) clamp(14px, 4vw, 28px) calc(clamp(12px, 3.2vw, 22px) + env(safe-area-inset-bottom));
+  isolation: isolate;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+
+.certmodalm::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Separate layer just for the photo so we can push its brightness/contrast up
+   without touching the scrim or the content sitting above it. Fully static —
+   no pan/zoom/scale movement, so nothing shifts up or down. */
+.certmodalm::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: inherit;
+  filter: brightness(0.95) saturate(1.02) contrast(1.02);
+}
+
+/* Dark scrim between the background photo and the content so text stays legible */
+.certmodalm__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 3, 3, 0.35) 0%, rgba(6, 3, 3, 0.65) 45%, rgba(6, 3, 3, 0.85) 100%),
+    linear-gradient(90deg, rgba(6, 3, 3, 0.4) 0%, rgba(6, 3, 3, 0.1) 30%, rgba(6, 3, 3, 0.1) 70%, rgba(6, 3, 3, 0.4) 100%);
+  pointer-events: none;
+}
+
+.certmodalm__close,
+.certmodalm__topright,
+.certmodalm__layout {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes certmodalm-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.certmodalm__sidebar > *,
+.certmodalm__tabs {
+  animation: certmodalm-reveal 0.5s ease both;
+}
+
+.certmodalm__sidebar > *:nth-child(1) { animation-delay: 0.05s; }
+.certmodalm__sidebar > *:nth-child(2) { animation-delay: 0.1s; }
+.certmodalm__sidebar > *:nth-child(3) { animation-delay: 0.15s; }
+.certmodalm__sidebar > *:nth-child(4) { animation-delay: 0.2s; }
+.certmodalm__sidebar > *:nth-child(5) { animation-delay: 0.25s; }
+.certmodalm__tabs { animation-delay: 0.1s; }
+.certmodalm__panel { animation: certmodalm-reveal 0.55s ease 0.2s both; }
+
+@keyframes certmodalm-pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(14px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ---------- Close + corner label ---------- */
+
+.certmodalm__close {
+  position: absolute;
+  top: clamp(12px, 3.2vw, 20px);
+  right: clamp(12px, 3.2vw, 20px);
+  z-index: 2;
+  width: clamp(28px, 7vw, 38px);
+  height: clamp(28px, 7vw, 38px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: clamp(0.85rem, 2.4vw, 1.1rem);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.certmodalm__close:hover {
+  border-color: var(--red);
+  background: rgba(255, 39, 64, 0.12);
+  color: var(--red);
+  transform: rotate(90deg);
+}
+
+.certmodalm__close:active {
+  transform: rotate(90deg) scale(0.88);
+  transition-duration: 0.1s;
+}
+
+/* Not enough room on a phone screen for this corner label */
+.certmodalm__topright { display: none; }
+
+/* ---------- Layout: single column, everything sized to fit 100dvh with
+   zero scrolling — sidebar collapses into one compact header row, main
+   (tabs + carousel + detail) takes the rest of the height ---------- */
+
+.certmodalm__layout {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 2vw, 14px);
+  margin-top: 0;
+}
+
+/* ---------- Header: eyebrow, big heading, description, quote and a
+   4-up stat grid — full column layout matching the desktop reference ---------- */
+
+.certmodalm__sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(6px, 1.6vw, 10px);
+  /* Same inset as .certmodalm__panel-inner's own padding, so this column's
+     left edge lines up with the search bar / cards inside the box below
+     instead of the box's outer border */
+  padding-left: clamp(10px, 2.6vw, 22px);
+  padding-right: clamp(34px, 9vw, 56px); /* room for the close button */
+}
+
+.certmodalm__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.56rem, 1.7vw, 0.7rem);
+  letter-spacing: 0.18em;
+  color: var(--red);
+}
+
+.certmodalm__eyebrow-line {
+  width: 16px;
+  height: 1px;
+  background: var(--red);
+}
+
+.certmodalm__heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 5vw, 1.75rem);
+  line-height: 1.1;
+}
+
+.certmodalm__heading br { display: block; }
+.certmodalm__heading span { margin-left: 0; }
+
+.certmodalm__heading span {
+  position: relative;
+  color: var(--red);
+  background: linear-gradient(100deg, var(--red) 40%, #ff9aa3 50%, var(--red) 60%);
+  background-size: 240% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: certmodalm-heading-shimmer 5s ease-in-out infinite;
+}
+
+@keyframes certmodalm-heading-shimmer {
+  0%, 15% { background-position: 100% 0; }
+  50%, 65% { background-position: 0% 0; }
+  100% { background-position: 100% 0; }
+}
+
+.certmodalm__desc {
+  font-size: clamp(0.6rem, 1.9vw, 0.78rem);
+  line-height: 1.5;
+  color: var(--certmodalm-text-dim);
+  max-width: 100%;
+}
+
+.certmodalm__quote {
+  position: relative;
+  width: 100%;
+  padding: clamp(8px, 2vw, 13px) clamp(10px, 2.4vw, 15px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 2px solid var(--red);
+  background: rgba(30, 12, 13, 0.6);
+  border-radius: 0 8px 8px 0;
+  font-size: clamp(0.58rem, 1.8vw, 0.74rem);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.certmodalm__quote cite {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(0.52rem, 1.5vw, 0.62rem);
+  font-style: normal;
+  font-weight: 600;
+  color: var(--red);
+}
+
+.certmodalm__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(5px, 1.4vw, 9px);
+  width: 100%;
+}
+
+.certmodalm__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: clamp(6px, 1.8vw, 11px) clamp(5px, 1.4vw, 9px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(155deg, rgba(255, 39, 64, 0.28), rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.certmodalm__stat:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 39, 64, 0.4);
+}
+
+.certmodalm__stat-icon {
+  color: var(--red);
+  font-size: clamp(0.7rem, 2.1vw, 0.95rem);
+}
+
+.certmodalm__stat strong {
+  font-family: var(--font-display);
+  font-size: clamp(0.7rem, 2.1vw, 0.95rem);
+}
+
+.certmodalm__stat span:last-child {
+  font-size: clamp(0.42rem, 1.2vw, 0.58rem);
+  color: var(--certmodalm-text-dim);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Main: tabs + carousel + detail, fills whatever height the
+   compact sidebar row leaves behind ---------- */
+
+.certmodalm__main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.6vw, 11px);
+  min-width: 0;
+}
+
+/* Tabs: single scrollable line, never wraps */
+
+.certmodalm__tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  gap: clamp(5px, 1.4vw, 8px);
+  padding-bottom: 2px;
+  flex-shrink: 0;
+}
+
+.certmodalm__tabs::-webkit-scrollbar { display: none; }
+
+.certmodalm__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: clamp(4px, 1.1vw, 7px) clamp(8px, 2vw, 13px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(30, 12, 13, 0.55);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  color: var(--certmodalm-text-dim);
+  font-family: var(--font-mono);
+  font-size: clamp(0.54rem, 1.6vw, 0.68rem);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.certmodalm__tab:hover {
+  border-color: rgba(255, 39, 64, 0.4);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+.certmodalm__tab:active {
+  transform: translateY(0) scale(0.94);
+  transition-duration: 0.1s;
+}
+
+.certmodalm__tab--active {
+  border-color: var(--red);
+  background: var(--red);
+  color: #0a0505;
+  font-weight: 600;
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 6px 18px rgba(255, 39, 64, 0.35);
+}
+
+/* ---------- Boxed panel: one bordered container holding the small-square
+   thumbnail grid (left) + the selected certificate's overview (right).
+   The panel is only as tall as its content and sits centered in whatever
+   vertical space main has left, so there's an even gap above and below it. */
+
+.certmodalm__panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  padding: clamp(14px, 3.5vw, 26px) 0 clamp(28px, 6vw, 48px);
+}
+
+.certmodalm__panel-inner {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 2vw, 16px);
+  padding: clamp(10px, 2.6vw, 22px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 39, 64, 0.45);
+  background: transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 20px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 39, 64, 0.08);
+}
+
+.certmodalm__panel-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: clamp(9px, 2.4vw, 16px);
+}
+
+/* Search + sort row, sits above the category tabs inside the box */
+
+.certmodalm__search-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.certmodalm__search {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: clamp(5px, 1.4vw, 8px) clamp(7px, 2vw, 11px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 5, 5, 0.5);
+  color: var(--certmodalm-text-dim);
+  font-size: clamp(0.6rem, 1.8vw, 0.74rem);
+}
+
+.certmodalm__search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: clamp(0.56rem, 1.6vw, 0.68rem);
+}
+
+.certmodalm__search input::placeholder {
+  color: var(--certmodalm-text-dim);
+}
+
+.certmodalm__search-reset {
+  flex-shrink: 0;
+  width: clamp(24px, 6vw, 30px);
+  height: clamp(24px, 6vw, 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 5, 5, 0.5);
+  color: var(--certmodalm-text-dim);
+  font-size: clamp(0.6rem, 1.8vw, 0.74rem);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.certmodalm__search-reset:hover {
+  border-color: rgba(255, 39, 64, 0.4);
+  color: var(--red);
+}
+
+.certmodalm__sort {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: clamp(5px, 1.4vw, 8px) clamp(6px, 1.6vw, 10px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 5, 5, 0.5);
+  font-family: var(--font-mono);
+  font-size: clamp(0.46rem, 1.3vw, 0.58rem);
+  color: var(--certmodalm-text-dim);
+  white-space: nowrap;
+}
+
+.certmodalm__sort select {
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: clamp(0.54rem, 1.6vw, 0.68rem);
+  font-weight: 600;
+}
+
+.certmodalm__sort select option {
+  background: #1a0c0d;
+  color: var(--text);
+}
+
+/* Left: compact certificate cards, 2 per row, scrolls if list is long */
+
+.certmodalm__mini-grid {
+  flex: 0 0 auto;
+  width: 38%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: min-content;
+  gap: clamp(6px, 1.6vw, 10px);
+  align-content: start;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-right: 2px;
+}
+
+.certmodalm__mini-grid::-webkit-scrollbar { display: none; }
+
+.certmodalm__mini-card {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3px, 1vw, 6px);
+  text-align: left;
+  padding: clamp(6px, 1.6vw, 10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(24, 10, 11, 0.82);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 6px 16px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.2s ease, transform 0.15s ease, background 0.2s ease;
+}
+
+.certmodalm__mini-card:hover {
+  border-color: rgba(255, 39, 64, 0.4);
+  transform: translateY(-2px);
+}
+
+.certmodalm__mini-card:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.1s;
+}
+
+.certmodalm__mini-card--active {
+  border-color: var(--red);
+  background: linear-gradient(160deg, rgba(255, 39, 64, 0.28), rgba(20, 8, 9, 0.75));
+  box-shadow: 0 0 0 1px rgba(255, 39, 64, 0.5), 0 10px 22px rgba(255, 39, 64, 0.25);
+}
+
+.certmodalm__mini-index {
+  padding: clamp(2px, 0.6vw, 3px) clamp(4px, 1.2vw, 7px);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  font-family: var(--font-mono);
+  font-size: clamp(0.44rem, 1.3vw, 0.56rem);
+  color: var(--certmodalm-text-dim);
+}
+
+.certmodalm__mini-verified {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(14px, 3.6vw, 19px);
+  height: clamp(14px, 3.6vw, 19px);
+  border-radius: 50%;
+  background: #0a0505;
+  color: #3ddc84;
+  font-size: clamp(0.52rem, 1.5vw, 0.68rem);
+  box-shadow: 0 0 0 1px rgba(61, 220, 132, 0.4);
+}
+
+.certmodalm__mini-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 7px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.certmodalm__mini-top {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.certmodalm__mini-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.certmodalm__mini-thumb-fallback {
+  color: var(--red);
+  font-size: clamp(0.95rem, 3vw, 1.3rem);
+  opacity: 0.75;
+}
+
+.certmodalm__mini-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.5rem, 1.5vw, 0.66rem);
+  line-height: 1.25;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.certmodalm__mini-issuer {
+  font-size: clamp(0.46rem, 1.3vw, 0.58rem);
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* Right: "Featured Certificate" panel for whichever card is selected */
+
+.certmodalm__overview {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.6vw, 10px);
+  padding-left: clamp(9px, 2.4vw, 16px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  animation: certmodalm-reveal 0.3s ease both;
+}
+
+.certmodalm__overview::-webkit-scrollbar { display: none; }
+
+.certmodalm__overview-label {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--red);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.54rem, 1.6vw, 0.68rem);
+}
+
+.certmodalm__overview-label svg {
+  font-size: clamp(0.54rem, 1.6vw, 0.68rem);
+}
+
+.certmodalm__overview-thumb {
+  flex-shrink: 0;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 39, 64, 0.3);
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.certmodalm__overview-thumb::before,
+.certmodalm__overview-thumb::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--red);
+  opacity: 0.85;
+  z-index: 1;
+}
+
+.certmodalm__overview-thumb::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 6px 0 0 0;
+}
+
+.certmodalm__overview-thumb::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 6px 0;
+}
+
+.certmodalm__overview-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.certmodalm__overview-thumb-fallback {
+  color: var(--red);
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  opacity: 0.75;
+}
+
+.certmodalm__overview-title {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.66rem, 2vw, 0.92rem);
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.certmodalm__overview-issuer {
+  flex-shrink: 0;
+  color: var(--red);
+  font-size: clamp(0.52rem, 1.5vw, 0.66rem);
+  font-weight: 600;
+}
+
+.certmodalm__overview-desc {
+  flex-shrink: 0;
+  font-size: clamp(0.5rem, 1.5vw, 0.68rem);
+  line-height: 1.4;
+  color: var(--certmodalm-text-dim);
+}
+
+.certmodalm__overview-tags {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.certmodalm__overview-tag-pill {
+  padding: clamp(2px, 0.7vw, 4px) clamp(6px, 1.6vw, 9px);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 39, 64, 0.4);
+  background: rgba(255, 39, 64, 0.1);
+  color: var(--red);
+  font-size: clamp(0.44rem, 1.3vw, 0.56rem);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.certmodalm__overview-tag-pill:nth-child(even) {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--certmodalm-text-dim);
+}
+
+.certmodalm__overview-meta {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.46rem, 1.3vw, 0.6rem);
+  color: var(--certmodalm-text-dim);
+}
+
+.certmodalm__overview-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.certmodalm__overview-ok {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(61, 220, 132, 0.35);
+  background: rgba(61, 220, 132, 0.1);
+  color: #3ddc84;
+  font-weight: 600;
+}
+
+/* Learning journey row: horizontal strip below the boxed panel, sitting in
+   the leftover space at the bottom of the screen (moved out of the right
+   overview column so that column stays scroll-free for normal content) */
+
+.certmodalm__journey-row {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(5px, 1.3vw, 8px);
+  width: 100%;
+  padding: clamp(6px, 1.6vw, 11px) 2px 0;
+}
+
+.certmodalm__journey-row-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(2px, 0.7vw, 4px);
+  padding: clamp(6px, 1.8vw, 11px) clamp(3px, 1vw, 6px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(155deg, rgba(255, 39, 64, 0.22), rgba(255, 255, 255, 0.06));
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.certmodalm__journey-row-dot {
+  width: clamp(6px, 1.6vw, 8px);
+  height: clamp(6px, 1.6vw, 8px);
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--red);
+  box-shadow: 0 0 0 3px rgba(255, 39, 64, 0.18);
+}
+
+.certmodalm__journey-row-item strong {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.64rem, 1.9vw, 0.85rem);
+  color: var(--text);
+}
+
+.certmodalm__journey-row-item span {
+  font-size: clamp(0.4rem, 1.2vw, 0.56rem);
+  color: var(--certmodalm-text-dim);
+  letter-spacing: 0.02em;
+}
+
+.certmodalm__empty {
+  padding: 40px 0;
+  text-align: center;
+  color: var(--certmodalm-text-dim);
+  font-size: 0.85rem;
+}
+
+.certmodalm__btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 4px;
+  padding: clamp(7px, 1.8vw, 11px) clamp(9px, 2.2vw, 13px);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: clamp(0.54rem, 1.6vw, 0.68rem);
+  font-weight: 600;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.certmodalm__btn--primary {
+  border-color: rgba(255, 39, 64, 0.6);
+  background: rgba(255, 39, 64, 0.12);
+  color: var(--text);
+  box-shadow: 0 8px 20px rgba(255, 39, 64, 0.2);
+}
+
+.certmodalm__btn--primary:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 39, 64, 0.22);
+  box-shadow: 0 12px 26px rgba(255, 39, 64, 0.35);
+}
+
+.certmodalm__btn:active {
+  transform: translateY(0) scale(0.96);
+  transition-duration: 0.1s;
+}
+
+
+/* ---------- Responsive: every size above (padding, gaps, type) already
+   scales fluidly via clamp() from small phones up through tablet-width
+   portrait screens, so no hard width breakpoint is needed to avoid a
+   "sometimes too big / sometimes too small" jump between sizes.
+
+   The one thing clamp() can't fix is a SHORT viewport (phones with small
+   physical height, or a tall keyboard eating vertical space) — the layout
+   has zero outer scroll by design, so on a short screen the least-essential
+   block (the quote) is dropped and spacing tightens to keep everything
+   inside view instead of getting silently clipped. ---------- */
+
+@media (max-height: 700px) {
+  .certmodalm__quote { display: none; }
+  .certmodalm__layout { gap: clamp(6px, 1.6vw, 9px); }
+  .certmodalm__sidebar { gap: 4px; }
+  .certmodalm__panel { padding-top: clamp(8px, 2vw, 14px); padding-bottom: clamp(18px, 4vw, 30px); }
+}
+
+@media (max-height: 560px) {
+  .certmodalm__desc { display: none; }
+  .certmodalm__stats { gap: 4px; }
+  .certmodalm__stat { padding: 5px 5px; }
+}
+
+/* Very narrow phones (~320–360px) — trim the boxed panel's own padding a
+   touch further so the two columns inside don't feel squeezed */
+@media (max-width: 360px) {
+  .certmodalm__panel-inner { padding: 8px; gap: 7px; }
+  .certmodalm__panel-body { gap: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .certmodalm__overlay,
+  .certmodalm,
+  .certmodalm::before,
+  .certmodalm__frame,
+  .certmodalm__glow-ring,
+  .certmodalm__sidebar > *,
+  .certmodalm__tabs,
+  .certmodalm__panel,
+  .certmodalm__overview,
+  .certmodalm__heading span {
+    animation: none !important;
+  }
+  .certmodalm__close:hover { transform: none; }
+}
