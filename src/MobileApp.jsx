@@ -20,7 +20,7 @@ function MobileApp() {
   const [introDone, setIntroDone] = useState(false);
 
   return (
-    <>
+    <div className="mobile-app-shell">
       <Preloader onComplete={() => setIntroDone(true)} />
       <NavbarMobile />
       <main className={`app-reveal${introDone ? ' is-revealed' : ''}`}>
@@ -32,7 +32,7 @@ function MobileApp() {
         <ContactMobile />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

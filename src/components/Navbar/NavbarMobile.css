@@ -4,6 +4,9 @@
   left: 14px;
   right: 14px;
   z-index: 100;
+  /* left/right yahan overridden hote hain neeche wale portrait-tablet
+     media query mein, taaki navbar bhi centered 480px content column ke
+     saath hi align rahe (viewport ke poore width tak stretch na ho). */
   border-radius: 24px;
   overflow: hidden;
   background: transparent;
@@ -100,6 +103,7 @@
   transform: translate(-50%, -50%);
   overflow: visible;
   pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .navbar-m__mark-ring rect {
@@ -148,6 +152,20 @@
   font-weight: 700;
   font-size: 0.85rem;
   color: var(--text);
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease;
+}
+
+.navbar-m__brand:active .navbar-m__mark {
+  transform: scale(0.86) rotate(-4deg);
+  border-color: var(--red);
+}
+
+.navbar-m__brand:active .navbar-m__mark-ring {
+  transform: translate(-50%, -50%) scale(1.35);
+}
+
+.navbar-m__brand:active .navbar-m__mark-ring rect {
+  stroke-dashoffset: 0;
 }
 
 .navbar-m__mark span {
@@ -182,6 +200,14 @@
   transition: opacity 0.3s ease 0.05s, transform 0.35s ease 0.05s;
 }
 
+.navbar-m__toggle:active {
+  transform: scale(0.82);
+}
+
+.navbar-m__toggle:active span {
+  background: var(--red);
+}
+
 .navbar-m__toggle span {
   width: 20px;
   height: 2px;
@@ -214,6 +240,8 @@
   padding: 13px 0;
   border-bottom: 1px solid var(--line);
   color: var(--text-dim);
+  position: relative;
+  transition: color 0.15s ease, padding-left 0.2s ease;
 }
 
 .navbar-m__links a.is-active {
@@ -222,6 +250,24 @@
 
 .navbar-m__links a:active {
   color: var(--red);
+  padding-left: 8px;
+}
+
+.navbar-m__links a:not(.navbar-m__cta)::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--red);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.18s ease;
+}
+
+.navbar-m__links a:active::before {
+  transform: scaleY(1);
 }
 
 .navbar-m__cta {
@@ -238,11 +284,18 @@
   font-weight: 500;
   font-size: 0.88rem;
   color: var(--text);
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
 .navbar-m__cta:active {
   border-color: var(--red);
   background: rgba(255, 39, 64, 0.1);
+  transform: scale(0.96);
+}
+
+.navbar-m__cta:active .navbar-m__cta-dot {
+  transform: scale(2.2);
+  box-shadow: 0 0 14px rgba(255, 39, 64, 1);
 }
 
 .navbar-m__cta-dot {
@@ -251,4 +304,19 @@
   border-radius: 50%;
   background: var(--red);
   box-shadow: 0 0 8px rgba(255, 39, 64, 0.8);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+/* Portrait tablets (iPad jaise, jinhe aspect-ratio detection ke wajah se
+   MobileApp mil jaata hai): navbar ko poore wide viewport pe stretch nahi
+   karna, balki 480px design-width content column ke saath hi centered
+   rakhna hai — position:fixed hi rehta hai (scroll pe pinned), sirf
+   left/right ab viewport ke bajaye us column ke hisaab se calculate hote
+   hain. */
+@media (min-width: 481px) and (orientation: portrait) {
+  .navbar-m {
+    left: 50%;
+    right: auto;
+    width: min(calc(480px - 28px), calc(100vw - 28px));
+    transform: translateX(-50%);
+  }
 }

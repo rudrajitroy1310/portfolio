@@ -59,7 +59,7 @@
   z-index: 3;
   display: flex;
   flex-direction: column;
-  gap: clamp(3px, 1vw, 5px);
+  gap: clamp(3px, calc(1 * var(--mvw)), 5px);
   max-width: 34%;
 }
 
@@ -70,13 +70,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: clamp(20px, 6.5vw, 28px);
-  height: clamp(20px, 6.5vw, 28px);
+  width: clamp(20px, calc(6.5 * var(--mvw)), 28px);
+  height: clamp(20px, calc(6.5 * var(--mvw)), 28px);
   border: 1.5px solid var(--red);
   border-radius: 5px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(0.62rem, 2.6vw, 0.8rem);
+  font-size: clamp(0.62rem, calc(2.6 * var(--mvw)), 0.8rem);
   color: var(--red);
   box-shadow: 0 0 10px rgba(255, 39, 64, 0.35);
   margin-bottom: 1px;
@@ -85,7 +85,7 @@
 .contactm__corner-text {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: clamp(0.44rem, 2.1vw, 0.6rem);
+  font-size: clamp(0.44rem, calc(2.1 * var(--mvw)), 0.6rem);
   letter-spacing: 0.16em;
   line-height: 1.5;
   color: rgba(237, 237, 237, 0.8);
@@ -96,7 +96,7 @@
 
 .contactm__corner-rule {
   display: block;
-  width: clamp(18px, 5vw, 26px);
+  width: clamp(18px, calc(5 * var(--mvw)), 26px);
   height: 2px;
   background: linear-gradient(to right, var(--red), rgba(255, 39, 64, 0));
 }
@@ -117,18 +117,18 @@
 }
 
 .contactm__eyebrow {
-  margin: 0 0 clamp(4px, 1.3vw, 7px);
+  margin: 0 0 clamp(4px, calc(1.3 * var(--mvw)), 7px);
   font-family: var(--font-mono);
-  font-size: clamp(0.56rem, 2.4vw, 0.7rem);
+  font-size: clamp(0.56rem, calc(2.4 * var(--mvw)), 0.7rem);
   letter-spacing: 0.16em;
   color: var(--text-dim);
 }
 
 .contactm__heading {
-  margin: 0 0 clamp(4px, 1.4vw, 8px);
+  margin: 0 0 clamp(4px, calc(1.4 * var(--mvw)), 8px);
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.55rem, 8.6vw, 2.35rem);
+  font-size: clamp(1.55rem, calc(8.6 * var(--mvw)), 2.35rem);
   line-height: 1.02;
   color: var(--text);
 }
@@ -139,9 +139,9 @@
 }
 
 .contactm__tagline {
-  margin: 0 0 clamp(6px, 2vw, 10px);
+  margin: 0 0 clamp(6px, calc(2 * var(--mvw)), 10px);
   font-family: var(--font-signature);
-  font-size: clamp(1rem, 5vw, 1.35rem);
+  font-size: clamp(1rem, calc(5 * var(--mvw)), 1.35rem);
   font-weight: 500;
   color: rgba(237, 237, 237, 0.85);
   line-height: 1.15;
@@ -151,14 +151,14 @@
   margin: 0;
   max-width: 46ch;
   color: var(--text-dim);
-  font-size: clamp(0.68rem, 2.5vw, 0.8rem);
+  font-size: clamp(0.68rem, calc(2.5 * var(--mvw)), 0.8rem);
   line-height: 1.45;
 }
 
 .contactm__head-rule {
   display: block;
-  margin-top: clamp(9px, 2.6vw, 14px);
-  width: clamp(28px, 7vw, 40px);
+  margin-top: clamp(9px, calc(2.6 * var(--mvw)), 14px);
+  width: clamp(28px, calc(7 * var(--mvw)), 40px);
   height: 2px;
   background: var(--red);
 }
@@ -169,7 +169,7 @@
   position: absolute;
   z-index: 3;
   left: 0;
-  top: 42%;
+  top: 48%;
   width: 100%;
   height: 46%;
 }
@@ -184,11 +184,17 @@
 
 .contactm__wave-path {
   fill: none;
-  stroke: var(--red);
+  stroke: #ffffff;
   stroke-width: 0.85;
   opacity: 1;
   vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 4px rgba(255, 39, 64, 0.85));
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.85));
+  animation: contactm-line-glow 2.6s ease-in-out infinite;
+}
+
+@keyframes contactm-line-glow {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55)); }
+  50% { filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.95)); }
 }
 
 .contactm__wave-dot {
@@ -206,13 +212,23 @@
   filter: drop-shadow(0 0 4px rgba(255, 39, 64, 0.85));
 }
 
-.contactm__wave-plane {
+.contactm__wave-plane-wrap {
   position: absolute;
-  width: clamp(30px, 9.5vw, 42px);
-  height: clamp(30px, 9.5vw, 42px);
   transform: translate(-38%, -55%);
+}
+
+.contactm__wave-plane {
+  display: block;
+  width: clamp(30px, calc(9.5 * var(--mvw)), 42px);
+  height: clamp(30px, calc(9.5 * var(--mvw)), 42px);
   color: var(--red);
   filter: drop-shadow(0 0 6px rgba(255, 39, 64, 0.55));
+  animation: contactm-plane-float 3.2s ease-in-out infinite;
+}
+
+@keyframes contactm-plane-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 .contactm__wave-stem {
@@ -230,33 +246,47 @@
 
 .contactm__social {
   position: absolute;
+  transform: translate(-50%, 0);
+  text-decoration: none;
+  width: clamp(58px, calc(19 * var(--mvw)), 84px);
+  text-align: center;
+  display: block;
+}
+
+.contactm__social-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(2px, 0.8vw, 4px);
-  transform: translate(-50%, 0);
-  text-decoration: none;
-  width: clamp(58px, 19vw, 84px);
-  text-align: center;
+  gap: clamp(2px, calc(0.8 * var(--mvw)), 4px);
+  width: 100%;
 }
 
 .contactm__social-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(30px, 9.5vw, 42px);
-  height: clamp(30px, 9.5vw, 42px);
+  width: clamp(30px, calc(9.5 * var(--mvw)), 42px);
+  height: clamp(30px, calc(9.5 * var(--mvw)), 42px);
   border-radius: 50%;
   border: 1.5px solid var(--red);
   background: rgba(10, 8, 9, 0.65);
   box-shadow: 0 0 10px rgba(255, 39, 64, 0.3);
-  font-size: clamp(0.8rem, 3.4vw, 1.05rem);
+  font-size: clamp(0.8rem, calc(3.4 * var(--mvw)), 1.05rem);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contactm__social:active .contactm__social-icon {
-  transform: scale(0.92);
-  box-shadow: 0 0 16px rgba(255, 39, 64, 0.55);
+  transform: scale(0.88) translateY(-3px);
+  box-shadow: 0 0 18px rgba(255, 39, 64, 0.65);
+}
+
+.contactm__social-icon {
+  animation: contactm-icon-glow 2.6s ease-in-out infinite;
+}
+
+@keyframes contactm-icon-glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 39, 64, 0.3); }
+  50% { box-shadow: 0 0 16px rgba(255, 39, 64, 0.55); }
 }
 
 .contactm__social--email .contactm__social-icon { color: #ff5b4a; }
@@ -267,13 +297,13 @@
 .contactm__social-label {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(0.56rem, 2.3vw, 0.7rem);
+  font-size: clamp(0.56rem, calc(2.3 * var(--mvw)), 0.7rem);
   color: var(--text);
   line-height: 1.2;
 }
 
 .contactm__social-sub {
-  font-size: clamp(0.44rem, 1.8vw, 0.56rem);
+  font-size: clamp(0.44rem, calc(1.8 * var(--mvw)), 0.56rem);
   color: var(--text-dim);
   line-height: 1.2;
 }
@@ -285,7 +315,7 @@
   margin: 0;
   text-align: right;
   font-family: var(--font-mono);
-  font-size: clamp(0.42rem, 1.9vw, 0.54rem);
+  font-size: clamp(0.42rem, calc(1.9 * var(--mvw)), 0.54rem);
   letter-spacing: 0.14em;
   line-height: 1.45;
   color: rgba(237, 237, 237, 0.55);
@@ -301,10 +331,10 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: clamp(26px, 6.5vw, 36px);
-  padding: clamp(20px, 5.5vw, 30px) clamp(16px, 4.5vw, 24px)
-    calc(clamp(28px, 7vw, 40px) + env(safe-area-inset-bottom));
-  margin-top: clamp(-34px, -8vw, -22px);
+  gap: clamp(26px, calc(6.5 * var(--mvw)), 36px);
+  padding: clamp(20px, calc(5.5 * var(--mvw)), 30px) clamp(16px, calc(4.5 * var(--mvw)), 24px)
+    calc(clamp(28px, calc(7 * var(--mvw)), 40px) + env(safe-area-inset-bottom));
+  margin-top: clamp(-34px, calc(-8 * var(--mvw)), -22px);
 }
 
 /* ---------- Reply note ---------- */
@@ -315,7 +345,7 @@
   gap: 6px;
   margin: 0;
   font-family: var(--font-mono);
-  font-size: clamp(0.58rem, 1.8vw, 0.64rem);
+  font-size: clamp(0.58rem, calc(1.8 * var(--mvw)), 0.64rem);
   color: var(--text-dim);
   line-height: 1.3;
 }
@@ -343,7 +373,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: clamp(12px, 3.2vw, 16px);
+  margin-bottom: clamp(12px, calc(3.2 * var(--mvw)), 16px);
 }
 
 .contactm__send-label {
@@ -352,7 +382,7 @@
   gap: 6px;
   margin: 0;
   font-family: var(--font-mono);
-  font-size: clamp(0.62rem, 2.1vw, 0.7rem);
+  font-size: clamp(0.62rem, calc(2.1 * var(--mvw)), 0.7rem);
   letter-spacing: 0.16em;
   color: var(--text-dim);
 }
@@ -368,7 +398,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(10px, 2.6vw, 14px);
+  gap: clamp(10px, calc(2.6 * var(--mvw)), 14px);
 }
 
 .contactm__pill {
@@ -376,8 +406,8 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: clamp(8px, 2.4vw, 12px);
-  padding: clamp(6px, 1.8vw, 8px) clamp(6px, 1.8vw, 8px) clamp(6px, 1.8vw, 8px) clamp(14px, 3.6vw, 18px);
+  gap: clamp(8px, calc(2.4 * var(--mvw)), 12px);
+  padding: clamp(6px, calc(1.8 * var(--mvw)), 8px) clamp(6px, calc(1.8 * var(--mvw)), 8px) clamp(6px, calc(1.8 * var(--mvw)), 8px) clamp(14px, calc(3.6 * var(--mvw)), 18px);
   border: 1.5px solid var(--red);
   border-radius: 999px;
   background: rgba(10, 8, 9, 0.75);
@@ -393,7 +423,7 @@
 .contactm__pill-icon {
   flex-shrink: 0;
   color: var(--text-dim);
-  font-size: clamp(0.85rem, 3vw, 1rem);
+  font-size: clamp(0.85rem, calc(3 * var(--mvw)), 1rem);
 }
 
 .contactm__pill:focus-within .contactm__pill-icon {
@@ -407,7 +437,7 @@
   border: none;
   color: var(--text);
   font-family: var(--font-body);
-  font-size: clamp(0.78rem, 2.6vw, 0.88rem);
+  font-size: clamp(0.78rem, calc(2.6 * var(--mvw)), 0.88rem);
 }
 
 .contactm__pill input:focus { outline: none; }
@@ -419,26 +449,46 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(34px, 10vw, 42px);
-  height: clamp(34px, 10vw, 42px);
+  width: clamp(34px, calc(10 * var(--mvw)), 42px);
+  height: clamp(34px, calc(10 * var(--mvw)), 42px);
   border: none;
   border-radius: 50%;
   background: linear-gradient(180deg, rgba(255, 39, 64, 0.9), rgba(180, 24, 44, 0.9));
   color: #fff;
-  font-size: clamp(0.9rem, 3vw, 1.05rem);
+  font-size: clamp(0.9rem, calc(3 * var(--mvw)), 1.05rem);
   cursor: pointer;
   box-shadow: 0 0 14px rgba(255, 39, 64, 0.45);
-  transition: transform 0.15s ease;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+  position: relative;
 }
 
 .contactm__pill-submit:active {
-  transform: scale(0.92);
+  transform: scale(0.86) rotate(-8deg);
+  box-shadow: 0 0 22px rgba(255, 39, 64, 0.9);
+}
+
+.contactm__pill-submit::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 39, 64, 0.7);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+
+.contactm__pill-submit:active::after {
+  opacity: 1;
+  transform: scale(1.25);
+  transition: opacity 0.02s, transform 0.02s;
 }
 
 .contactm__steps {
   display: flex;
   align-items: center;
-  gap: clamp(7px, 2vw, 10px);
+  gap: clamp(7px, calc(2 * var(--mvw)), 10px);
 }
 
 .contactm__step-dot {
@@ -462,6 +512,12 @@
   transform: scale(1.25);
 }
 
+.contactm__step-dot:active {
+  transform: scale(1.5);
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(255, 39, 64, 0.9);
+}
+
 .contactm__step-dot:disabled { cursor: default; }
 
 /* ---------- Quote ---------- */
@@ -469,7 +525,7 @@
 .contactm__quote {
   position: relative;
   margin: 0;
-  padding: clamp(12px, 3.2vw, 16px) clamp(14px, 3.6vw, 18px);
+  padding: clamp(12px, calc(3.2 * var(--mvw)), 16px) clamp(14px, calc(3.6 * var(--mvw)), 18px);
   border-left: 2px solid var(--red);
   background: rgba(255, 39, 64, 0.05);
   border-radius: 0 12px 12px 0;
@@ -478,7 +534,7 @@
 .contactm__quote-mark {
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(1.7rem, 5.2vw, 2.1rem);
+  font-size: clamp(1.7rem, calc(5.2 * var(--mvw)), 2.1rem);
   line-height: 1;
   color: var(--red);
   margin-bottom: 3px;
@@ -487,17 +543,17 @@
 .contactm__quote p {
   margin: 0;
   font-style: italic;
-  font-size: clamp(0.8rem, 2.7vw, 0.9rem);
+  font-size: clamp(0.8rem, calc(2.7 * var(--mvw)), 0.9rem);
   line-height: 1.4;
   color: var(--text);
 }
 
 .contactm__quote cite {
   display: block;
-  margin-top: clamp(6px, 1.6vw, 8px);
+  margin-top: clamp(6px, calc(1.6 * var(--mvw)), 8px);
   font-style: normal;
   font-family: var(--font-mono);
-  font-size: clamp(0.68rem, 2.2vw, 0.76rem);
+  font-size: clamp(0.68rem, calc(2.2 * var(--mvw)), 0.76rem);
   color: var(--red);
 }
 
@@ -506,25 +562,25 @@
 .contactm__ideas {
   list-style: none;
   margin: 0;
-  padding: clamp(14px, 3.6vw, 18px) 0 0;
+  padding: clamp(14px, calc(3.6 * var(--mvw)), 18px) 0 0;
   border-top: 1px solid var(--line);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(8px, 2.4vw, 12px);
+  gap: clamp(8px, calc(2.4 * var(--mvw)), 12px);
 }
 
 .contactm__ideas li {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(4px, 1.4vw, 6px);
+  gap: clamp(4px, calc(1.4 * var(--mvw)), 6px);
   min-width: 0;
 }
 
 .contactm__ideas-icon {
   flex-shrink: 0;
   color: var(--red);
-  font-size: clamp(0.95rem, 3.4vw, 1.15rem);
+  font-size: clamp(0.95rem, calc(3.4 * var(--mvw)), 1.15rem);
 }
 
 .contactm__ideas li span {
@@ -537,13 +593,13 @@
 .contactm__ideas li strong {
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: clamp(0.7rem, 2.4vw, 0.8rem);
+  font-size: clamp(0.7rem, calc(2.4 * var(--mvw)), 0.8rem);
   color: var(--text);
 }
 
 .contactm__ideas li em {
   font-style: normal;
-  font-size: clamp(0.56rem, 1.9vw, 0.64rem);
+  font-size: clamp(0.56rem, calc(1.9 * var(--mvw)), 0.64rem);
   color: var(--text-dim);
   line-height: 1.25;
 }
@@ -555,7 +611,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
-  padding-top: clamp(6px, 1.6vw, 10px);
+  padding-top: clamp(6px, calc(1.6 * var(--mvw)), 10px);
 }
 
 .contactm__corners-bottom .contactm__corner {
@@ -568,7 +624,7 @@
 }
 
 .contactm__corners-bottom .contactm__corner-rule {
-  margin-bottom: clamp(3px, 1vw, 5px);
+  margin-bottom: clamp(3px, calc(1 * var(--mvw)), 5px);
 }
 
 @media (prefers-reduced-motion: reduce) {

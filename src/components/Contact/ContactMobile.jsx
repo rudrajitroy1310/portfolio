@@ -31,14 +31,20 @@ const socials = [
    khatam hone ke baad hi curve wala "big dot" aaye — taaki dot/line icon
    se chipke nahi, jaisa reference mein hai. Stem line (chhota upar wala
    dot se curve wale dot tak) sirf isi gap ke aakhri hisse mein khinchi
-   jaati hai, taaki upar text ke liye poori jagah khaali rahe. */
-const DOT_OFFSET_Y = 36;
+   jaati hai, taaki upar text ke liye poori jagah khaali rahe.
+   NOTE: smooth (Catmull-Rom) curve neighbouring points ki wajah se thoda
+   "overshoot" karta hai — GitHub/Instagram ke beech mein curve upar ki
+   taraf bulge karta hai. Isliye offset yahan generous rakha gaya hai
+   (55, sirf 48 nahi) taaki curve kabhi bhi icon/text ke paas na aaye,
+   aur stem hamesha ek seedhi, saaf "icon se neeche curve tak" line
+   jaisi dikhe — side mein bhatakti hui nahi. */
+const DOT_OFFSET_Y = 38;
 const dots = socials.map((s) => ({ x: s.x, y: s.y + DOT_OFFSET_Y }));
-/* Stem: chhota dot (label ke just neeche) se seedha neeche curve ke
-   bade dot tak — reference ki "flagpole" line. */
+/* Stem: chhota dot (label ke pura neeche, text khatam hone ke baad) se
+   seedha neeche curve ke bade dot tak — reference ki "flagpole" line. */
 const stems = socials.map((s) => ({
   x: s.x,
-  y1: s.y + DOT_OFFSET_Y * 0.5,
+  y1: s.y + DOT_OFFSET_Y * 0.8,
   y2: s.y + DOT_OFFSET_Y,
 }));
 const ARROW_START = { x: 6, y: dots[0].y + 10 };
@@ -154,7 +160,13 @@ function ContactMobile() {
         </div>
 
         {/* ---------- Social wave ---------- */}
-        <div className="contactm__wave">
+        <motion.div
+          className="contactm__wave"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <svg
             className="contactm__wave-lines"
             viewBox="0 0 100 100"
@@ -182,27 +194,33 @@ function ContactMobile() {
           </svg>
 
           {/* ---------- Paper airplane — reference jaisa outlined fold-style icon,
-             dashed tail line se pehle dot tak connect hota hai ---------- */}
-          <svg
-            className="contactm__wave-plane"
-            viewBox="0 0 40 40"
+             dashed tail line se pehle dot tak connect hota hai. Wrapper positions
+             it (static left/top/anchor-offset), inner svg gets the float animation
+             so the two transforms don't fight each other. ---------- */}
+          <div
+            className="contactm__wave-plane-wrap"
             style={{ left: `${ARROW_START.x}%`, top: `${ARROW_START.y}%` }}
-            aria-hidden="true"
           >
-            <path
-              d="M4 32 L35 5 L23 36 L16 21 Z"
-              fill="rgba(255, 39, 64, 0.12)"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-            />
-            <path d="M16 21 L35 5" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-          </svg>
+            <svg
+              className="contactm__wave-plane"
+              viewBox="0 0 40 40"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 32 L35 5 L23 36 L16 21 Z"
+                fill="rgba(255, 255, 255, 0.12)"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+              <path d="M16 21 L35 5" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            </svg>
+          </div>
 
           {socials.map(({
             key, label, sub, href, Icon, x, y,
-          }) => (
+          }, i) => (
             <a
               key={key}
               href={href}
@@ -211,16 +229,24 @@ function ContactMobile() {
               className={`contactm__social contactm__social--${key}`}
               style={{ left: `${x}%`, top: `${y}%` }}
             >
-              <span className="contactm__social-icon">
-                <Icon />
-              </span>
-              <span className="contactm__social-label">{label}</span>
-              <span className="contactm__social-sub">{sub}</span>
+              <motion.span
+                className="contactm__social-inner"
+                initial={{ opacity: 0, y: 14, scale: 0.85 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.45, delay: 0.15 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <span className="contactm__social-icon">
+                  <Icon />
+                </span>
+                <span className="contactm__social-label">{label}</span>
+                <span className="contactm__social-sub">{sub}</span>
+              </motion.span>
             </a>
           ))}
 
           <p className="contactm__wave-caption">GOOD IDEAS<br />BETTER PEOPLE //</p>
-        </div>
+        </motion.div>
       </div>
 
       {/* ================= Flowing zone: plain dark bg, normal document flow ================= */}

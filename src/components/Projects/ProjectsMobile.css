@@ -49,11 +49,11 @@
 .projects-m__kicker {
   position: absolute;
   z-index: 3;
-  top: 5.69vw;
+  top: calc(5.69 * var(--mvw));
   left: 7.8%;
   max-width: 42%;
   font-family: var(--font-mono);
-  font-size: clamp(0.5rem, 2.55vw, 0.62rem);
+  font-size: clamp(0.5rem, calc(2.55 * var(--mvw)), 0.62rem);
   line-height: 1.4;
   letter-spacing: 0.04em;
   color: var(--text-dim);
@@ -66,7 +66,7 @@
 .projects-m__brand {
   position: absolute;
   z-index: 3;
-  top: 6.22vw;
+  top: calc(6.22 * var(--mvw));
   right: 5%;
   max-width: 34%;
   display: flex;
@@ -76,7 +76,7 @@
 }
 
 .projects-m__brand-logo {
-  width: 15vw;
+  width: calc(15 * var(--mvw));
   max-width: 72px;
   height: auto;
   margin-bottom: 10px;
@@ -84,7 +84,7 @@
 
 .projects-m__brand-text {
   font-family: var(--font-mono);
-  font-size: clamp(0.46rem, 2.2vw, 0.54rem);
+  font-size: clamp(0.46rem, calc(2.2 * var(--mvw)), 0.54rem);
   line-height: 1.35;
   letter-spacing: 0.06em;
   color: var(--text-dim);
@@ -112,7 +112,7 @@
 
 .projects-m__index-num {
   font-family: var(--font-mono);
-  font-size: clamp(0.62rem, 3vw, 0.74rem);
+  font-size: clamp(0.62rem, calc(3 * var(--mvw)), 0.74rem);
   color: var(--red);
   animation: projects-m-glow 3.4s ease-in-out infinite;
 }
@@ -127,7 +127,7 @@
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   font-family: var(--font-mono);
-  font-size: clamp(0.54rem, 2.5vw, 0.62rem);
+  font-size: clamp(0.54rem, calc(2.5 * var(--mvw)), 0.62rem);
   letter-spacing: 0.14em;
   color: var(--text-dim);
 }
@@ -142,13 +142,13 @@
 .projects-m__body {
   position: absolute;
   z-index: 2;
-  top: 21.5vw;
+  top: calc(21.5 * var(--mvw));
   left: 0;
   right: 0;
   padding: 0 9% 0 9%;
   display: flex;
   flex-direction: column;
-  gap: 3.6vw;
+  gap: calc(3.6 * var(--mvw));
 }
 
 .projects-m__eyebrow {
@@ -156,7 +156,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: clamp(0.58rem, 2.7vw, 0.66rem);
+  font-size: clamp(0.58rem, calc(2.7 * var(--mvw)), 0.66rem);
   letter-spacing: 0.12em;
   color: var(--text-dim);
 }
@@ -176,7 +176,7 @@
 .projects-m__heading {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.4rem, 8.2vw, 2.1rem);
+  font-size: clamp(1.4rem, calc(8.2 * var(--mvw)), 2.1rem);
   line-height: 1.14;
 }
 
@@ -186,7 +186,7 @@
 
 .projects-m__text {
   color: var(--text-dim);
-  font-size: clamp(0.62rem, 2.9vw, 0.74rem);
+  font-size: clamp(0.62rem, calc(2.9 * var(--mvw)), 0.74rem);
   line-height: 1.4;
   max-width: 92%;
 }
@@ -197,15 +197,15 @@
   margin-top: 0;
   display: flex;
   flex-direction: column;
-  gap: 5vw;
+  gap: calc(5 * var(--mvw));
 }
 
 .projects-m__card {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 3.2vw;
-  padding: 3.8vw 2.4vw;
+  gap: calc(3.2 * var(--mvw));
+  padding: calc(3.8 * var(--mvw)) calc(2.4 * var(--mvw));
   border: 1px solid rgba(255, 39, 64, 0.55);
   border-radius: 10px;
   background: linear-gradient(155deg, rgba(24, 12, 14, 0.9), rgba(12, 6, 8, 0.86));
@@ -266,9 +266,13 @@
 }
 
 .projects-m__card:active {
-  transform: scale(0.98);
+  transform: scale(0.97) perspective(600px) rotateX(3deg);
   border-color: rgba(255, 39, 64, 1);
-  box-shadow: 0 0 18px rgba(255, 39, 64, 0.45);
+  box-shadow: 0 0 18px rgba(255, 39, 64, 0.45), inset 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+.projects-m__card:active .projects-m__card-thumb-icon {
+  transform: scale(1.12);
 }
 
 @media (hover: hover) {
@@ -284,7 +288,7 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  width: 33vw;
+  width: calc(33 * var(--mvw));
   aspect-ratio: 16 / 9;
   max-width: 142px;
   border-radius: 7px;
@@ -337,7 +341,7 @@
 
 .projects-m__card-thumb-icon {
   color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(0.9rem, 4.6vw, 1.25rem);
+  font-size: clamp(0.9rem, calc(4.6 * var(--mvw)), 1.25rem);
   transition: transform 0.3s ease;
 }
 
@@ -350,7 +354,7 @@
 .projects-m__card-thumb-label {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(0.4rem, 1.8vw, 0.46rem);
+  font-size: clamp(0.4rem, calc(1.8 * var(--mvw)), 0.46rem);
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
@@ -370,13 +374,13 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-display);
-  font-size: clamp(0.58rem, 2.6vw, 0.68rem);
+  font-size: clamp(0.58rem, calc(2.6 * var(--mvw)), 0.68rem);
   font-weight: 600;
   color: var(--text);
 }
 
 .projects-m__card-desc {
-  font-size: clamp(0.42rem, 1.8vw, 0.48rem);
+  font-size: clamp(0.42rem, calc(1.8 * var(--mvw)), 0.48rem);
   line-height: 1.4;
   color: var(--text-dim);
   overflow: hidden;
@@ -389,15 +393,15 @@
   margin-top: 2px;
   display: flex;
   flex-wrap: wrap;
-  gap: 1.4vw;
+  gap: calc(1.4 * var(--mvw));
 }
 
 .projects-m__card-tag {
   font-family: var(--font-mono);
-  font-size: clamp(0.36rem, 1.5vw, 0.4rem);
+  font-size: clamp(0.36rem, calc(1.5 * var(--mvw)), 0.4rem);
   letter-spacing: 0.02em;
   color: var(--text);
-  padding: 0.7vw 1.9vw;
+  padding: calc(0.7 * var(--mvw)) calc(1.9 * var(--mvw));
   border: 1px solid rgba(255, 39, 64, 0.55);
   border-radius: 999px;
   white-space: nowrap;
@@ -407,15 +411,15 @@
 
 .projects-m__cta {
   align-self: center;
-  margin-top: 4.6vw;
+  margin-top: calc(4.6 * var(--mvw));
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 2.4vw 6.5vw;
+  padding: calc(2.4 * var(--mvw)) calc(6.5 * var(--mvw));
   border: 1px solid var(--red);
   border-radius: 6px;
   font-family: var(--font-display);
-  font-size: clamp(0.7rem, 3.3vw, 0.8rem);
+  font-size: clamp(0.7rem, calc(3.3 * var(--mvw)), 0.8rem);
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
@@ -465,7 +469,7 @@
   max-width: 34%;
   text-align: right;
   font-family: var(--font-mono);
-  font-size: clamp(0.5rem, 2.4vw, 0.58rem);
+  font-size: clamp(0.5rem, calc(2.4 * var(--mvw)), 0.58rem);
   line-height: 1.4;
   letter-spacing: 0.05em;
   color: var(--text-dim);

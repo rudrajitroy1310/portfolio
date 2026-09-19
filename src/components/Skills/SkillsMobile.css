@@ -104,7 +104,7 @@
 .skillsm__head {
   position: absolute;
   z-index: 4;
-  top: 8%;
+  top: 4%;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -113,16 +113,16 @@
 
 .skillsm__eyebrow {
   font-family: var(--font-mono);
-  font-size: clamp(0.55rem, 2.9vw, 0.78rem);
+  font-size: clamp(0.55rem, calc(2.9 * var(--mvw)), 0.78rem);
   letter-spacing: 0.26em;
   color: var(--text-dim);
 }
 
 .skillsm__heading {
-  margin-top: 1.4vw;
+  margin-top: calc(1.4 * var(--mvw));
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.62rem, 8.4vw, 2.7rem);
+  font-size: clamp(1.62rem, calc(8.4 * var(--mvw)), 2.7rem);
   line-height: 1.02;
   letter-spacing: -0.035em;
 }
@@ -144,17 +144,17 @@
 }
 
 .skillsm__subtitle {
-  margin: 2.4vw auto 0;
+  margin: calc(2.4 * var(--mvw)) auto 0;
   max-width: 74%;
-  font-size: clamp(0.64rem, 3.05vw, 0.86rem);
+  font-size: clamp(0.64rem, calc(3.05 * var(--mvw)), 0.86rem);
   line-height: 1.45;
   color: rgba(237, 237, 237, 0.78);
 }
 
 .skillsm__head-rule {
   display: block;
-  margin: 3.2vw auto 0;
-  width: 11vw;
+  margin: calc(3.2 * var(--mvw)) auto 0;
+  width: calc(11 * var(--mvw));
   max-width: 54px;
   height: 2px;
   background: linear-gradient(
@@ -184,9 +184,9 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 1.2vw;
+  gap: calc(1.2 * var(--mvw));
   font-family: var(--font-mono);
-  font-size: clamp(0.44rem, 2.15vw, 0.62rem);
+  font-size: clamp(0.44rem, calc(2.15 * var(--mvw)), 0.62rem);
   letter-spacing: 0.14em;
   line-height: 1.35;
   color: rgba(237, 237, 237, 0.78);
@@ -205,6 +205,11 @@
   color: var(--text);
 }
 
+.skillsm__group-title:active .skillsm__group-dot {
+  transform: scale(1.9);
+  box-shadow: 0 0 10px rgba(255, 39, 64, 0.9);
+}
+
 .skillsm__group-title--active {
   color: var(--text);
 }
@@ -221,7 +226,7 @@
   background: rgba(255, 39, 64, 0.4);
   box-shadow: none;
   flex: none;
-  transition: background 0.25s ease, box-shadow 0.25s ease;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .skillsm__group-title--active .skillsm__group-dot {
@@ -315,7 +320,7 @@
   position: absolute;
   translate: -50% -50%;
   z-index: 3;
-  --box: clamp(26px, 7.8vw, 42px);
+  --box: clamp(26px, calc(7.8 * var(--mvw)), 42px);
   width: var(--box);
   height: var(--box);
   padding: 0;
@@ -338,6 +343,15 @@
 .skillsm__pill:active {
   scale: 0.9;
   border-color: var(--red);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -8px 14px rgba(255, 39, 64, 0.25),
+    0 0 18px rgba(255, 39, 64, 0.75),
+    0 6px 16px rgba(0, 0, 0, 0.55);
+}
+
+.skillsm__pill:active .skillsm__icon {
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 6px rgba(255, 39, 64, 0.9));
 }
 
 /* Filter se match na karne wale icons — position (left/top) bilkul nahi
@@ -366,6 +380,7 @@
   height: 46%;
   color: rgba(255, 255, 255, 0.96);
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
+  transition: filter 0.2s ease;
 }
 
 /* ---------- Quote ---------- */
@@ -382,22 +397,22 @@
   display: block;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.6rem, 8vw, 2.4rem);
+  font-size: clamp(1.6rem, calc(8 * var(--mvw)), 2.4rem);
   line-height: 0.6;
   color: var(--red);
 }
 
 .skillsm__quote blockquote {
-  margin-top: 1.8vw;
-  font-size: clamp(0.76rem, 3.6vw, 1.02rem);
+  margin-top: calc(1.8 * var(--mvw));
+  font-size: clamp(0.76rem, calc(3.6 * var(--mvw)), 1.02rem);
   line-height: 1.4;
   color: rgba(237, 237, 237, 0.92);
 }
 
 .skillsm__quote figcaption {
-  margin-top: 1.6vw;
+  margin-top: calc(1.6 * var(--mvw));
   font-family: var(--font-mono);
-  font-size: clamp(0.56rem, 2.8vw, 0.76rem);
+  font-size: clamp(0.56rem, calc(2.8 * var(--mvw)), 0.76rem);
   letter-spacing: 0.06em;
   color: var(--red);
 }
@@ -411,7 +426,7 @@
   right: 5%;
   text-align: left;
   font-family: var(--font-mono);
-  font-size: clamp(0.5rem, 2.5vw, 0.68rem);
+  font-size: clamp(0.5rem, calc(2.5 * var(--mvw)), 0.68rem);
   line-height: 1.5;
   letter-spacing: 0.14em;
   color: var(--text);
@@ -419,8 +434,8 @@
 
 .skillsm__mindset-bar {
   display: block;
-  margin-top: 1.8vw;
-  width: 8vw;
+  margin-top: calc(1.8 * var(--mvw));
+  width: calc(8 * var(--mvw));
   max-width: 38px;
   height: 2px;
   background: var(--red);
@@ -436,7 +451,7 @@
   right: 4%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5vw;
+  gap: calc(1.5 * var(--mvw));
 }
 
 .skillsm__stat {
@@ -444,7 +459,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.1vw;
+  gap: calc(1.1 * var(--mvw));
 }
 
 .skillsm__stat-icon {
@@ -454,21 +469,21 @@
 }
 
 .skillsm__stat-icon svg {
-  width: clamp(16px, 5vw, 26px);
-  height: clamp(16px, 5vw, 26px);
+  width: clamp(16px, calc(5 * var(--mvw)), 26px);
+  height: clamp(16px, calc(5 * var(--mvw)), 26px);
 }
 
 .skillsm__stat-value {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(0.92rem, 4.6vw, 1.4rem);
+  font-size: clamp(0.92rem, calc(4.6 * var(--mvw)), 1.4rem);
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--text);
 }
 
 .skillsm__stat-label {
-  font-size: clamp(0.5rem, 2.5vw, 0.7rem);
+  font-size: clamp(0.5rem, calc(2.5 * var(--mvw)), 0.7rem);
   line-height: 1.2;
   color: var(--text-dim);
 }
@@ -483,7 +498,7 @@
   right: 0;
   text-align: center;
   font-family: var(--font-mono);
-  font-size: clamp(0.5rem, 2.5vw, 0.68rem);
+  font-size: clamp(0.5rem, calc(2.5 * var(--mvw)), 0.68rem);
   letter-spacing: 0.22em;
   color: var(--text-dim);
 }
@@ -497,14 +512,14 @@
    taaki heading block aur corner lists ek doosre par na chadhein */
 @media (max-height: 700px) {
   .skillsm__head { top: 7%; }
-  .skillsm__heading { font-size: clamp(1.45rem, 7.4vw, 2.2rem); }
+  .skillsm__heading { font-size: clamp(1.45rem, calc(7.4 * var(--mvw)), 2.2rem); }
   .skillsm__subtitle {
-    margin-top: 1.8vw;
+    margin-top: calc(1.8 * var(--mvw));
     max-width: 70%;
-    font-size: clamp(0.58rem, 2.8vw, 0.76rem);
+    font-size: clamp(0.58rem, calc(2.8 * var(--mvw)), 0.76rem);
     line-height: 1.35;
   }
-  .skillsm__head-rule { margin-top: 2.2vw; }
+  .skillsm__head-rule { margin-top: calc(2.2 * var(--mvw)); }
   .skillsm__quote blockquote { line-height: 1.32; }
 }
 

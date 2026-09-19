@@ -15,6 +15,22 @@
   --font-signature: 'Dancing Script', cursive;
 
   --container: 1120px;
+
+  /* Mobile-scale vw reference — MobileApp ke saare responsive vw values
+     (gaps, icon sizes, offsets) ab isi variable ke through calc() karte
+     hain, raw "vw" ke bajaye. Normal phones (<=480px width) pe yeh exactly
+     1vw ke barabar hai — matlab koi visual/behavior change nahi. Portrait
+     tablets (iPad jaisi, jinhe aspect-ratio detection ke wajah se
+     MobileApp mil jaata hai) pe yeh 480px width par "freeze" ho jaata hai,
+     taaki icons/gaps/spacing tablet ki extra width ke saath ballooning na
+     karein aur layout phone jaisa hi proportion mein rahe. */
+  --mvw: 1vw;
+}
+
+@media (min-width: 481px) and (orientation: portrait) {
+  :root {
+    --mvw: 4.8px; /* = 1vw at a 480px reference width, frozen beyond that */
+  }
 }
 
 * {
@@ -25,6 +41,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -44,6 +62,8 @@ body {
   font-family: var(--font-body);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* ---------- Section seams: har section ka apna alag background/template hai
@@ -215,4 +235,41 @@ body::-webkit-scrollbar {
 :focus-visible {
   outline: 2px solid var(--red);
   outline-offset: 3px;
+}
+
+/* ---------- Global touch feedback (mobile) ----------
+   Mobile browsers pe by default: (a) tap pe ek bhaddi gray/blue highlight
+   box flash hoti hai, aur (b) ~300ms ka delay hota hai tap register hone
+   mein. Dono yahan globally hata rahe hain, taaki har section ka apna
+   custom :active effect turant aur clean dikhe, koi native flash overlap
+   na kare. Sirf mobile-app-shell ke andar — desktop hover-based design
+   isse untouched rehta hai. */
+.mobile-app-shell a,
+.mobile-app-shell button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+/* ---------- Mobile shell on portrait tablets ----------
+   useDeviceMode() sirf aspect-ratio dekh kar decide karta hai (width <
+   height => mobile) — width ki koi upper limit nahi. Isliye ek portrait
+   tablet (jaise iPad) bhi MobileApp hi load karega. Normal phones
+   (<=480px) pe .mobile-app-shell ka koi effect nahi — 100% width, jaisa
+   pehle tha. Us se bade portrait viewports pe content ko 480px (largest
+   phone ke design-width) tak cap karke center kar dete hain, taaki
+   percentage-width/vw-based layout tablet ki extra width mein ajeeb tareeke
+   se stretch na ho — poore ka poora "phone" design bas center mein achhe
+   proportion ke saath dikhta hai. --mvw isi 480px reference par freeze
+   ho jaata hai (upar :root mein), isliye icons/gaps/spacing bhi
+   proportionally sahi rehte hain, bade nahi ho jaate. */
+.mobile-app-shell {
+  width: 100%;
+}
+
+@media (min-width: 481px) and (orientation: portrait) {
+  .mobile-app-shell {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--bg);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+  }
 }
