@@ -5,125 +5,15 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   BsX, BsChevronLeft, BsChevronRight, BsGridFill, BsShieldLockFill, BsLayers,
   BsSearch, BsThreeDots, BsBoxArrowUpRight, BsArrowRight, BsArrowLeft,
-  BsHandIndexThumb, BsPalette2, BsPlayBtnFill, BsCheckSquareFill, BsBugFill,
-  BsTerminalFill, BsCrosshair, BsShieldCheck, BsFileEarmarkText, BsGearFill,
+  BsHandIndexThumb,
 } from 'react-icons/bs';
-import { FaLaptopCode } from 'react-icons/fa';
 import projectsAllModalBg from '../../assets/images/projects-all-modal-bg.webp';
 import ProjectDetailModal from './ProjectDetailModal';
+import { mobileProjects as ALL_PROJECTS } from './projectsData';
 import './ProjectsAllModal.css';
 
-// ---- DUMMY DATA — sirf layout/design dikhane ke liye placeholder hai ----
-// Baad me apne real projects (title, description, tags, link, category) se replace karna.
-// category yahi 4 values me se ek honi chahiye taaki filter tabs sahi kaam karein:
-// 'Cybersecurity' | 'Full Stack' | 'Digital Forensics' | 'Other'
-const ALL_PROJECTS = [
-  {
-    title: 'NetRazor',
-    subtitle: 'DETECT · ANALYZE · SECURE',
-    category: 'Cybersecurity',
-    Icon: BsShieldLockFill,
-    accent: ['#2a0508', '#ff2740'],
-    description: 'A network vulnerability scanner to detect open ports, services and common vulnerabilities.',
-    tags: ['Python', 'Nmap', 'Linux', 'Cybersecurity'],
-    link: '#',
-    // Extra data used only by the project-detail screen (ProjectDetailModal).
-    // Other projects fall back to sensible defaults there, but this one
-    // mirrors the reference design exactly.
-    detail: {
-      version: 'v1.0.0',
-      status: 'Completed',
-      date: 'Dec 2024',
-      type: 'Personal Project',
-      tagline: 'Discover vulnerabilities before attackers do.',
-      stats: [
-        { label: 'Open Ports', value: '12' },
-        { label: 'Vulnerabilities', value: '5', accent: true },
-        { label: 'Services', value: '8' },
-        { label: 'Risk Level', value: 'High', accent: true },
-      ],
-      features: [
-        { title: 'Port Scanning', desc: 'Identify open ports and services', Icon: BsCrosshair },
-        { title: 'Vulnerability Detection', desc: 'Detect known security issues', Icon: BsShieldCheck },
-        { title: 'Detailed Reports', desc: 'Get comprehensive scan results', Icon: BsFileEarmarkText },
-        { title: 'Customizable', desc: 'Flexible scan options and configurations', Icon: BsGearFill },
-      ],
-      quote: 'Improved my understanding of network protocols, port scanning, vulnerability assessment and security best practices.',
-      quoteNote: 'A SMALL STEP TOWARDS A SAFER DIGITAL WORLD.',
-      links: { live: '#', code: '#', docs: '#' },
-    },
-  },
-  {
-    title: 'Portfolio Website',
-    subtitle: 'BUILD · ANIMATE · SHIP',
-    category: 'Full Stack',
-    Icon: FaLaptopCode,
-    accent: ['#0a1830', '#2f5dff'],
-    description: 'My personal portfolio website built with modern web technologies and smooth animations.',
-    tags: ['React', 'Tailwind CSS', 'Framer Motion'],
-    link: '#',
-  },
-  {
-    title: 'CipherTrace',
-    subtitle: 'RECOVER · TRACE · REPORT',
-    category: 'Digital Forensics',
-    Icon: BsSearch,
-    accent: ['#1c0a2e', '#9b3dff'],
-    description: 'A digital forensics tool to trace file metadata and recover deleted evidence from disk images.',
-    tags: ['Python', 'Autopsy', 'Forensics'],
-    link: '#',
-  },
-  {
-    title: 'Netflix Clone',
-    subtitle: 'STREAM · BROWSE · WATCH',
-    category: 'Full Stack',
-    Icon: BsPlayBtnFill,
-    accent: ['#1a0505', '#8a0000'],
-    description: 'A front-end clone of Netflix with responsive design and modern UI/UX.',
-    tags: ['React', 'Firebase', 'Tailwind CSS'],
-    link: '#',
-  },
-  {
-    title: 'PhishNet',
-    subtitle: 'SCAN · FLAG · PROTECT',
-    category: 'Cybersecurity',
-    Icon: BsBugFill,
-    accent: ['#2a0508', '#ff2740'],
-    description: 'A phishing detection tool that analyzes URLs and emails for malicious patterns.',
-    tags: ['Python', 'ML', 'Cybersecurity'],
-    link: '#',
-  },
-  {
-    title: 'LogSentinel',
-    subtitle: 'PARSE · MONITOR · ALERT',
-    category: 'Digital Forensics',
-    Icon: BsTerminalFill,
-    accent: ['#1c0a2e', '#9b3dff'],
-    description: 'A log analysis tool for identifying suspicious activity across system logs.',
-    tags: ['Python', 'SIEM', 'Forensics'],
-    link: '#',
-  },
-  {
-    title: 'Todo App',
-    subtitle: 'ADD · FILTER · DONE',
-    category: 'Other',
-    Icon: BsCheckSquareFill,
-    accent: ['#04140e', '#0f8a52'],
-    description: 'A simple and clean todo app with add, delete, and filter features.',
-    tags: ['React', 'LocalStorage', 'CSS'],
-    link: '#',
-  },
-  {
-    title: 'ZAROO FF',
-    subtitle: 'DESIGN · BRAND · STYLE',
-    category: 'Other',
-    Icon: BsPalette2,
-    accent: ['#3a0a0d', '#ff2740'],
-    description: 'A modern YouTube channel banner design with a dark theme and red accents.',
-    tags: ['HTML', 'CSS', 'JavaScript'],
-    link: '#',
-  },
-];
+// Projects ka data ab ek hi jagah se aata hai: ./projectsData.jsx (wahin edit karna).
+// Category filter tabs 4 values pe chalte hain: Cybersecurity | Full Stack | Digital Forensics | Other
 
 const CATEGORIES = [
   { key: 'all', label: 'All', Icon: BsGridFill },
@@ -355,7 +245,16 @@ function ProjectsAllModal({ isOpen, onClose }) {
                             >
                               <div className="pallmodal__card-thumb">
                                 <span className="pallmodal__card-thumb-body" />
-                                <project.Icon className="pallmodal__card-thumb-icon" />
+                                {project.images?.poster ? (
+                                  <img
+                                    src={project.images.poster}
+                                    className="pallmodal__card-thumb-img"
+                                    alt=""
+                                    loading="lazy"
+                                  />
+                                ) : (
+                                  <project.Icon className="pallmodal__card-thumb-icon" />
+                                )}
                                 <span className="pallmodal__card-thumb-scrim" />
 
                                 <span className="pallmodal__card-index">

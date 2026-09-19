@@ -2,56 +2,17 @@ import { useEffect, useRef, useMemo, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  BsArrowRight, BsPalette2, BsPlayBtnFill, BsCheckSquareFill,
+  BsArrowRight,
 } from 'react-icons/bs';
-import { FaLaptopCode } from 'react-icons/fa';
 import projectsMobileBg from '../../assets/images/projects-mobile-bg.webp';
 import ProjectsAllModal from './ProjectsAllModal';
 import ProjectDetailModal from './ProjectDetailModal';
+import { mobileProjects as projects } from './projectsData';
 import './ProjectsMobile.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ---- DUMMY DATA — sirf layout/design dikhane ke liye placeholder hai ----
-// Baad me apne real projects (title, description, tags, link) se replace karna
-const projects = [
-  {
-    title: 'ZAROO FF',
-    category: 'web',
-    Icon: BsPalette2,
-    accent: ['#3a0a0d', '#ff2740'],
-    description: 'A modern YouTube channel banner design with a dark theme and red accents.',
-    tags: ['HTML', 'CSS', 'JavaScript'],
-    link: '#',
-  },
-  {
-    title: 'Portfolio Website',
-    category: 'frontend',
-    Icon: FaLaptopCode,
-    accent: ['#0a1830', '#2f5dff'],
-    description: 'My personal portfolio website built with modern web technologies and smooth animations.',
-    tags: ['React', 'Tailwind CSS', 'Framer Motion'],
-    link: '#',
-  },
-  {
-    title: 'Netflix Clone',
-    category: 'fullstack',
-    Icon: BsPlayBtnFill,
-    accent: ['#1a0505', '#8a0000'],
-    description: 'A front-end clone of Netflix with responsive design and modern UI/UX.',
-    tags: ['React', 'Firebase', 'Tailwind CSS'],
-    link: '#',
-  },
-  {
-    title: 'Todo App',
-    category: 'frontend',
-    Icon: BsCheckSquareFill,
-    accent: ['#04140e', '#0f8a52'],
-    description: 'A simple and clean todo app with add, delete, and filter features.',
-    tags: ['React', 'LocalStorage', 'CSS'],
-    link: '#',
-  },
-];
+// Projects ka data ab ek hi jagah se aata hai: ./projectsData.jsx (wahin edit karna)
 
 function RRLogo() {
   return (
@@ -194,14 +155,25 @@ function ProjectsMobile() {
                 onClick={() => setDetailProject(project)}
               >
                 <span className="projects-m__card-thumb">
-                  <span className="projects-m__card-thumb-bar">
-                    <i /><i /><i />
-                    <span className="projects-m__card-thumb-url" />
-                  </span>
-                  <span className="projects-m__card-thumb-body">
-                    <project.Icon className="projects-m__card-thumb-icon" />
-                    <span className="projects-m__card-thumb-label">{project.title}</span>
-                  </span>
+                  {project.images?.poster ? (
+                    <img
+                      src={project.images.poster}
+                      className="projects-m__card-thumb-img"
+                      alt=""
+                      loading="lazy"
+                    />
+                  ) : (
+                    <>
+                      <span className="projects-m__card-thumb-bar">
+                        <i /><i /><i />
+                        <span className="projects-m__card-thumb-url" />
+                      </span>
+                      <span className="projects-m__card-thumb-body">
+                        <project.Icon className="projects-m__card-thumb-icon" />
+                        <span className="projects-m__card-thumb-label">{project.title}</span>
+                      </span>
+                    </>
+                  )}
                 </span>
                 <div className="projects-m__card-info">
                   <span className="projects-m__card-title">

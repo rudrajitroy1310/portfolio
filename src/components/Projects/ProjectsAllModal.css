@@ -385,6 +385,15 @@
   background: linear-gradient(150deg, var(--accent-a), var(--accent-b));
 }
 
+.pallmodal__card-thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .pallmodal__card-thumb-icon {
   position: absolute;
   right: 6%;

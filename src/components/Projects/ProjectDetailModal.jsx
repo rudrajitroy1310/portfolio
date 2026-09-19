@@ -109,7 +109,8 @@ function ProjectDetailModal({ project, onClose }) {
   const isOpen = Boolean(project);
   const [slide, setSlide] = useState(0);
   const touchState = useRef({ x: 0, tracking: false });
-  const slideCount = project?.detail?.screenshotCount || 5;
+  const shots = project?.images?.screenshots || [];
+  const slideCount = shots.length || project?.detail?.screenshotCount || 5;
 
   // Same body-scroll-lock technique used across the other modals so the
   // page underneath doesn't jump when this one opens/closes.
@@ -210,6 +211,10 @@ function ProjectDetailModal({ project, onClose }) {
               />
               <div className="pdetail__mask" aria-hidden="true" />
 
+              {/* ---------- Sab kuch is scroll wrapper ke andar — bg/mask upar
+                  isse bahar hain, isliye scroll hone par wo fixed rehte hain ---------- */}
+              <div className="pdetail__scroll">
+
               {/* ---------- Top bar: logo + tagline, menu (also closes) ---------- */}
               <div className="pdetail__topbar">
                 <div className="pdetail__brand">
@@ -287,9 +292,17 @@ function ProjectDetailModal({ project, onClose }) {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -12 }}
                       transition={{ duration: 0.22, ease: 'easeOut' }}
-                      style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                      <ScreenshotFrame project={project} slide={slide} />
+                      {shots.length > 0 ? (
+                        <img
+                          src={shots[slide] || shots[0]}
+                          alt={`${project.title} screenshot ${slide + 1}`}
+                          className="pdetail__real-shot"
+                        />
+                      ) : (
+                        <ScreenshotFrame project={project} slide={slide} />
+                      )}
                     </motion.div>
                   </AnimatePresence>
 
@@ -390,6 +403,7 @@ function ProjectDetailModal({ project, onClose }) {
                 )}
 
                 <div className="pdetail__spacer" aria-hidden="true" />
+              </div>
               </div>
             </div>
           </motion.div>

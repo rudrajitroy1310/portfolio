@@ -1,162 +1,21 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  BsGrid3X3GapFill, BsThreeDots, BsBoxArrowUpRight, BsX, BsSearch, BsArrowLeft, BsArrowRight,
-  BsChevronDown, BsCheckLg, BsGithub, BsFileEarmarkText, BsInfoCircleFill, BsEyeFill,
-  BsDatabaseFill, BsTerminalFill, BsGearFill, BsTools, BsPalette2, BsMagic, BsShieldLockFill,
-  BsChevronLeft, BsChevronRight, BsCodeSlash,
+  BsGrid3X3GapFill, BsThreeDots, BsBoxArrowUpRight, BsX, BsSearch, BsArrowLeft,
+  BsArrowRight, BsChevronDown, BsCheckLg, BsGithub, BsFileEarmarkText,
+  BsInfoCircleFill, BsEyeFill, BsDatabaseFill, BsTerminalFill, BsGearFill, BsTools,
+  BsPalette2, BsMagic, BsShieldLockFill, BsChevronLeft, BsChevronRight,
+  BsCodeSlash,
 } from 'react-icons/bs';
 import { MdSecurity } from 'react-icons/md';
 import {
-  FaLayerGroup, FaFingerprint, FaShieldAlt, FaLaptopCode, FaCode,
-  FaPython, FaLinux, FaDocker, FaReact, FaNodeJs,
+  FaLayerGroup, FaFingerprint, FaPython, FaLinux, FaDocker, FaReact, FaNodeJs,
 } from 'react-icons/fa';
 import projectsBgTemplate from '../../assets/images/projects-bg-template.webp';
+import { desktopProjects as projects, projectStats as stats } from './projectsData';
 import './Projects.css';
 
-// ---- DUMMY DATA — sirf layout/design dikhane ke liye placeholder hai ----
-// Titles, description, tags, links, features, screenshots — sab baad me apne real projects se replace karna
-const projects = [
-  {
-    title: 'Project One',
-    category: 'cyber',
-    Icon: FaShieldAlt,
-    screenshotCount: 8, // demo ke liye 5 se zyada — isliye thumb-strip mein ">" button aayega
-    description: 'Placeholder summary for a cybersecurity project — replace with real details.',
-    tags: ['Python', 'Nmap', 'Cybersecurity'],
-    link: '#',
-    version: 'v1.0.0',
-    status: 'Completed',
-    tagline: 'A placeholder tagline for this project goes here.',
-    longDescription:
-      'Placeholder long description — replace with 2-3 sentences explaining what this project does, who it is for, and what problem it solves. Talk about the core functionality and the value it provides.',
-    features: [
-      'Placeholder Feature One', 'Placeholder Feature Two',
-      'Placeholder Feature Three', 'Placeholder Feature Four',
-      'Placeholder Feature Five', 'Placeholder Feature Six',
-    ],
-    liveLink: '#',
-    codeLink: '#',
-    docsLink: '#',
-    whatILearned:
-      'Placeholder note on what you learned building this project — new tools, concepts or challenges you overcame.',
-  },
-  {
-    title: 'Project Two',
-    category: 'fullstack',
-    Icon: FaLaptopCode,
-    description: 'Placeholder summary for a full stack project — replace with real details.',
-    tags: ['React', 'Node.js', 'Database'],
-    link: '#',
-    version: 'v1.0.0',
-    status: 'Completed',
-    tagline: 'A placeholder tagline for this project goes here.',
-    longDescription:
-      'Placeholder long description — replace with 2-3 sentences explaining what this project does, who it is for, and what problem it solves. Talk about the core functionality and the value it provides.',
-    features: [
-      'Placeholder Feature One', 'Placeholder Feature Two',
-      'Placeholder Feature Three', 'Placeholder Feature Four',
-      'Placeholder Feature Five', 'Placeholder Feature Six',
-    ],
-    liveLink: '#',
-    codeLink: '#',
-    docsLink: '#',
-    whatILearned:
-      'Placeholder note on what you learned building this project — new tools, concepts or challenges you overcame.',
-  },
-  {
-    title: 'Project Three',
-    category: 'forensics',
-    Icon: FaFingerprint,
-    description: 'Placeholder summary for a forensics project — replace with real details.',
-    tags: ['Python', 'Forensics', 'CLI'],
-    link: '#',
-    version: 'v1.0.0',
-    status: 'In Progress',
-    tagline: 'A placeholder tagline for this project goes here.',
-    longDescription:
-      'Placeholder long description — replace with 2-3 sentences explaining what this project does, who it is for, and what problem it solves. Talk about the core functionality and the value it provides.',
-    features: [
-      'Placeholder Feature One', 'Placeholder Feature Two',
-      'Placeholder Feature Three', 'Placeholder Feature Four',
-      'Placeholder Feature Five', 'Placeholder Feature Six',
-    ],
-    liveLink: '#',
-    codeLink: '#',
-    docsLink: '#',
-    whatILearned:
-      'Placeholder note on what you learned building this project — new tools, concepts or challenges you overcame.',
-  },
-  {
-    title: 'Project Four',
-    category: 'cyber',
-    Icon: FaShieldAlt,
-    description: 'Placeholder summary for another security project — replace with real details.',
-    tags: ['Docker', 'Linux', 'Cybersecurity'],
-    link: '#',
-    version: 'v1.0.0',
-    status: 'Completed',
-    tagline: 'A placeholder tagline for this project goes here.',
-    longDescription:
-      'Placeholder long description — replace with 2-3 sentences explaining what this project does, who it is for, and what problem it solves. Talk about the core functionality and the value it provides.',
-    features: [
-      'Placeholder Feature One', 'Placeholder Feature Two',
-      'Placeholder Feature Three', 'Placeholder Feature Four',
-      'Placeholder Feature Five', 'Placeholder Feature Six',
-    ],
-    liveLink: '#',
-    codeLink: '#',
-    docsLink: '#',
-    whatILearned:
-      'Placeholder note on what you learned building this project — new tools, concepts or challenges you overcame.',
-  },
-  {
-    title: 'Project Five',
-    category: 'fullstack',
-    Icon: FaLaptopCode,
-    description: 'Placeholder summary for a web app project — replace with real details.',
-    tags: ['React', 'Tailwind CSS', 'Animation'],
-    link: '#',
-    version: 'v1.0.0',
-    status: 'Completed',
-    tagline: 'A placeholder tagline for this project goes here.',
-    longDescription:
-      'Placeholder long description — replace with 2-3 sentences explaining what this project does, who it is for, and what problem it solves. Talk about the core functionality and the value it provides.',
-    features: [
-      'Placeholder Feature One', 'Placeholder Feature Two',
-      'Placeholder Feature Three', 'Placeholder Feature Four',
-      'Placeholder Feature Five', 'Placeholder Feature Six',
-    ],
-    liveLink: '#',
-    codeLink: '#',
-    docsLink: '#',
-    whatILearned:
-      'Placeholder note on what you learned building this project — new tools, concepts or challenges you overcame.',
-  },
-  {
-    title: 'Project Six',
-    category: 'other',
-    Icon: FaCode,
-    description: 'Placeholder summary for a misc project — replace with real details.',
-    tags: ['Python', 'Automation', 'Tool'],
-    link: '#',
-    version: 'v1.0.0',
-    status: 'Completed',
-    tagline: 'A placeholder tagline for this project goes here.',
-    longDescription:
-      'Placeholder long description — replace with 2-3 sentences explaining what this project does, who it is for, and what problem it solves. Talk about the core functionality and the value it provides.',
-    features: [
-      'Placeholder Feature One', 'Placeholder Feature Two',
-      'Placeholder Feature Three', 'Placeholder Feature Four',
-      'Placeholder Feature Five', 'Placeholder Feature Six',
-    ],
-    liveLink: '#',
-    codeLink: '#',
-    docsLink: '#',
-    whatILearned:
-      'Placeholder note on what you learned building this project — new tools, concepts or challenges you overcame.',
-  },
-];
+// Projects ka data ab ek hi jagah se aata hai: ./projectsData.jsx (wahin edit karna)
 
 // Tag ke naam se icon match karne ke liye — naya tag add karo toh yahan bhi entry daal dena
 const tagIconMap = {
@@ -181,6 +40,8 @@ const tagIconMap = {
 const PLACEHOLDER_SHOT_COUNT = 5;
 // Ek "page" mein kitne thumbnails ek saath dikhte hain — isse zyada hone par hi ">" (more) button aayega
 const THUMBS_PER_PAGE = 5;
+// Section ke grid mein kitne project cards dikhte hain (baaki "View All" modal mein)
+const PREVIEW_COUNT = 6;
 
 const filters = [
   { key: 'all', label: 'All Projects', Icon: BsGrid3X3GapFill },
@@ -219,13 +80,6 @@ const filterHeadings = {
   },
 };
 
-// Stats bhi dummy hain — apne asli numbers se replace kar lena
-const stats = [
-  { label: 'Projects Completed', value: '00+' },
-  { label: 'Domains Explored', value: '00+' },
-  { label: 'Total Hours', value: '0+' },
-];
-
 const gridVariants = {
   hidden: {},
   show: {
@@ -248,7 +102,8 @@ const cardVariants = {
 };
 
 function ProjectCard({ project, onOpen }) {
-  const { title, description, tags, link, Icon } = project;
+  const { title, description, tags, link, Icon, images } = project;
+  const poster = images?.poster;
   return (
     <motion.div
       className="projects__card"
@@ -264,8 +119,14 @@ function ProjectCard({ project, onOpen }) {
     >
       <div className="projects__card-top">
         <div className="projects__card-thumb">
-          <span className="projects__card-thumb-glow" aria-hidden="true" />
-          <Icon className="projects__card-thumb-icon" />
+          {poster ? (
+            <img src={poster} className="projects__card-thumb-img" alt="" loading="lazy" />
+          ) : (
+            <>
+              <span className="projects__card-thumb-glow" aria-hidden="true" />
+              <Icon className="projects__card-thumb-icon" />
+            </>
+          )}
         </div>
 
         <div className="projects__card-body">
@@ -284,9 +145,12 @@ function ProjectCard({ project, onOpen }) {
           <p className="projects__card-desc">{description}</p>
 
           <div className="projects__card-tags">
-            {tags.map((tag) => (
+            {tags.slice(0, 4).map((tag) => (
               <span key={tag}>{tag}</span>
             ))}
+            {tags.length > 4 && (
+              <span className="projects__card-tags-more">+{tags.length - 4}</span>
+            )}
           </div>
         </div>
       </div>
@@ -387,6 +251,8 @@ function Projects() {
     setModalPage(1);
   }, [modalFilter, modalSearch, modalSort]);
 
+  // Real screenshots ho toh unhi ko use karo (poster/mock frame ki jagah)
+  const selectedProjectShots = selectedProject?.images?.screenshots || [];
   // Selected project ke actual screenshot count ke hisaab se thumbnail paging
   const shotCount = selectedProject?.screenshotCount ?? PLACEHOLDER_SHOT_COUNT;
   const totalThumbPages = Math.ceil(shotCount / THUMBS_PER_PAGE);
@@ -410,7 +276,8 @@ function Projects() {
       const q = modalSearch.trim().toLowerCase();
       list = list.filter((p) => p.title.toLowerCase().includes(q));
     }
-    list = modalSort === 'oldest' ? list : [...list].reverse();
+    // projectsData.jsx mein list newest-first hai
+    list = modalSort === 'oldest' ? [...list].reverse() : list;
     return list;
   }, [modalFilter, modalSearch, modalSort]);
 
@@ -472,7 +339,7 @@ function Projects() {
             whileInView="show"
             viewport={{ once: true, amount: 0.15 }}
           >
-            {projects.map((project) => (
+            {projects.slice(0, PREVIEW_COUNT).map((project) => (
               <ProjectCard project={project} key={project.title} onOpen={setSelectedProject} />
             ))}
           </motion.div>
@@ -768,13 +635,24 @@ function Projects() {
                 {/* ---- Left: screenshot gallery ---- */}
                 <div className="projects__detail-gallery">
                   <div className="projects__detail-shot">
-                    <span className="projects__detail-shot-glow" aria-hidden="true" />
-                    <selectedProject.Icon className="projects__detail-shot-icon" />
+                    {selectedProjectShots.length > 0 ? (
+                      <img
+                        src={selectedProjectShots[activeShot] || selectedProjectShots[0]}
+                        className="projects__detail-shot-img"
+                        alt={`${selectedProject.title} screenshot ${activeShot + 1}`}
+                      />
+                    ) : (
+                      <>
+                        <span className="projects__detail-shot-glow" aria-hidden="true" />
+                        <selectedProject.Icon className="projects__detail-shot-icon" />
+                      </>
+                    )}
                   </div>
 
                   <div className="projects__detail-thumbs">
                     {Array.from({ length: thumbsOnPage }, (_, i) => {
                       const shotIndex = thumbPageStart + i;
+                      const shotImg = selectedProjectShots[shotIndex];
                       return (
                         <button
                           type="button"
@@ -782,7 +660,11 @@ function Projects() {
                           className={`projects__detail-thumb${activeShot === shotIndex ? ' projects__detail-thumb--active' : ''}`}
                           onClick={() => goToShot(shotIndex)}
                         >
-                          <selectedProject.Icon />
+                          {shotImg ? (
+                            <img src={shotImg} alt="" className="projects__detail-thumb-img" />
+                          ) : (
+                            <selectedProject.Icon />
+                          )}
                         </button>
                       );
                     })}
@@ -884,28 +766,40 @@ function Projects() {
                       ))}
                     </div>
 
-                    <p className="projects__detail-subheading">
-                      <span className="projects__eyebrow-line" />
-                      LIVE LINKS
-                    </p>
-                    <div className="projects__detail-links">
-                      <a href={selectedProject.liveLink} className="projects__detail-link projects__detail-link--primary">
-                        View Live <BsBoxArrowUpRight />
-                      </a>
-                      <a href={selectedProject.codeLink} className="projects__detail-link">
-                        <BsGithub /> View Code
-                      </a>
-                      <a href={selectedProject.docsLink} className="projects__detail-link">
-                        <BsFileEarmarkText /> Documentation
-                      </a>
-                    </div>
+                    {(selectedProject.liveLink || selectedProject.codeLink || selectedProject.docsLink) && (
+                      <>
+                        <p className="projects__detail-subheading">
+                          <span className="projects__eyebrow-line" />
+                          LIVE LINKS
+                        </p>
+                        <div className="projects__detail-links">
+                          {selectedProject.liveLink && (
+                            <a href={selectedProject.liveLink} className="projects__detail-link projects__detail-link--primary">
+                              View Live <BsBoxArrowUpRight />
+                            </a>
+                          )}
+                          {selectedProject.codeLink && (
+                            <a href={selectedProject.codeLink} className="projects__detail-link">
+                              <BsGithub /> View Code
+                            </a>
+                          )}
+                          {selectedProject.docsLink && (
+                            <a href={selectedProject.docsLink} className="projects__detail-link">
+                              <BsFileEarmarkText /> Documentation
+                            </a>
+                          )}
+                        </div>
+                      </>
+                    )}
 
-                    <div className="projects__detail-learned">
-                      <p className="projects__detail-learned-title">
-                        <BsInfoCircleFill /> What I Learned
-                      </p>
-                      <p className="projects__detail-learned-text">{selectedProject.whatILearned}</p>
-                    </div>
+                    {selectedProject.whatILearned && (
+                      <div className="projects__detail-learned">
+                        <p className="projects__detail-learned-title">
+                          <BsInfoCircleFill /> What I Learned
+                        </p>
+                        <p className="projects__detail-learned-text">{selectedProject.whatILearned}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
