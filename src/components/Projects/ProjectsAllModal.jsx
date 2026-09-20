@@ -173,6 +173,11 @@ function ProjectsAllModal({ isOpen, onClose }) {
               />
               <div className="pallmodal__mask" aria-hidden="true" />
 
+              {/* bg + mask upar fixed rehte hain; baaki sab kuch is scroll wrapper ke
+                  andar hai, isliye sirf content scroll hota hai (scrollbar hidden). */}
+              <div className="pallmodal__scroll">
+              <div className="pallmodal__content">
+
               {/* ---------- Top bar: brand + close ---------- */}
               <div className="pallmodal__topbar">
                 <div className="pallmodal__brand">
@@ -352,6 +357,8 @@ function ProjectsAllModal({ isOpen, onClose }) {
                 <br />
                 SOON...
               </p>
+              </div>
+              </div>
             </div>
           </motion.div>
         </motion.div>

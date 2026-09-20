@@ -21,7 +21,7 @@
 .pallmodal {
   position: relative;
   width: 100%;
-  height: var(--modal-h);
+  height: calc(100 * var(--mvdh));
 }
 
 .pallmodal__inner {
@@ -29,6 +29,36 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+/* Sirf content scroll hota hai — bg/mask (inner ke direct children) fixed rehte
+   hain. Scrollbar teeno browsers mein hide hai. */
+.pallmodal__scroll {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.pallmodal__scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Content ki height = screen jitni (phone pe bilkul pehle jaisa layout), lekin
+   kam se kam ~2:1 phone-aspect. Bahut chhoti/chaudi screen (chhota phone ya
+   4:3 tablet) pe layout dabne ke bajaye itni lambi rehti hai aur scroll hota hai.
+   NOTE: min-height nahi, height — carousel/card ki percentage heights ko ek
+   definite parent height chahiye, warna card sikud jaata hai. */
+.pallmodal__content {
+  position: relative;
+  height: max(100%, calc(200 * var(--mvw)));
   display: flex;
   flex-direction: column;
 }

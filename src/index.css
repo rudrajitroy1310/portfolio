@@ -290,10 +290,10 @@ body::-webkit-scrollbar {
      Zoom ke baad tablet ka "design viewport" 480 x ~640 (4:3) rehta hai,
      jisme orbit/heading/stats overlap ho jaate. Isliye height ko kam se kam
      phone jitne aspect (2.13:1) tak rakhte hain. */
-  /* Fixed-height modals: zoom ke baad tablet ka design viewport 4:3 ho jaata
-     hai, jisme phone jaisa tall layout fit nahi hota. Isliye panel ko phone
-     jitni height (--modal-h) dete hain aur overlay ko scroll-able rakhte hain. */
-  html .pallmodal__overlay,
+  /* Certificates/Experience modals: zoom ke baad tablet ka design viewport 4:3
+     ho jaata hai, jisme phone jaisa tall layout fit nahi hota. Isliye panel ko
+     phone jitni height (--modal-h) dete hain aur overlay ko scroll-able rakhte hain.
+     (All Projects modal ka apna scroll wrapper hai — ProjectsAllModal.css.) */
   html .certmodalm__overlay,
   html .expmm__overlay {
     overflow-x: hidden;
@@ -301,7 +301,6 @@ body::-webkit-scrollbar {
     scrollbar-width: none;
   }
 
-  html .pallmodal__overlay::-webkit-scrollbar,
   html .certmodalm__overlay::-webkit-scrollbar,
   html .expmm__overlay::-webkit-scrollbar {
     display: none;
