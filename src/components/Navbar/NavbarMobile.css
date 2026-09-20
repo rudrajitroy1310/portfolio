@@ -306,17 +306,3 @@
   box-shadow: 0 0 8px rgba(255, 39, 64, 0.8);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-/* Portrait tablets (iPad jaise, jinhe aspect-ratio detection ke wajah se
-   MobileApp mil jaata hai): navbar ko poore wide viewport pe stretch nahi
-   karna, balki 480px design-width content column ke saath hi centered
-   rakhna hai — position:fixed hi rehta hai (scroll pe pinned), sirf
-   left/right ab viewport ke bajaye us column ke hisaab se calculate hote
-   hain. */
-@media (min-width: 481px) and (orientation: portrait) {
-  .navbar-m {
-    left: 50%;
-    right: auto;
-    width: min(calc(480px - 28px), calc(100vw - 28px));
-    transform: translateX(-50%);
-  }
-}

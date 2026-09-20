@@ -30,7 +30,7 @@
 .footer__inner {
   position: relative;
   z-index: 1;
-  padding: 0 clamp(20px, 4vw, 64px);
+  padding: 0 clamp(20px, calc(4 * var(--mvw)), 64px);
 }
 
 /* ---------- Top row: brand / links / socials — sab EK row mein ---------- */
@@ -40,7 +40,7 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
-  gap: clamp(16px, 2.5vw, 40px);
+  gap: clamp(16px, calc(2.5 * var(--mvw)), 40px);
   padding-top: 34px;
   padding-bottom: 30px;
 }
@@ -54,7 +54,7 @@
 .footer__brand-text {
   /* Bg template image ke andar RR logo already hai (left side) —
      ye padding usi ke liye jagah chhodta hai taaki text uske upar overlap na kare */
-  padding-left: clamp(130px, 11.5vw, 230px);
+  padding-left: clamp(130px, calc(11.5 * var(--mvw)), 230px);
   white-space: nowrap;
 }
 
@@ -114,14 +114,14 @@
   width: 1px;
   height: 14px;
   background: var(--red-dim);
-  margin: 0 clamp(8px, 1.4vw, 18px);
+  margin: 0 clamp(8px, calc(1.4 * var(--mvw)), 18px);
   flex-shrink: 0;
 }
 
 .footer__right {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.6vw, 20px);
+  gap: clamp(10px, calc(1.6 * var(--mvw)), 20px);
   flex-shrink: 0;
 }
 
@@ -155,7 +155,7 @@
 .footer__socials {
   display: flex;
   gap: 8px;
-  padding-left: clamp(10px, 1.6vw, 18px);
+  padding-left: clamp(10px, calc(1.6 * var(--mvw)), 18px);
   border-left: 1px solid var(--line);
   flex-shrink: 0;
 }
@@ -194,7 +194,7 @@
   position: relative;
   z-index: 1;
   height: 1px;
-  width: calc(100% - clamp(60px, 10vw, 180px));
+  width: calc(100% - clamp(60px, calc(10 * var(--mvw)), 180px));
   margin: 0 auto;
   background: linear-gradient(90deg, transparent, var(--red) 10%, var(--red) 90%, transparent);
   box-shadow: 0 0 10px rgba(255, 39, 64, 0.5);
@@ -311,7 +311,10 @@
   }
 }
 
-@media (max-width: 640px) {
+/* Portrait tablets bhi phone-style footer lete hain: wahan layout zoom se 480px
+   design-width mein calculate hota hai, lekin media queries real width (768+)
+   dekhti hain, isliye sirf max-width: 640px se tablet miss ho jaata tha. */
+@media (max-width: 640px), (min-width: 481px) and (orientation: portrait) {
   .footer__top {
     justify-content: center;
     text-align: center;

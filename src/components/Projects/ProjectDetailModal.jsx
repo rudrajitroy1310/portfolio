@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   BsArrowLeft, BsX, BsChevronLeft, BsChevronRight,
@@ -117,8 +118,22 @@ function ProjectDetailModal({ project, onClose }) {
   useEffect(() => {
     if (!isOpen) return undefined;
 
-    const scrollY = window.scrollY;
     const { body, documentElement: html } = document;
+
+    // Agar parent modal (All Projects) ne body pehle se lock kar rakhi hai
+    // (position: fixed), to dobara lock nahi karna — us waqt window.scrollY 0
+    // hota hai, aur naya lock page ko top pe jump kara deta tha. Sirf slide
+    // reset + Escape handler chalao.
+    if (body.style.position === 'fixed') {
+      setSlide(0);
+      const onKeyDownNested = (e) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', onKeyDownNested);
+      return () => window.removeEventListener('keydown', onKeyDownNested);
+    }
+
+    const scrollY = window.scrollY;
     const prevBodyStyle = {
       position: body.style.position,
       top: body.style.top,
@@ -184,7 +199,11 @@ function ProjectDetailModal({ project, onClose }) {
   const features = detail.features || [];
   const hasLinks = Boolean(links.live || links.code || links.docs);
 
-  return (
+  // Portal: modal ko document.body pe render karte hain, taaki ye kisi
+  // <section> ke andar na ho — warna MobileApp ka IntersectionObserver
+  // section ko "offscreen" mark karke iski CSS animations pause kar deta hai
+  // (isi wajah se content invisible reh jaata tha).
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -409,7 +428,8 @@ function ProjectDetailModal({ project, onClose }) {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 

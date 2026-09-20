@@ -1,7 +1,10 @@
 import {
   BsCheckCircleFill, BsCrosshair, BsShieldCheck, BsFileEarmarkText, BsGearFill,
   BsShieldLockFill, BsSearch, BsPlayBtnFill, BsBugFill, BsTerminalFill,
-  BsCheckSquareFill, BsPalette2,
+  BsCheckSquareFill, BsPalette2, BsBroadcast, BsGraphUpArrow,
+  BsExclamationTriangleFill, BsDiagram3Fill, BsDownload, BsWindowDesktop,
+  BsMicFill, BsChatDotsFill, BsCloudSunFill, BsEnvelopeFill,
+  BsMortarboardFill, BsLink45Deg, BsPeopleFill, BsPatchQuestionFill, BsQrCode,
 } from 'react-icons/bs';
 import {
   FaLaptopCode, FaShieldAlt, FaFingerprint, FaCode,
@@ -10,6 +13,32 @@ import vigilonPoster from '../../assets/images/projects/vigilon/vigilon-poster.w
 import vigilonSs1 from '../../assets/images/projects/vigilon/vigilon-ss-1.webp';
 import vigilonSs2 from '../../assets/images/projects/vigilon/vigilon-ss-2.webp';
 import vigilonSs3 from '../../assets/images/projects/vigilon/vigilon-ss-3.webp';
+import netpulsePoster from '../../assets/images/projects/netpulse/netpulse-poster.webp';
+import netpulseSs1 from '../../assets/images/projects/netpulse/netpulse-ss-1.webp';
+import netpulseSs2 from '../../assets/images/projects/netpulse/netpulse-ss-2.webp';
+import netpulseSs3 from '../../assets/images/projects/netpulse/netpulse-ss-3.webp';
+import netpulseSs4 from '../../assets/images/projects/netpulse/netpulse-ss-4.webp';
+import securelensPoster from '../../assets/images/projects/securelens/securelens-poster.webp';
+import securelensSs1 from '../../assets/images/projects/securelens/securelens-ss-1.webp';
+import securelensSs2 from '../../assets/images/projects/securelens/securelens-ss-2.webp';
+import securelensSs3 from '../../assets/images/projects/securelens/securelens-ss-3.webp';
+import securelensSs4 from '../../assets/images/projects/securelens/securelens-ss-4.webp';
+import securelensSs5 from '../../assets/images/projects/securelens/securelens-ss-5.webp';
+import secureassistantPoster from '../../assets/images/projects/secureassistant/secureassistant-poster.webp';
+import secureassistantSs1 from '../../assets/images/projects/secureassistant/secureassistant-ss-1.webp';
+import secureassistantSs2 from '../../assets/images/projects/secureassistant/secureassistant-ss-2.webp';
+import secureassistantSs3 from '../../assets/images/projects/secureassistant/secureassistant-ss-3.webp';
+import secureassistantSs4 from '../../assets/images/projects/secureassistant/secureassistant-ss-4.webp';
+import phishguardPoster from '../../assets/images/projects/phishguard/phishguard-poster.webp';
+import phishguardSs1 from '../../assets/images/projects/phishguard/phishguard-ss-1.webp';
+import phishguardSs2 from '../../assets/images/projects/phishguard/phishguard-ss-2.webp';
+import phishguardSs3 from '../../assets/images/projects/phishguard/phishguard-ss-3.webp';
+import phishguardSs4 from '../../assets/images/projects/phishguard/phishguard-ss-4.webp';
+import phishguardSs5 from '../../assets/images/projects/phishguard/phishguard-ss-5.webp';
+import phishguardSs6 from '../../assets/images/projects/phishguard/phishguard-ss-6.webp';
+import phishguardSs7 from '../../assets/images/projects/phishguard/phishguard-ss-7.webp';
+import phishguardSs8 from '../../assets/images/projects/phishguard/phishguard-ss-8.webp';
+import phishguardSs9 from '../../assets/images/projects/phishguard/phishguard-ss-9.webp';
 
 // =====================================================================
 //  PROJECTS — SINGLE SOURCE OF TRUTH
@@ -60,6 +89,135 @@ const placeholderLearned =
   'Placeholder note on what you learned building this project — new tools, concepts or challenges you overcame.';
 
 export const projects = [
+  {
+    title: 'PhishGuard',
+    subtitle: 'LEARN · SPOT · TEST · CERTIFY',
+    category: 'cyber',
+    accent: ['#1a0505', '#ff2740'],
+    description: 'Gamified web app for phishing awareness and threat detection.',
+    tagline: 'Interactive Phishing Awareness & Detection',
+    longDescription:
+      'PhishGuard combines interactive phishing training with real URL and email-header analysis, scenario-based challenges, quizzes, and a verifiable completion certificate to make security awareness practical and engaging.',
+    tags: ['Python', 'Flask', 'SQLite', 'Pillow', 'HTML5', 'CSS3', 'JavaScript', 'Jinja2', 'JSON'],
+    status: 'Completed',
+    type: 'CodeAlpha Internship Project',
+    images: {
+      poster: phishguardPoster,
+      screenshots: [phishguardSs1, phishguardSs2, phishguardSs3, phishguardSs4, phishguardSs5, phishguardSs6, phishguardSs7, phishguardSs8, phishguardSs9],
+    },
+    screenshotCount: 9,
+    features: [
+      { title: 'Phishing Awareness Training', desc: 'Structured modules covering every phishing tactic', Icon: BsMortarboardFill },
+      { title: 'Live URL Analyzer', desc: 'Paste any link and see the suspicious signals flagged', Icon: BsLink45Deg },
+      { title: 'Email Header Analyzer', desc: 'Inspect real headers for spoofing and red flags', Icon: BsEnvelopeFill },
+      { title: 'Social Engineering Scenarios', desc: 'Urgency, fear, authority and reward tactics explained', Icon: BsPeopleFill },
+      { title: 'Interactive Security Quiz', desc: '10-question knowledge check with live scoring', Icon: BsPatchQuestionFill },
+      { title: 'QR Certificate Verification', desc: 'Verifiable completion certificate with a scannable ID', Icon: BsQrCode },
+    ],
+    links: {
+      code: 'https://github.com/rudrajitroy1310/CodeAlpha_PhishGuard',
+      docs: 'https://github.com/rudrajitroy1310/CodeAlpha_PhishGuard#readme',
+    },
+    whatILearned:
+      'Phishing detection, email analysis, Flask APIs, web security awareness and certificate generation.',
+  },
+  {
+    title: 'SecureAssistant',
+    subtitle: 'AUTHENTICATE · LISTEN · ASSIST · SECURE',
+    category: 'other',
+    accent: ['#150404', '#ff3b3b'],
+    description: 'Desktop AI voice assistant with face authentication and system controls.',
+    tagline: 'Intelligent Voice Assistant with Secure Access',
+    longDescription:
+      'SecureAssistant is a Python-based desktop voice assistant with face-authentication login, voice and text commands, system controls, reminders, email, and AI-powered conversations through Gemini and Groq.',
+    tags: ['Python', 'Eel', 'HTML5', 'CSS3', 'JavaScript', 'OpenCV', 'Gemini', 'Groq'],
+    status: 'Completed',
+    type: 'Personal Project',
+    images: {
+      poster: secureassistantPoster,
+      screenshots: [secureassistantSs1, secureassistantSs2, secureassistantSs3, secureassistantSs4],
+    },
+    screenshotCount: 4,
+    features: [
+      { title: 'Face Authentication', desc: 'OpenCV-based face login before access is granted', Icon: BsShieldLockFill },
+      { title: 'Voice Commands', desc: 'Hands-free control through natural speech', Icon: BsMicFill },
+      { title: 'AI Chat', desc: 'Conversational answers powered by Gemini and Groq', Icon: BsChatDotsFill },
+      { title: 'System Control', desc: 'Open apps, manage files and control the desktop by voice', Icon: BsGearFill },
+      { title: 'Weather & News', desc: 'Quick spoken updates on demand', Icon: BsCloudSunFill },
+      { title: 'Email & Reminders', desc: 'Send mail and set reminders without touching the keyboard', Icon: BsEnvelopeFill },
+    ],
+    links: {
+      code: 'https://github.com/rudrajitroy1310/SecureAssistant',
+      docs: 'https://github.com/rudrajitroy1310/SecureAssistant#readme',
+    },
+    whatILearned:
+      'Voice assistant development, face authentication, desktop-web integration and AI API integration.',
+  },
+  {
+    title: 'SecureLens',
+    subtitle: 'SCAN · ANALYZE · FIX · SECURE',
+    category: 'cyber',
+    accent: ['#031707', '#22e07a'],
+    description: 'Web-based tool for automated vulnerability analysis of source code.',
+    tagline: 'Automated Secure Code Review',
+    longDescription:
+      'SecureLens scans uploaded codebases for security vulnerabilities using pattern and AST-based rules, maps findings to CWE and OWASP, and generates detailed PDF security reports.',
+    tags: ['Python', 'Flask', 'SQLite', 'HTML5', 'CSS3', 'JavaScript', 'Jinja2', 'ReportLab', 'GitHub Actions'],
+    version: 'v1 — Static Code Review',
+    status: 'Completed',
+    type: 'CodeAlpha Internship Project',
+    images: {
+      poster: securelensPoster,
+      screenshots: [securelensSs1, securelensSs2, securelensSs3, securelensSs4, securelensSs5],
+    },
+    screenshotCount: 5,
+    features: [
+      { title: 'Automated Code Scanning', desc: 'Scans an uploaded codebase in one pass', Icon: BsCrosshair },
+      { title: '27 Security Rules', desc: 'Pattern and AST-based checks across languages', Icon: BsShieldCheck },
+      { title: 'CWE & OWASP Mapping', desc: 'Every finding mapped to a recognized standard', Icon: BsDiagram3Fill },
+      { title: 'Severity Scoring', desc: 'Critical, High, Medium and Low at a glance', Icon: BsGraphUpArrow },
+      { title: 'Line-Level Findings', desc: 'Points to the exact file and flagged line', Icon: BsSearch },
+      { title: 'PDF Security Reports', desc: 'Clean, shareable report generated for every scan', Icon: BsFileEarmarkText },
+    ],
+    links: {
+      code: 'https://github.com/rudrajitroy1310/CodeAlpha_SecureLens',
+      docs: 'https://github.com/rudrajitroy1310/CodeAlpha_SecureLens#readme',
+    },
+    whatILearned:
+      'Secure code analysis, vulnerability detection, OWASP/CWE mapping and security report generation.',
+  },
+  {
+    title: 'NetPulse',
+    subtitle: 'CAPTURE · ANALYZE · DETECT · RESPOND',
+    category: 'cyber',
+    accent: ['#04101c', '#00c2ff'],
+    description: 'Python-based network monitoring and threat detection tool.',
+    tagline: 'Real-Time Network Traffic Monitoring',
+    longDescription:
+      'NetPulse captures and analyzes live network traffic using Python and Scapy, detects suspicious scan patterns, and provides real-time monitoring through terminal, desktop, and web interfaces.',
+    tags: ['Python', 'Scapy', 'Flask', 'Tkinter', 'Rich', 'HTML5', 'CSS3', 'JavaScript'],
+    status: 'Completed',
+    type: 'CodeAlpha Internship Project',
+    images: {
+      poster: netpulsePoster,
+      screenshots: [netpulseSs1, netpulseSs2, netpulseSs3, netpulseSs4],
+    },
+    screenshotCount: 4,
+    features: [
+      { title: 'Live Packet Capture', desc: 'Real-time traffic sniffing with Scapy', Icon: BsBroadcast },
+      { title: 'Traffic Analysis', desc: 'Protocol mix, busiest hosts and heaviest senders at a glance', Icon: BsGraphUpArrow },
+      { title: 'Threat Detection', desc: 'Flags suspicious scan patterns and raises alerts', Icon: BsExclamationTriangleFill },
+      { title: 'Protocol Monitoring', desc: 'Live breakdown of TCP, UDP, DNS, HTTPS and more', Icon: BsDiagram3Fill },
+      { title: 'PCAP & CSV Export', desc: 'Save captured sessions for later analysis', Icon: BsDownload },
+      { title: 'Live Web Dashboard', desc: 'Terminal, desktop GUI and browser dashboards, all in real time', Icon: BsWindowDesktop },
+    ],
+    links: {
+      code: 'https://github.com/rudrajitroy1310/CodeAlpha_Netpulse',
+      docs: 'https://github.com/rudrajitroy1310/CodeAlpha_Netpulse#readme',
+    },
+    whatILearned:
+      'Network sniffing, packet analysis, traffic monitoring and threat detection.',
+  },
   {
     title: 'VIGILON',
     subtitle: 'DETECT · ANALYZE · RESPOND',

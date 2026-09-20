@@ -21,7 +21,7 @@
 .pallmodal {
   position: relative;
   width: 100%;
-  height: 100dvh;
+  height: var(--modal-h);
 }
 
 .pallmodal__inner {
@@ -69,7 +69,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5.5vw 6% 0;
+  padding: calc(5.5 * var(--mvw)) 6% 0;
 }
 
 .pallmodal__brand {
@@ -79,7 +79,7 @@
 }
 
 .pallmodal__brand-logo {
-  width: 8vw;
+  width: calc(8 * var(--mvw));
   min-width: 28px;
   max-width: 34px;
   height: auto;
@@ -87,7 +87,7 @@
 
 .pallmodal__brand-name {
   font-family: var(--font-mono);
-  font-size: clamp(0.6rem, 2.8vw, 0.7rem);
+  font-size: clamp(0.6rem, calc(2.8 * var(--mvw)), 0.7rem);
   letter-spacing: 0.06em;
   color: var(--text);
 }
@@ -98,8 +98,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 9vw;
-  height: 9vw;
+  width: calc(9 * var(--mvw));
+  height: calc(9 * var(--mvw));
   min-width: 32px;
   min-height: 32px;
   max-width: 38px;
@@ -107,7 +107,7 @@
   border: 1px solid var(--red);
   border-radius: 6px;
   color: var(--red);
-  font-size: clamp(1rem, 4.5vw, 1.2rem);
+  font-size: clamp(1rem, calc(4.5 * var(--mvw)), 1.2rem);
   background: rgba(20, 6, 8, 0.5);
   box-shadow: 0 0 10px rgba(255, 39, 64, 0.3);
   transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -131,11 +131,11 @@
   z-index: 2;
   flex: 1 1 auto;
   min-height: 0;
-  margin-top: 5vw;
-  padding: 0 6.5% 11vw;
+  margin-top: calc(5 * var(--mvw));
+  padding: 0 6.5% calc(11 * var(--mvw));
   display: flex;
   flex-direction: column;
-  gap: 2.2vw;
+  gap: calc(2.2 * var(--mvw));
   overflow: hidden;
 }
 
@@ -144,7 +144,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: clamp(0.58rem, 2.7vw, 0.66rem);
+  font-size: clamp(0.58rem, calc(2.7 * var(--mvw)), 0.66rem);
   letter-spacing: 0.16em;
   color: var(--text-dim);
   animation: pallmodal-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -166,7 +166,7 @@
 .pallmodal__heading {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.1rem, 12.5vw, 3.1rem);
+  font-size: clamp(2.1rem, calc(12.5 * var(--mvw)), 3.1rem);
   line-height: 1.02;
   color: var(--text);
   animation: pallmodal-fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -179,7 +179,7 @@
 
 .pallmodal__desc {
   color: var(--text-dim);
-  font-size: clamp(0.66rem, 3vw, 0.76rem);
+  font-size: clamp(0.66rem, calc(3 * var(--mvw)), 0.76rem);
   line-height: 1.5;
   max-width: 96%;
   animation: pallmodal-fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -191,9 +191,9 @@
 .pallmodal__tabs {
   display: flex;
   flex-wrap: nowrap;
-  gap: 2.4vw;
+  gap: calc(2.4 * var(--mvw));
   overflow-x: auto;
-  margin-top: 3vw;
+  margin-top: calc(3 * var(--mvw));
   padding-bottom: 2px;
   scrollbar-width: none;
   animation: pallmodal-fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -209,11 +209,11 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 1.9vw 3vw;
+  padding: calc(1.9 * var(--mvw)) calc(3 * var(--mvw));
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
   font-family: var(--font-display);
-  font-size: clamp(0.5rem, 2.3vw, 0.58rem);
+  font-size: clamp(0.5rem, calc(2.3 * var(--mvw)), 0.58rem);
   font-weight: 600;
   color: var(--text-dim);
   background: rgba(255, 255, 255, 0.03);
@@ -263,8 +263,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 8vw;
-  height: 8vw;
+  width: calc(8 * var(--mvw));
+  height: calc(8 * var(--mvw));
   min-width: 28px;
   min-height: 28px;
   max-width: 36px;
@@ -274,7 +274,7 @@
   border-radius: 50%;
   color: var(--red);
   background: rgba(10, 4, 5, 0.55);
-  font-size: clamp(0.8rem, 3.4vw, 0.95rem);
+  font-size: clamp(0.8rem, calc(3.4 * var(--mvw)), 0.95rem);
   box-shadow: 0 0 12px rgba(255, 39, 64, 0.3);
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -304,20 +304,20 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 68vw;
+  width: calc(68 * var(--mvw));
   max-width: 280px;
   height: 72%;
   max-height: 320px;
   display: flex;
   flex-direction: column;
-  padding: 2.6vw 2.8vw;
+  padding: calc(2.6 * var(--mvw)) calc(2.8 * var(--mvw));
   border: 1px solid rgba(255, 39, 64, 0.55);
   border-radius: 14px;
   background: linear-gradient(155deg, rgba(24, 12, 14, 0.94), rgba(10, 5, 7, 0.94));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 0 18px rgba(255, 39, 64, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  transform: translate(-50%, -50%) translateX(calc(var(--pos, 0) * 58vw)) scale(calc(1 - (var(--pos, 0) * var(--pos, 0)) * 0.14));
+  transform: translate(-50%, -50%) translateX(calc(var(--pos, 0) * calc(58 * var(--mvw)))) scale(calc(1 - (var(--pos, 0) * var(--pos, 0)) * 0.14));
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, box-shadow 0.5s ease;
   opacity: 0.2;
   pointer-events: none;
@@ -342,10 +342,10 @@
 .pallmodal__card-index {
   position: absolute;
   z-index: 2;
-  left: 3vw;
-  top: 2.4vw;
+  left: calc(3 * var(--mvw));
+  top: calc(2.4 * var(--mvw));
   font-family: var(--font-mono);
-  font-size: clamp(0.46rem, 2.1vw, 0.54rem);
+  font-size: clamp(0.46rem, calc(2.1 * var(--mvw)), 0.54rem);
   color: var(--red);
   letter-spacing: 0.04em;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
@@ -354,13 +354,13 @@
 .pallmodal__card-external {
   position: absolute;
   z-index: 2;
-  right: 3vw;
-  top: 2.4vw;
+  right: calc(3 * var(--mvw));
+  top: calc(2.4 * var(--mvw));
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 6vw;
-  height: 6vw;
+  width: calc(6 * var(--mvw));
+  height: calc(6 * var(--mvw));
   min-width: 22px;
   min-height: 22px;
   max-width: 26px;
@@ -368,7 +368,7 @@
   border: 1px solid rgba(255, 39, 64, 0.6);
   border-radius: 6px;
   color: var(--red);
-  font-size: clamp(0.5rem, 2.2vw, 0.58rem);
+  font-size: clamp(0.5rem, calc(2.2 * var(--mvw)), 0.58rem);
   background: rgba(6, 3, 4, 0.5);
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -398,7 +398,7 @@
   position: absolute;
   right: 6%;
   top: 8%;
-  font-size: clamp(1.5rem, 7.5vw, 2rem);
+  font-size: clamp(1.5rem, calc(7.5 * var(--mvw)), 2rem);
   color: rgba(255, 255, 255, 0.16);
 }
 
@@ -423,20 +423,20 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding: 2.6vw 3.2vw;
+  padding: calc(2.6 * var(--mvw)) calc(3.2 * var(--mvw));
 }
 
 .pallmodal__card-thumb-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(0.82rem, 4vw, 1.02rem);
+  font-size: clamp(0.82rem, calc(4 * var(--mvw)), 1.02rem);
   color: rgba(255, 255, 255, 0.97);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .pallmodal__card-thumb-sub {
   font-family: var(--font-mono);
-  font-size: clamp(0.34rem, 1.5vw, 0.4rem);
+  font-size: clamp(0.34rem, calc(1.5 * var(--mvw)), 0.4rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
@@ -445,8 +445,8 @@
 .pallmodal__card-info {
   display: flex;
   flex-direction: column;
-  gap: 1.8vw;
-  margin-top: 3vw;
+  gap: calc(1.8 * var(--mvw));
+  margin-top: calc(3 * var(--mvw));
   min-height: 0;
   flex: 1;
 }
@@ -456,7 +456,7 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: clamp(0.44rem, 2vw, 0.5rem);
+  font-size: clamp(0.44rem, calc(2 * var(--mvw)), 0.5rem);
   letter-spacing: 0.1em;
   color: var(--red);
 }
@@ -470,12 +470,12 @@
 .pallmodal__card-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(0.86rem, 4.1vw, 1.02rem);
+  font-size: clamp(0.86rem, calc(4.1 * var(--mvw)), 1.02rem);
   color: var(--text);
 }
 
 .pallmodal__card-desc {
-  font-size: clamp(0.52rem, 2.3vw, 0.6rem);
+  font-size: clamp(0.52rem, calc(2.3 * var(--mvw)), 0.6rem);
   line-height: 1.4;
   color: var(--text-dim);
   overflow: hidden;
@@ -487,15 +487,15 @@
 .pallmodal__card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.4vw;
+  gap: calc(1.4 * var(--mvw));
 }
 
 .pallmodal__card-tag {
   font-family: var(--font-mono);
-  font-size: clamp(0.34rem, 1.5vw, 0.4rem);
+  font-size: clamp(0.34rem, calc(1.5 * var(--mvw)), 0.4rem);
   letter-spacing: 0.02em;
   color: var(--text);
-  padding: 0.8vw 2.2vw;
+  padding: calc(0.8 * var(--mvw)) calc(2.2 * var(--mvw));
   border: 1px solid rgba(255, 39, 64, 0.55);
   border-radius: 999px;
   white-space: nowrap;
@@ -513,12 +513,12 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 2vw 6.5vw;
+  padding: calc(2 * var(--mvw)) calc(6.5 * var(--mvw));
   border: 1px solid var(--red);
   border-radius: 7px;
   background: rgba(255, 39, 64, 0.08);
   font-family: var(--font-display);
-  font-size: clamp(0.58rem, 2.7vw, 0.68rem);
+  font-size: clamp(0.58rem, calc(2.7 * var(--mvw)), 0.68rem);
   font-weight: 600;
   color: var(--text);
   white-space: nowrap;
@@ -552,7 +552,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 1vw;
+  margin-top: calc(1 * var(--mvw));
   animation: pallmodal-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 0.34s;
 }
@@ -589,9 +589,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 0.5vw;
+  margin-top: calc(0.5 * var(--mvw));
   font-family: var(--font-mono);
-  font-size: clamp(0.5rem, 2.3vw, 0.58rem);
+  font-size: clamp(0.5rem, calc(2.3 * var(--mvw)), 0.58rem);
   letter-spacing: 0.05em;
   color: var(--text-dim);
   animation: pallmodal-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -635,7 +635,7 @@
   text-align: center;
   color: var(--text-dim);
   font-size: 0.8rem;
-  padding: 10vw 0;
+  padding: calc(10 * var(--mvw)) 0;
 }
 
 /* ---------- Bottom footer notes ---------- */
@@ -643,9 +643,9 @@
 .pallmodal__footer {
   position: absolute;
   z-index: 3;
-  bottom: 3.2vw;
+  bottom: calc(3.2 * var(--mvw));
   font-family: var(--font-mono);
-  font-size: clamp(0.46rem, 2.1vw, 0.54rem);
+  font-size: clamp(0.46rem, calc(2.1 * var(--mvw)), 0.54rem);
   line-height: 1.35;
   letter-spacing: 0.05em;
   color: var(--text-dim);

@@ -1,6 +1,7 @@
 import {
   useEffect, useMemo, useRef, useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   BsX, BsChevronLeft, BsChevronRight, BsGridFill, BsShieldLockFill, BsLayers,
@@ -145,6 +146,7 @@ function ProjectsAllModal({ isOpen, onClose }) {
 
   return (
     <>
+      {createPortal(
       <AnimatePresence>
         {isOpen && (
         <motion.div
@@ -354,7 +356,9 @@ function ProjectsAllModal({ isOpen, onClose }) {
           </motion.div>
         </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+      document.body,
+      )}
 
       <ProjectDetailModal project={detailProject} onClose={() => setDetailProject(null)} />
     </>

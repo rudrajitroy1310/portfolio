@@ -23,11 +23,24 @@
      taaki icons/gaps/spacing tablet ki extra width ke saath ballooning na
      karein aur layout phone jaisa hi proportion mein rahe. */
   --mvw: 1vw;
+
+  /* Viewport-height ke zoom-safe versions (raw vh/svh/dvh ki jagah mobile CSS
+     mein yahi use hote hain). Tablet pe utils/tabletScale.js inhe override
+     karta hai; phones pe ye exactly 1vh/1svh/1dvh hi rehte hain. */
+  --mvh: 1vh;
+  --mvsh: 1svh;
+  --mvdh: 1dvh;
+
+  /* Full-screen modals (All Projects, Certificates, Experience) ki height.
+     Phone pe = poori screen; tablet pe neeche media query mein phone-jitni
+     tall ho jaati hai aur modal ke andar scroll hota hai. */
+  --modal-h: calc(100 * var(--mvdh));
 }
 
 @media (min-width: 481px) and (orientation: portrait) {
   :root {
     --mvw: 4.8px; /* = 1vw at a 480px reference width, frozen beyond that */
+    --modal-h: max(calc(100 * var(--mvdh)), calc(213 * var(--mvw)));
   }
 }
 
@@ -249,26 +262,64 @@ body::-webkit-scrollbar {
 }
 /* ---------- Mobile shell on portrait tablets ----------
    useDeviceMode() sirf aspect-ratio dekh kar decide karta hai (width <
-   height => mobile) — width ki koi upper limit nahi. Isliye ek portrait
-   tablet (jaise iPad) bhi MobileApp hi load karega. Normal phones
-   (<=480px) pe .mobile-app-shell ka koi effect nahi — 100% width, jaisa
-   pehle tha. Us se bade portrait viewports pe content ko 480px (largest
-   phone ke design-width) tak cap karke center kar dete hain, taaki
-   percentage-width/vw-based layout tablet ki extra width mein ajeeb tareeke
-   se stretch na ho — poore ka poora "phone" design bas center mein achhe
-   proportion ke saath dikhta hai. --mvw isi 480px reference par freeze
-   ho jaata hai (upar :root mein), isliye icons/gaps/spacing bhi
-   proportionally sahi rehte hain, bade nahi ho jaate. */
+   height => mobile) — isliye portrait tablet (iPad jaisi) ko bhi MobileApp
+   milta hai. Phone design 480px width ke liye bana hai, to tablet pe usse
+   CSS `zoom` se poori screen width tak scale karte hain (zoom = viewport
+   width / 480, utils/tabletScale.js set karta hai). Andar ka layout 480px
+   "design width" mein hi calculate hota hai, bas visually bada dikhta hai —
+   isliye proportions bilkul phone jaise rehte hain aur side mein khali
+   patti nahi bachti. Phones (<=480px) pe koi effect nahi.
+
+   Preloader jaan-boojh kar zoom se bahar hai (wo apne aap full-viewport
+   overlay hai). Project modals <body> mein portal hote hain, isliye unhe
+   alag se list kiya hai. */
 .mobile-app-shell {
   width: 100%;
 }
 
 @media (min-width: 481px) and (orientation: portrait) {
-  .mobile-app-shell {
-    max-width: 480px;
-    margin: 0 auto;
-    background: var(--bg);
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+  .mobile-app-shell > main,
+  .mobile-app-shell > .navbar-m,
+  .mobile-app-shell > .footer,
+  .pallmodal__overlay,
+  .pdetail__overlay {
+    zoom: var(--tablet-zoom, 1);
+  }
+
+  /* Skills poster ka layout tall phone-screen (~2.1:1) ke liye bana hai.
+     Zoom ke baad tablet ka "design viewport" 480 x ~640 (4:3) rehta hai,
+     jisme orbit/heading/stats overlap ho jaate. Isliye height ko kam se kam
+     phone jitne aspect (2.13:1) tak rakhte hain. */
+  /* Fixed-height modals: zoom ke baad tablet ka design viewport 4:3 ho jaata
+     hai, jisme phone jaisa tall layout fit nahi hota. Isliye panel ko phone
+     jitni height (--modal-h) dete hain aur overlay ko scroll-able rakhte hain. */
+  html .pallmodal__overlay,
+  html .certmodalm__overlay,
+  html .expmm__overlay {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  html .pallmodal__overlay::-webkit-scrollbar,
+  html .certmodalm__overlay::-webkit-scrollbar,
+  html .expmm__overlay::-webkit-scrollbar {
+    display: none;
+  }
+
+  html .certmodalm__overlay,
+  html .expmm__overlay {
+    align-items: flex-start;
+  }
+
+  html .certmodalm__frame,
+  html .expmm__frame {
+    flex: 0 0 auto;
+    height: var(--modal-h);
+  }
+
+  .mobile-app-shell .skillsm__poster {
+    height: max(calc(100 * var(--mvsh)), calc(213 * var(--mvw)));
   }
 }
 
