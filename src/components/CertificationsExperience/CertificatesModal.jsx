@@ -20,10 +20,22 @@ const CATEGORY_ICONS = {
 
 const CATEGORIES = ['All Certificates', 'Cybersecurity', 'Networking', 'Cloud', 'Development', 'Other'];
 
-function CertificatesModal({ isOpen, onClose, certifications, stats, quote }) {
+function CertificatesModal({
+  isOpen, onClose, certifications, stats, quote, initialTitle,
+}) {
   const [activeCategory, setActiveCategory] = useState('All Certificates');
   const [activeIndex, setActiveIndex] = useState(0);
   const [showCredential, setShowCredential] = useState(false);
+
+  // Jab kisi specific card se modal khola gaya ho (preview list se click),
+  // usi certificate ko seedha carousel me active karke dikhao
+  useEffect(() => {
+    if (!isOpen || !initialTitle) return;
+    setActiveCategory('All Certificates');
+    const idx = certifications.findIndex((c) => c.title === initialTitle);
+    setActiveIndex(idx >= 0 ? idx : 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, initialTitle]);
 
   // Lock body scroll while modal is open, close on Escape — pins the page at
   // its current scroll position (instead of just hiding overflow) so the
@@ -82,11 +94,6 @@ function CertificatesModal({ isOpen, onClose, certifications, stats, quote }) {
       : certifications.filter((c) => c.category === activeCategory)),
     [certifications, activeCategory],
   );
-
-  // Reset carousel position whenever the filter changes
-  useEffect(() => {
-    setActiveIndex(0);
-  }, [activeCategory]);
 
   // Close the credential preview whenever the active card changes, so it
   // doesn't stay open showing a stale certificate after switching
@@ -200,7 +207,7 @@ function CertificatesModal({ isOpen, onClose, certifications, stats, quote }) {
                     type="button"
                     key={cat}
                     className={`certmodal__tab${activeCategory === cat ? ' certmodal__tab--active' : ''}`}
-                    onClick={() => setActiveCategory(cat)}
+                    onClick={() => { setActiveCategory(cat); setActiveIndex(0); }}
                   >
                     <Icon /> {cat}
                   </button>
@@ -237,13 +244,13 @@ function CertificatesModal({ isOpen, onClose, certifications, stats, quote }) {
                             <BsPatchCheckFill />
                           </span>
                           <span className="certmodal__orbit-icon">
-                            <Icon />
+                            {cert.issuerLogo ? (
+                              <img src={cert.issuerLogo} alt="" className="certmodal__orbit-logo" />
+                            ) : (
+                              <Icon />
+                            )}
                           </span>
-                          <span className="certmodal__orbit-issuer">{cert.issuer}</span>
                           <span className="certmodal__orbit-title">{cert.title}</span>
-                          <span className="certmodal__orbit-date">
-                            <BsCalendar3 /> {cert.date}
-                          </span>
                         </button>
                       );
                     })}
@@ -270,15 +277,25 @@ function CertificatesModal({ isOpen, onClose, certifications, stats, quote }) {
                 {active && (
                   <>
                   <div className="certmodal__detail" key={`${active.title}-${activeIndex}`}>
-                    <div className="certmodal__detail-art">
-                      <span className="certmodal__detail-art-icon">
-                        {(() => {
-                          const Icon = CATEGORY_ICONS[active.category] || BsAward;
-                          return <Icon />;
-                        })()}
-                      </span>
-                      <p className="certmodal__detail-art-title">{active.title}</p>
-                      <p className="certmodal__detail-art-issuer">{active.issuer}</p>
+                    <div className={`certmodal__detail-art${active.image ? ' certmodal__detail-art--has-image' : ''}`}>
+                      {active.image ? (
+                        <img src={active.image} alt={active.title} className="certmodal__detail-art-img" />
+                      ) : (
+                        <>
+                          <span className="certmodal__detail-art-icon">
+                            {active.issuerLogo ? (
+                              <img src={active.issuerLogo} alt="" className="certmodal__detail-art-logo" />
+                            ) : (
+                              (() => {
+                                const Icon = CATEGORY_ICONS[active.category] || BsAward;
+                                return <Icon />;
+                              })()
+                            )}
+                          </span>
+                          <p className="certmodal__detail-art-title">{active.title}</p>
+                          <p className="certmodal__detail-art-issuer">{active.issuer}</p>
+                        </>
+                      )}
                     </div>
 
                     <div className="certmodal__detail-info">

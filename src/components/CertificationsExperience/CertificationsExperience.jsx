@@ -23,6 +23,14 @@ function CertificationsExperience() {
   const dividerRef = useRef(null);
   const [isCertModalOpen, setCertModalOpen] = useState(false);
   const [isExpModalOpen, setExpModalOpen] = useState(false);
+  // Preview card click karne par usi certificate ka detail modal ke andar
+  // khulna chahiye — "View All" button se khole to null (default/first cert)
+  const [selectedCertTitle, setSelectedCertTitle] = useState(null);
+
+  const openCertModal = (title = null) => {
+    setSelectedCertTitle(title);
+    setCertModalOpen(true);
+  };
 
   // ---------- GSAP: scroll-triggered batch reveal — jab bhi ek ya zyada
   // .certexp__reveal elements viewport me enter karte hain, wo saath mein
@@ -113,23 +121,33 @@ function CertificationsExperience() {
                   <p>Industry-recognized certifications that validate my skills and knowledge.</p>
                 </div>
               </div>
-              <button type="button" className="certexp__view-all" onClick={() => setCertModalOpen(true)}>
+              <button type="button" className="certexp__view-all" onClick={() => openCertModal(null)}>
                 View All <BsArrowRight />
               </button>
             </div>
 
             <div className="certexp__cert-list">
-              {certifications.slice(0, 4).map((cert, idx) => (
-                <a
+              {certifications.slice(0, 3).map((cert, idx) => (
+                <div
                   key={cert.title}
-                  href={cert.link}
+                  role="button"
+                  tabIndex={0}
                   className="certexp__cert-card certexp__reveal"
                   style={{ '--i': idx }}
-                  target={cert.link === '#' ? undefined : '_blank'}
-                  rel={cert.link === '#' ? undefined : 'noreferrer'}
+                  onClick={() => openCertModal(cert.title)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      openCertModal(cert.title);
+                    }
+                  }}
                 >
                   <div className="certexp__cert-badge">
-                    <BsAward />
+                    {cert.issuerLogo ? (
+                      <img src={cert.issuerLogo} alt="" className="certexp__cert-badge-logo" />
+                    ) : (
+                      <BsAward />
+                    )}
                   </div>
 
                   <div className="certexp__cert-content">
@@ -157,7 +175,7 @@ function CertificationsExperience() {
                       </span>
                     </div>
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           </div>
@@ -241,6 +259,7 @@ function CertificationsExperience() {
         certifications={certifications}
         stats={certStats}
         quote={certQuote}
+        initialTitle={selectedCertTitle}
       />
 
       <ExperienceModal

@@ -2,6 +2,15 @@ import { BsAward, BsPatchCheckFill, BsBarChartFill } from 'react-icons/bs';
 import pythonIcon from '../../assets/icons/python.webp';
 import kaliIcon from '../../assets/icons/kali-linux.webp';
 import jsIcon from '../../assets/icons/javascript.webp';
+import dcscCertImage from '../../assets/images/certificates/dcsc-certificate.webp';
+import tdoLogo from '../../assets/images/certificates/tdo-logo.webp';
+import ciscoCertImage from '../../assets/images/certificates/cisco-cybersecurity-certificate.webp';
+import ciscoLogo from '../../assets/images/certificates/cisco-logo.webp';
+import ciscoCtmCertImage from '../../assets/images/certificates/cisco-cyber-threat-management-certificate.webp';
+import tcsionCertImage from '../../assets/images/certificates/tcsion-it-primer-certificate.webp';
+import tcsionLogo from '../../assets/images/certificates/tcsion-logo.webp';
+import nasscomCertImage from '../../assets/images/certificates/nasscom-genai-tools-certificate.webp';
+import futureskillsLogo from '../../assets/images/certificates/futureskills-prime-logo.webp';
 
 // ---- Shared dummy data for Certifications & Experience — used by both the
 // desktop (CertificationsExperience) and mobile (CertificationsExperienceMobile)
@@ -9,6 +18,66 @@ import jsIcon from '../../assets/icons/javascript.webp';
 // truth instead of duplicating this array in two places. ----
 // credentialId abhi masked (••••) hai, real ID milte hi wahan daal dena.
 export const certifications = [
+  {
+    title: 'DCSC — Drop Certified Security Course',
+    issuer: 'The Drop Organization (TDO Tech Education Pvt. Ltd.)',
+    category: 'Cybersecurity',
+    description: 'Successfully completed the requirements and examination for Web Application Penetration Testing under the Drop Certified Security Course (DCSC).',
+    tags: ['Cybersecurity', 'Web Application Security', 'Penetration Testing', 'Web Security', 'Vulnerability Assessment'],
+    date: 'Apr 2026',
+    credentialId: 'DCSC-RRBR1225',
+    link: '#',
+    image: dcscCertImage,
+    issuerLogo: tdoLogo,
+  },
+  {
+    title: 'Introduction to Cybersecurity',
+    issuer: 'Cisco Networking Academy',
+    category: 'Cybersecurity',
+    description: 'Successfully completed the Introduction to Cybersecurity course offered through the Cisco Networking Academy program, covering foundational concepts of cybersecurity and digital security.',
+    tags: ['Cybersecurity', 'Network Security', 'Security Fundamentals', 'Cyber Awareness'],
+    date: 'Aug 2026',
+    credentialId: '11950e89-dae7-49b6-a6b9-0efd7562c552',
+    link: '#',
+    image: ciscoCertImage,
+    issuerLogo: ciscoLogo,
+  },
+  {
+    title: 'Cyber Threat Management',
+    issuer: 'Cisco Networking Academy',
+    category: 'Cybersecurity',
+    description: 'Successfully completed the Cyber Threat Management course through the Cisco Networking Academy program, covering concepts related to identifying, understanding, and managing cyber threats.',
+    tags: ['Cybersecurity', 'Threat Management', 'Cyber Threats', 'Network Security', 'Security Operations'],
+    date: 'Sep 2026',
+    credentialId: 'cde896b6-eceb-4846-a831-4651bd4bcd67',
+    link: '#',
+    image: ciscoCtmCertImage,
+    issuerLogo: ciscoLogo,
+  },
+  {
+    title: 'TCS iON Career Edge – IT Primer',
+    issuer: 'TCS iON — Tata Consultancy Services',
+    category: 'Development',
+    description: 'Successfully completed the TCS iON Career Edge – IT Primer course, covering IT industry fundamentals, job tools, industry elements, trending technologies, and career development.',
+    tags: ['IT Fundamentals', 'Career Development', 'Trending Technologies', 'IT Industry', 'TCS iON'],
+    date: 'Sep 2026',
+    credentialId: '8739-33394418-1016',
+    link: '#',
+    image: tcsionCertImage,
+    issuerLogo: tcsionLogo,
+  },
+  {
+    title: 'Gen AI Tools',
+    issuer: 'FutureSkills Prime / IT-ITeS Sector Skills Council (Nasscom)',
+    category: 'Other',
+    description: 'Certificate of participation for successfully completing Gen AI Tools, aligned with competency standards developed by the IT-ITeS Sector Skills Council Nasscom in collaboration with industry and government.',
+    tags: ['Generative AI', 'AI Tools', 'Artificial Intelligence', 'Emerging Technology', 'Digital Skills'],
+    date: 'Aug 2026',
+    credentialId: '26060825933',
+    link: '#',
+    image: nasscomCertImage,
+    issuerLogo: futureskillsLogo,
+  },
   {
     title: 'Certification Name Placeholder One',
     issuer: 'Issuing Platform',

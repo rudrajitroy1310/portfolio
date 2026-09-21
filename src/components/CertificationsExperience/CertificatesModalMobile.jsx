@@ -28,8 +28,12 @@ function CertificatesModalMobile({
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [search, setSearch] = useState('');
   const [sortOrder, setSortOrder] = useState('latest'); // 'latest' | 'oldest'
+  // Category filter ab dropdown me hai (search bar aur sort ke beech wale
+  // icon button se khulta hai), tabs ki jagah
+  const [isFilterOpen, setFilterOpen] = useState(false);
   const miniGridRef = useRef(null);
   const activeCardRef = useRef(null);
+  const filterWrapRef = useRef(null);
 
   // Jab kisi specific card se modal khola gaya ho (preview carousel se tap),
   // usi certificate ko seedha overview me select karke dikhao — filter/search
@@ -121,12 +125,20 @@ function CertificatesModalMobile({
   const handleCategoryChange = (cat) => {
     setActiveCategory(cat);
     setSelectedTitle(null);
+    setFilterOpen(false);
   };
 
-  const handleResetFilters = () => {
-    setSearch('');
-    setSortOrder('latest');
-  };
+  // Filter dropdown ko bahar click karne par band kar do
+  useEffect(() => {
+    if (!isFilterOpen) return undefined;
+    const onClickOutside = (e) => {
+      if (filterWrapRef.current && !filterWrapRef.current.contains(e.target)) {
+        setFilterOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
+  }, [isFilterOpen]);
 
   // Whichever card was tapped drives the overview column — defaults to the
   // first certificate in the current filter so the overview is never empty
@@ -234,14 +246,38 @@ function CertificatesModalMobile({
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>
-                  <button
-                    type="button"
-                    className="certmodalm__search-reset"
-                    onClick={handleResetFilters}
-                    aria-label="Reset search and sort"
-                  >
-                    <BsSliders />
-                  </button>
+                  <div className="certmodalm__filter-wrap" ref={filterWrapRef}>
+                    <button
+                      type="button"
+                      className={`certmodalm__search-reset${activeCategory !== 'All Certificates' ? ' certmodalm__search-reset--active' : ''}`}
+                      onClick={() => setFilterOpen((o) => !o)}
+                      aria-label="Filter by category"
+                      aria-haspopup="listbox"
+                      aria-expanded={isFilterOpen}
+                    >
+                      <BsSliders />
+                    </button>
+
+                    {isFilterOpen && (
+                      <div className="certmodalm__filter-menu" role="listbox">
+                        {CATEGORIES.map((cat) => {
+                          const Icon = CATEGORY_ICONS[cat];
+                          return (
+                            <button
+                              type="button"
+                              key={cat}
+                              role="option"
+                              aria-selected={activeCategory === cat}
+                              className={`certmodalm__filter-option${activeCategory === cat ? ' certmodalm__filter-option--active' : ''}`}
+                              onClick={() => handleCategoryChange(cat)}
+                            >
+                              <Icon /> {cat}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                   <label className="certmodalm__sort">
                     <span>Sort</span>
                     <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
@@ -249,22 +285,6 @@ function CertificatesModalMobile({
                       <option value="oldest">Oldest</option>
                     </select>
                   </label>
-                </div>
-
-                <div className="certmodalm__tabs">
-                  {CATEGORIES.map((cat) => {
-                    const Icon = CATEGORY_ICONS[cat];
-                    return (
-                      <button
-                        type="button"
-                        key={cat}
-                        className={`certmodalm__tab${activeCategory === cat ? ' certmodalm__tab--active' : ''}`}
-                        onClick={() => handleCategoryChange(cat)}
-                      >
-                        <Icon /> {cat}
-                      </button>
-                    );
-                  })}
                 </div>
 
                 {filtered.length === 0 ? (

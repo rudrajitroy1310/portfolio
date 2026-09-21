@@ -54,11 +54,11 @@
 /* Content ki height = screen jitni (phone pe bilkul pehle jaisa layout), lekin
    kam se kam ~2:1 phone-aspect. Bahut chhoti/chaudi screen (chhota phone ya
    4:3 tablet) pe layout dabne ke bajaye itni lambi rehti hai aur scroll hota hai.
-   NOTE: min-height nahi, height — carousel/card ki percentage heights ko ek
-   definite parent height chahiye, warna card sikud jaata hai. */
+   Card/track ab percentage heights pe depend nahi karte (neeche dekho), isliye
+   yahan min-height chal jaati hai — content zyada ho to ye khud lamba ho jaata hai. */
 .pallmodal__content {
   position: relative;
-  height: max(100%, calc(200 * var(--mvw)));
+  min-height: max(100%, calc(200 * var(--mvw)));
   display: flex;
   flex-direction: column;
 }
@@ -279,7 +279,10 @@
   position: relative;
   width: 100%;
   flex: 1 1 auto;
-  min-height: 0;
+  /* Card content ke hisaab se apni height leta hai (~300-340px). Carousel kabhi
+     isse chhota nahi hota, isliye chhoti screen pe card sikudta nahi — content
+     zyada ho to modal scroll hota hai. */
+  min-height: 350px;
   overflow: visible;
   touch-action: pan-y;
   animation: pallmodal-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -325,9 +328,8 @@
 }
 
 .pallmodal__track {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
 }
 
 .pallmodal__card {
@@ -336,8 +338,10 @@
   top: 50%;
   width: calc(68 * var(--mvw));
   max-width: 280px;
-  height: 72%;
-  max-height: 320px;
+  /* Height content se aati hai (pehle carousel ki 72% thi — isi wajah se chhoti
+     screen pe description gayab hoti thi aur View Project button card se bahar
+     nikalta tha). */
+  height: auto;
   display: flex;
   flex-direction: column;
   padding: calc(2.6 * var(--mvw)) calc(2.8 * var(--mvw));
@@ -366,7 +370,8 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.45);
-  flex: 0 0 40%;
+  flex: 0 0 auto;
+  aspect-ratio: 2.275;
 }
 
 .pallmodal__card-index {
@@ -477,8 +482,7 @@
   flex-direction: column;
   gap: calc(1.8 * var(--mvw));
   margin-top: calc(3 * var(--mvw));
-  min-height: 0;
-  flex: 1;
+  flex: 1 0 auto;
 }
 
 .pallmodal__card-cat {

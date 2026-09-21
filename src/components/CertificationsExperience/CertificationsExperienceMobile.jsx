@@ -4,7 +4,7 @@ import {
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  BsAward, BsBriefcaseFill, BsPatchCheckFill, BsArrowRight,
+  BsAward, BsBriefcaseFill, BsArrowRight,
   BsChevronLeft, BsChevronRight,
 } from 'react-icons/bs';
 import certExpMobileBg from '../../assets/images/certexp-mobile-bg.webp';
@@ -173,15 +173,15 @@ function CertificationsExperienceMobile() {
                     aria-label={`View details for ${cert.title}`}
                   >
                     <div className="certexp-m__cert-top">
-                      <span className="certexp-m__cert-badge"><BsAward /></span>
-                      <span className="certexp-m__verified"><BsPatchCheckFill /> Verified</span>
+                      <span className="certexp-m__cert-badge">
+                        {cert.issuerLogo ? (
+                          <img src={cert.issuerLogo} alt="" className="certexp-m__cert-badge-logo" />
+                        ) : (
+                          <BsAward />
+                        )}
+                      </span>
                     </div>
                     <h4>{cert.title}</h4>
-                    <p className="certexp-m__cert-issuer">{cert.issuer}</p>
-                    <p className="certexp-m__cert-desc">{cert.description}</p>
-                    <div className="certexp-m__cert-meta">
-                      <span>{cert.date}</span>
-                    </div>
                   </button>
                 ))}
               </div>

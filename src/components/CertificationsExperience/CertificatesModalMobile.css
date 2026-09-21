@@ -110,8 +110,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.certmodalm__sidebar > *,
-.certmodalm__tabs {
+.certmodalm__sidebar > * {
   animation: certmodalm-reveal 0.5s ease both;
 }
 
@@ -120,7 +119,6 @@
 .certmodalm__sidebar > *:nth-child(3) { animation-delay: 0.15s; }
 .certmodalm__sidebar > *:nth-child(4) { animation-delay: 0.2s; }
 .certmodalm__sidebar > *:nth-child(5) { animation-delay: 0.25s; }
-.certmodalm__tabs { animation-delay: 0.1s; }
 .certmodalm__panel { animation: certmodalm-reveal 0.55s ease 0.2s both; }
 
 @keyframes certmodalm-pop-in {
@@ -320,58 +318,64 @@
   min-width: 0;
 }
 
-/* Tabs: single scrollable line, never wraps */
+/* Category filter: dropdown from the search-row's filter icon button (replaces
+   the old always-visible horizontal tab row) */
 
-.certmodalm__tabs {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  gap: clamp(5px, calc(1.4 * var(--mvw)), 8px);
-  padding-bottom: 2px;
+.certmodalm__filter-wrap {
+  position: relative;
   flex-shrink: 0;
 }
 
-.certmodalm__tabs::-webkit-scrollbar { display: none; }
+.certmodalm__filter-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  max-width: calc(100vw - 32px);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 168px;
+  padding: 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 39, 64, 0.4);
+  background: #1a0c0d;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 39, 64, 0.1);
+  animation: certmodalm-reveal 0.18s ease both;
+}
 
-.certmodalm__tab {
-  display: inline-flex;
+.certmodalm__filter-option {
+  display: flex;
   align-items: center;
-  gap: 5px;
-  padding: clamp(4px, calc(1.1 * var(--mvw)), 7px) clamp(8px, calc(2 * var(--mvw)), 13px);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(30, 12, 13, 0.55);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  gap: 7px;
+  padding: clamp(6px, calc(1.6 * var(--mvw)), 9px) clamp(9px, calc(2.2 * var(--mvw)), 12px);
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--certmodalm-text-dim);
   font-family: var(--font-mono);
-  font-size: clamp(0.54rem, calc(1.6 * var(--mvw)), 0.68rem);
+  font-size: clamp(0.54rem, calc(1.6 * var(--mvw)), 0.66rem);
   letter-spacing: 0.02em;
   white-space: nowrap;
-  flex-shrink: 0;
-  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
-.certmodalm__tab:hover {
-  border-color: rgba(255, 39, 64, 0.4);
+.certmodalm__filter-option:hover {
+  border-color: rgba(255, 39, 64, 0.35);
   color: var(--text);
-  transform: translateY(-2px);
 }
 
-.certmodalm__tab:active {
-  transform: translateY(0) scale(0.94);
-  transition-duration: 0.1s;
-}
-
-.certmodalm__tab--active {
+.certmodalm__filter-option--active {
   border-color: var(--red);
   background: var(--red);
   color: #0a0505;
   font-weight: 600;
-  transform: translateY(-1px) scale(1.04);
-  box-shadow: 0 6px 18px rgba(255, 39, 64, 0.35);
+}
+
+.certmodalm__search-reset--active {
+  border-color: var(--red);
+  color: var(--red);
 }
 
 /* ---------- Boxed panel: one bordered container holding the small-square
@@ -471,7 +475,7 @@
   border-color: var(--red);
   color: var(--red);
   background: rgba(255, 39, 64, 0.15);
-  transform: rotate(-90deg) scale(0.88);
+  transform: scale(0.9);
 }
 
 .certmodalm__sort {
@@ -763,12 +767,6 @@
   white-space: nowrap;
 }
 
-.certmodalm__overview-tag-pill:nth-child(even) {
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--certmodalm-text-dim);
-}
-
 .certmodalm__overview-meta {
   flex-shrink: 0;
   display: flex;
@@ -932,7 +930,6 @@
   .certmodalm__frame,
   .certmodalm__glow-ring,
   .certmodalm__sidebar > *,
-  .certmodalm__tabs,
   .certmodalm__panel,
   .certmodalm__overview,
   .certmodalm__heading span {

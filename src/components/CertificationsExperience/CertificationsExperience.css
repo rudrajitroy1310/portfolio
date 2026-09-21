@@ -415,8 +415,8 @@
 .certexp__cert-card {
   position: relative;
   display: flex;
-  gap: 14px;
-  padding: 18px 20px;
+  gap: 16px;
+  padding: 26px 24px;
   border-radius: 10px;
   border: 1px solid rgba(255, 39, 64, 0.3);
   /* Pehle bg image seedha through dikh raha tha (bohot transparent) —
@@ -460,16 +460,23 @@
 
 .certexp__cert-badge {
   flex-shrink: 0;
-  width: 42px;
-  height: 42px;
+  width: 72px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 39, 64, 0.3);
   background: linear-gradient(155deg, #1c0508, #0a0405 70%);
   color: rgba(255, 39, 64, 0.6);
-  font-size: 1.05rem;
+  font-size: 1.7rem;
+  overflow: hidden;
+}
+
+.certexp__cert-badge-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .certexp__cert-content {
@@ -482,19 +489,19 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 .certexp__cert-top h4 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.83rem;
+  font-size: 0.95rem;
   color: var(--text);
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 .certexp__cert-issuer {
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   color: var(--red);
 }
 
@@ -525,18 +532,18 @@
 }
 
 .certexp__cert-desc {
-  font-size: 0.7rem;
-  line-height: 1.4;
+  font-size: 0.76rem;
+  line-height: 1.55;
   color: var(--text-dim);
-  margin-bottom: 12px;
+  margin-bottom: 18px;
 }
 
 .certexp__cert-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 14px;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.66rem;
   color: var(--text-dim);
 }
 

@@ -304,8 +304,9 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  gap: calc(2 * var(--mvw));
-  padding: calc(3.6 * var(--mvw)) calc(3 * var(--mvw));
+  justify-content: center;
+  gap: calc(3.2 * var(--mvw));
+  padding: calc(4.4 * var(--mvw)) calc(3 * var(--mvw));
   border: 1px solid rgba(255, 39, 64, 0.4);
   border-radius: 10px;
   background: linear-gradient(160deg, rgba(38, 14, 17, 0.9), rgba(16, 8, 9, 0.92));
@@ -362,61 +363,34 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: calc(9 * var(--mvw));
-  height: calc(9 * var(--mvw));
-  max-width: 36px;
-  max-height: 36px;
-  border-radius: 7px;
+  width: calc(19 * var(--mvw));
+  height: calc(19 * var(--mvw));
+  max-width: 74px;
+  max-height: 74px;
+  border-radius: 12px;
   border: 1px solid rgba(255, 39, 64, 0.3);
   background: linear-gradient(155deg, #1c0508, #0a0405 70%);
   color: rgba(255, 39, 64, 0.75);
-  font-size: clamp(0.6rem, calc(2.8 * var(--mvw)), 0.7rem);
+  font-size: clamp(1.3rem, calc(5.8 * var(--mvw)), 1.5rem);
+  overflow: hidden;
 }
 
-.certexp-m__verified {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-family: var(--font-mono);
-  font-size: clamp(0.32rem, calc(1.4 * var(--mvw)), 0.38rem);
-  color: #3ddc84;
-  white-space: nowrap;
+.certexp-m__cert-badge-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .certexp-m__cert-card h4 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(0.44rem, calc(2 * var(--mvw)), 0.52rem);
+  font-size: clamp(0.5rem, calc(2.3 * var(--mvw)), 0.6rem);
   line-height: 1.3;
   color: var(--text);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.certexp-m__cert-issuer {
-  font-size: clamp(0.36rem, calc(1.6 * var(--mvw)), 0.42rem);
-  color: var(--red);
-}
-
-.certexp-m__cert-desc {
-  font-size: clamp(0.34rem, calc(1.5 * var(--mvw)), 0.4rem);
-  line-height: 1.4;
-  color: var(--text-dim);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.certexp-m__cert-meta {
-  margin-top: auto;
-  padding-top: calc(1 * var(--mvw));
-  border-top: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: clamp(0.3rem, calc(1.3 * var(--mvw)), 0.36rem);
-  color: var(--text-dim);
 }
 
 .certexp-m__dots {

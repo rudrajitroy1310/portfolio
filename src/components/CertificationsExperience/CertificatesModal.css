@@ -447,16 +447,16 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   width: var(--card-w);
-  padding: 20px;
+  padding: 24px 20px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: linear-gradient(160deg, rgba(75, 22, 27, 0.72), rgba(20, 9, 10, 0.8));
   backdrop-filter: blur(28px) saturate(160%);
   -webkit-backdrop-filter: blur(28px) saturate(160%);
-  text-align: left;
+  text-align: center;
   color: var(--text);
   cursor: pointer;
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease, filter 0.35s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -465,7 +465,8 @@
   /* Fan the cards out horizontally based on distance from center (--pos).
      translate happens BEFORE scale in the transform list, so the offset
      itself is never shrunk by the scale — this is what stops the cards
-     from overlapping once they shrink. */
+     from overlapping once they shrink. No rotation anywhere in this stack,
+     so cards stay perfectly flat/straight, never tilted. */
   transform: translateX(calc(var(--pos) * 250px)) translateY(var(--lift)) scale(calc(1 - min(0.4, abs(var(--pos)) * 0.4)));
   opacity: calc(1 - min(1, abs(var(--pos)) * 0.55));
   filter: brightness(calc(1 - min(0.4, abs(var(--pos)) * 0.4)));
@@ -529,17 +530,24 @@
 }
 
 .certmodal__orbit-icon {
-  width: 42px;
-  height: 42px;
+  width: 72px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 16px;
   background: rgba(255, 39, 64, 0.12);
   border: 1px solid rgba(255, 39, 64, 0.3);
   color: var(--red);
-  font-size: 1.25rem;
-  margin-bottom: 2px;
+  font-size: 2rem;
+  margin-bottom: 4px;
+  overflow: hidden;
+}
+
+.certmodal__orbit-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .certmodal__orbit-card--active .certmodal__orbit-icon {
@@ -551,29 +559,11 @@
   50% { transform: translateY(-3px); }
 }
 
-.certmodal__orbit-issuer {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  color: var(--certmodal-text-dim);
-  text-transform: uppercase;
-}
-
 .certmodal__orbit-title {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1rem;
-  line-height: 1.22;
-}
-
-.certmodal__orbit-date {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: var(--certmodal-text-dim);
+  line-height: 1.25;
 }
 
 /* Progress bar */
@@ -651,7 +641,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 150px;
+  /* Fixed generic box, decoupled from any one certificate's own ratio —
+     align-self: start stops the grid row from stretching it taller, so
+     aspect-ratio actually holds. object-fit: contain on the image (below)
+     then fits any ratio (landscape, portrait, square) without cropping. */
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  align-self: start;
   padding: 16px;
   border-radius: 10px;
   text-align: center;
@@ -659,6 +655,21 @@
   backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
   border: 1px dashed rgba(255, 39, 64, 0.4);
+  overflow: hidden;
+}
+
+.certmodal__detail-art--has-image {
+  border-style: solid;
+  border-color: rgba(255, 39, 64, 0.5);
+  background: #0c0505;
+  padding: 8px;
+}
+
+.certmodal__detail-art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 .certmodal__detail-art-icon {
@@ -672,6 +683,13 @@
   border: 1px solid rgba(255, 39, 64, 0.4);
   color: var(--red);
   font-size: 1.4rem;
+  overflow: hidden;
+}
+
+.certmodal__detail-art-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .certmodal__detail-art-title {
@@ -798,8 +816,12 @@
 .certmodal__cred-card {
   position: relative;
   width: 100%;
-  max-width: 620px;
-  aspect-ratio: 1 / 1;
+  max-width: 900px;
+  max-height: calc(100vh - 48px);
+  /* Fixed generic box — NOT tied to any one certificate's own ratio.
+     object-fit: contain on the image below fits any certificate (landscape,
+     portrait, or square) inside it without cropping or stretching. */
+  aspect-ratio: 3 / 2;
   display: flex;
   flex-direction: column;
   border-radius: 20px;
@@ -836,8 +858,9 @@
 }
 
 
-/* Fills the top ~85% of the square card with the certificate photo, or the
-   same icon+title placeholder art used elsewhere when no real image exists yet */
+/* Fills the card with the certificate photo (any aspect ratio — see
+   object-fit: contain below), or the same icon+title placeholder art used
+   elsewhere when no real image exists yet */
 .certmodal__cred-image {
   position: relative;
   flex: 1;
@@ -857,7 +880,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .certmodal__cred-image-icon {
